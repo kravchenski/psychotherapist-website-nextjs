@@ -5,11 +5,24 @@
   --foreground: #171717;
 }
 
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-20px); }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --animate-slide-down: slideDown 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  --animate-slide-up: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @media (prefers-color-scheme: dark) {
