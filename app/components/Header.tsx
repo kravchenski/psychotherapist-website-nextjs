@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import styles from "./Header.module.css";
 
 const NAV_LINKS = [
   { href: "#about", label: "Обо мне" },
@@ -47,7 +46,7 @@ const MobileNavLink = ({ href, label, onClick }: { href: string; label: string; 
       onClick={onClick}
       onMouseEnter={() => setColor(COLORS.button)}
       onMouseLeave={() => setColor(COLORS.text)}
-      className="text-base font-medium transition-colors whitespace-nowrap"
+      className="text-base font-medium transition-colors whitespace-nowrap block py-4 border-b border-[#f0ede6] first:pt-0 last:border-b-0 last:pb-4"
       style={{ color, fontFamily: 'var(--font-montserrat), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif' }}
     >
       {label}
@@ -103,7 +102,7 @@ export default function Header() {
     closeTimeoutRef.current = setTimeout(() => {
       setOpen(false);
       setIsClosing(false);
-    }, 300);
+    }, 350);
   };
 
   const openMenu = () => {
@@ -151,22 +150,22 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full bg-white border-b" style={{ borderColor: COLORS.border, height: "66px", display: "flex", alignItems: "center" }}>
-      <div className={`${styles.headerContainer} max-w-6xl w-full mx-auto px-3 flex justify-between items-center transition-all`}>
+    <header className="w-full bg-white border-b relative z-50 px-3" style={{ borderColor: COLORS.border, height: "66px", display: "flex", alignItems: "center" }}>
+      <div className="max-w-6xl w-full mx-auto flex justify-between items-center transition-all px-3 md:px-4 lg:px-6">
           <Link href="/" className="flex-shrink-0">
-            <span className={`${styles.headerLogo}`} style={{ color: COLORS.text, letterSpacing: "0.6px", fontFamily: 'var(--font-cormorant), Georgia, serif'}}>
+            <span className="text-2xl md:text-[28px]" style={{ color: COLORS.text, letterSpacing: "0.6px", fontFamily: 'var(--font-cormorant), Georgia, serif'}}>
               Анна Почебыт
             </span>
           </Link>
 
-          <nav className={`${styles.desktopNav} gap-8 items-center`}>
+          <nav className="hidden md:flex gap-8 items-center">
             {NAV_LINKS.map((link) => (
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
             <ActionButton>Записаться</ActionButton>
           </nav>
 
-          <div className={styles.mobileMenuBtn}>
+          <div className="md:hidden">
             <button type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={toggleMenu} className="p-2 cursor-pointer">
               <HamburgerIcon open={open || isClosing} />
             </button>
@@ -176,7 +175,7 @@ export default function Header() {
         {(open || isClosing) && (
           <div
             ref={menuRef}
-            className={`${styles.mobileMenuContainer} absolute top-[66px] left-0 right-0 border-b flex flex-col gap-0 px-6 py-8 transition-all shadow-md max-h-96 overflow-y-auto ${isClosing ? styles.mobileMenuClosing : styles.mobileMenu}`}
+            className={`absolute top-[66px] left-0 right-0 border-b flex flex-col gap-0 px-6 py-8 shadow-md max-h-[420px] overflow-y-auto ${isClosing ? 'animate-slide-up' : 'animate-slide-down'}`}
             style={{
               backgroundColor: COLORS.mobileMenuBg,
               borderColor: COLORS.border,
@@ -184,9 +183,7 @@ export default function Header() {
           >
             <div className="flex flex-col gap-0">
               {NAV_LINKS.map((link) => (
-                <div key={link.href} className={styles.mobileMenuLink}>
-                  <MobileNavLink href={link.href} label={link.label} onClick={() => closeMenu()} />
-                </div>
+                <MobileNavLink key={link.href} href={link.href} label={link.label} onClick={() => closeMenu()} />
               ))}
             </div>
             <button
