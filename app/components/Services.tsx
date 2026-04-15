@@ -118,7 +118,7 @@ export default function Services() {
 
                 {/* Action Button */}
                 <button
-                  className="w-full bg-[#2c302e] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] transition-colors hover:bg-[#1a1d1c] cursor-pointer"
+                  className="w-full bg-[#495b48] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] transition-colors cursor-pointer"
                   style={{
                     fontFamily: 'var(--font-montserrat), sans-serif',
                   }}
