@@ -26,7 +26,7 @@ const TIMELINE_ITEMS = [
   {
     year: "Дополнительное образование по курсам:",
     courses: [
-      "- семейная системная писхотерапия;",
+      "- семейная системная психотерапия;",
       "- семейная медиация: технология работы с семейным кризисом;",
       "- сексуальные расстройства, профилактика сексуальных нарушений;",
       "- доказательная медицина: антидепрессанты в практике врача-психотерапевта;",
@@ -63,7 +63,7 @@ export default function About() {
           <div className="w-full lg:w-1/2 flex flex-col gap-3">
             {/* Section Label */}
             <div
-              className="text-sm font-semibold tracking-wider uppercase"
+              className="text-sm font-semibold tracking-wider uppercase text-center lg:text-left"
               style={{
                 color: "#6c7b6b",
                 fontFamily: "var(--font-cormorant), Georgia, serif",
@@ -75,7 +75,7 @@ export default function About() {
 
             {/* Main Heading */}
             <div
-              className="text-4xl sm:text-5xl lg:text-[48px] font-medium"
+              className="text-4xl sm:text-5xl lg:text-[48px] font-medium text-center lg:text-left"
               style={{
                 color: "#2c302e",
                 fontFamily: "var(--font-cormorant), Georgia, serif",
@@ -87,7 +87,7 @@ export default function About() {
             </div>
 
             {/* Bio Text */}
-            <div className="flex flex-col gap-4 sm:gap-5 pt-3 sm:pt-4 pb-4 sm:pb-5">
+            <div className="flex flex-col gap-4 sm:gap-5 pt-3 sm:pt-4 pb-4 sm:pb-5 text-center sm:text-left">
             <div
               className="text-lg sm:text-xl"
               style={{
@@ -97,7 +97,9 @@ export default function About() {
                 lineHeight: "1.6",
               }}
             >
-              <p className="mb-0">Меня зовут Анна Почебыт, я психотерапевт-психолог. Живу и работаю в Гродно.</p>
+              <p className="mb-0">
+                Меня зовут <span className="font-semibold text-[#2c302e]">Анна Почебыт</span>, я психотерапевт-психолог. Живу и работаю в Гродно.
+              </p>
             </div>
 
               <div
