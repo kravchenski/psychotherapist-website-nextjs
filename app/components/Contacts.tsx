@@ -18,10 +18,6 @@ const CONTACT_INFO = [
     value: "+375 (29) 726-22-39",
   },
   {
-    label: "Email",
-    value: "anna.pochebyt@gmail.com",
-  },
-  {
     label: "Часы работы",
     value: "Пн-Пт: 09:00 - 20:00",
     subValue: "(по предварительной записи)",
@@ -30,12 +26,12 @@ const CONTACT_INFO = [
 
 export default function Contacts() {
   return (
-    <section className="w-full bg-white md:py-20 lg:py-20 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-[60px]" id="contact">
+    <section className="w-full bg-white pt-12 md:py-20 lg:py-20 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-[60px]" id="contact">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           
           {/* Left: Contact Info */}
-          <div className="w-full lg:w-1/2 flex flex-col gap-3">
+          <div className="w-full lg:w-1/2 flex flex-col gap-3 text-center lg:text-left">
             {/* Section Label */}
             <div
               className="text-sm font-semibold tracking-wider uppercase"
@@ -62,9 +58,9 @@ export default function Contacts() {
             </div>
 
             {/* Description */}
-            <div className="flex flex-col gap-4 sm:gap-5 pt-3 sm:pt-4 pb-4 sm:pb-5 max-w-md">
+            <div className="flex flex-col gap-4 sm:gap-5 pt-3 sm:pt-4 pb-4 sm:pb-5 max-w-md mx-auto lg:mx-0">
               <div
-                className="text-base sm:text-lg"
+                className="text-base sm:text-lg text-center lg:text-left"
                 style={{
                   color: "rgba(44, 48, 46, 0.7)",
                   fontFamily: "var(--font-montserrat), sans-serif",
@@ -102,7 +98,15 @@ export default function Contacts() {
                     className="text-xl font-medium"
                     style={{
                       color: "#2c302e",
-                      fontFamily: "var(--font-cormorant), Georgia, serif",
+                      fontFamily:
+                        item.label === "Телефон" || item.label === "Часы работы"
+                          ? "var(--font-montserrat), sans-serif"
+                          : "var(--font-cormorant), Georgia, serif",
+                      fontWeight: item.label === "Телефон" || item.label === "Часы работы" ? 600 : 500,
+                      fontVariantNumeric:
+                        item.label === "Телефон" || item.label === "Часы работы" ? "tabular-nums" : undefined,
+                      letterSpacing:
+                        item.label === "Телефон" || item.label === "Часы работы" ? "0.02em" : undefined,
                       lineHeight: "28px",
                     }}
                   >
@@ -138,13 +142,6 @@ export default function Contacts() {
                   alt={social.alt}
                   src={social.icon}
                   className="max-w-none size-full object-contain transition-all duration-300 group-hover:opacity-100"
-                  style={{ filter: 'brightness(1)' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.filter = 'hue-rotate(-10deg) saturate(80%) brightness(0.85)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.filter = 'brightness(1)';
-                  }}
                 />
                 </a>
               ))}
