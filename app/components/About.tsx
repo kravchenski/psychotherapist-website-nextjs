@@ -38,7 +38,7 @@ const TIMELINE_ITEMS = [
 
 export default function About() {
   return (
-    <section className="w-full bg-white py-12 lg:py-16 px-4 sm:px-6 lg:px-8" id="#about">
+    <section className="w-full bg-white py-12 lg:py-16 px-4 sm:px-6 lg:px-8" id="about">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
           {/* Left: Image */}
