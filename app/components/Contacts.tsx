@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 const imgViber = "social_networks/viber.svg";
 const imgTelegram = "social_networks/telegram.svg";
 const imgInstagram = "social_networks/instagram.svg";
@@ -16,6 +18,7 @@ const CONTACT_INFO = [
   {
     label: "Телефон",
     value: "+375 (29) 726-22-39",
+    href: "tel:+375297262239",
   },
   {
     label: "Часы работы",
@@ -25,6 +28,18 @@ const CONTACT_INFO = [
 ];
 
 export default function Contacts() {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyPhone = async (value: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      setCopied(false);
+    }
+  };
+
   return (
     <section className="w-full bg-white pt-12 md:py-20 lg:py-20 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-[60px]" id="contact">
       <div className="max-w-7xl mx-auto">
@@ -94,24 +109,58 @@ export default function Contacts() {
                   >
                     {item.label}
                   </div>
-                  <div
-                    className="text-xl font-medium"
-                    style={{
-                      color: "#2c302e",
-                      fontFamily:
-                        item.label === "Телефон" || item.label === "Часы работы"
-                          ? "var(--font-montserrat), sans-serif"
-                          : "var(--font-cormorant), Georgia, serif",
-                      fontWeight: item.label === "Телефон" || item.label === "Часы работы" ? 600 : 500,
-                      fontVariantNumeric:
-                        item.label === "Телефон" || item.label === "Часы работы" ? "tabular-nums" : undefined,
-                      letterSpacing:
-                        item.label === "Телефон" || item.label === "Часы работы" ? "0.02em" : undefined,
-                      lineHeight: "28px",
-                    }}
-                  >
-                    {item.value}
-                  </div>
+                  {item.label === "Телефон" && item.href ? (
+                    <div className="flex items-center justify-center lg:justify-start gap-2">
+                      <div
+                        className="text-xl font-medium"
+                        style={{
+                          color: "#2c302e",
+                          fontFamily: "var(--font-montserrat), sans-serif",
+                          fontWeight: 600,
+                          fontVariantNumeric: "tabular-nums",
+                          letterSpacing: "0.02em",
+                          lineHeight: "28px",
+                        }}
+                      >
+                        <a href={item.href} className="select-all">
+                          {item.value}
+                        </a>
+                      </div>
+                      <button
+                        type="button"
+                        aria-label="Скопировать номер телефона"
+                        title={copied ? "Скопировано" : "Скопировать"}
+                        onClick={() => handleCopyPhone(item.value)}
+                        className="h-8 w-8 rounded-md border border-[rgba(108,123,107,0.25)] flex items-center justify-center transition-colors hover:bg-[rgba(108,123,107,0.1)] cursor-pointer relative"
+                      >
+                        <span className={`absolute inset-0 flex items-center justify-center transition-all duration-200 ${copied ? "opacity-0 scale-75" : "opacity-100 scale-100"}`}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M9 9.75A1.75 1.75 0 0 1 10.75 8h8.5A1.75 1.75 0 0 1 21 9.75v8.5A1.75 1.75 0 0 1 19.25 20h-8.5A1.75 1.75 0 0 1 9 18.25v-8.5Z" stroke="#6c7b6b" strokeWidth="1.8"/>
+                            <path d="M5.75 16A1.75 1.75 0 0 1 4 14.25v-8.5A1.75 1.75 0 0 1 5.75 4h8.5A1.75 1.75 0 0 1 16 5.75" stroke="#6c7b6b" strokeWidth="1.8"/>
+                          </svg>
+                        </span>
+                        <span className={`absolute inset-0 flex items-center justify-center transition-all duration-200 ${copied ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M5 12.5L9.2 16.5L19 7.5" stroke="#6c7b6b" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div
+                      className="text-xl font-medium"
+                      style={{
+                        color: "#2c302e",
+                        fontFamily: "var(--font-montserrat), sans-serif",
+                        fontWeight: 600,
+                        fontVariantNumeric: "tabular-nums",
+                        letterSpacing: "0.02em",
+                        lineHeight: "28px",
+                      }}
+                    >
+                      {item.value}
+                    </div>
+                  )}
                   {item.subValue && (
                     <div
                       className="text-sm font-light"
