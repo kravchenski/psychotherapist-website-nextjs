@@ -37,3 +37,25 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+*::selection {
+  background: #6c7b6b !important;
+  color: #ffffff !important;
+}
+
+*::-moz-selection {
+  background: #6c7b6b !important;
+  color: #ffffff !important;
+}
+
+input::selection,
+textarea::selection {
+  background: #6c7b6b !important;
+  color: #ffffff !important;
+}
+
+input::-moz-selection,
+textarea::-moz-selection {
+  background: #6c7b6b !important;
+  color: #ffffff !important;
+}
