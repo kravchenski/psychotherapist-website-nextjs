@@ -30,35 +30,20 @@ export default function Services() {
             Направления работы
           </div>
 
-          {/* Main Heading */}
-          <div
-            className="text-4xl sm:text-5xl lg:text-[48px] font-medium mb-4"
-            style={{
-              color: "#2c302e",
-              fontFamily: "var(--font-cormorant), Georgia, serif",
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Услуги и стоимость
-          </div>
-
           {/* Description */}
           <div
             className="text-base sm:text-lg max-w-2xl"
             style={{
-              color: "rgba(44, 48, 46, 0.7)",
+              color: "rgba(44, 48, 46, 0.88)",
               fontFamily: "var(--font-montserrat), sans-serif",
-              fontWeight: 300,
+              fontWeight: 400,
               lineHeight: "1.7",
             }}
           >
             <p className="mb-0">
-              Предлагаю индивидуальные форматы работы, доступные как онлайн, так и
+              Предлагаю индивидуальный формат работы, доступный как очно, так и онлайн.
             </p>
             <p>
-              <span>очно в Гродно.</span>
-              <br />
               <span className="font-bold">Не работаю со всеми видами зависимости, с детьми и подростками до 18 лет</span>
             </p>
           </div>
@@ -97,9 +82,9 @@ export default function Services() {
                 <div
                   className="text-sm mb-7"
                   style={{
-                    color: "rgba(44, 48, 46, 0.6)",
+                    color: "rgba(44, 48, 46, 0.82)",
                     fontFamily: "var(--font-montserrat), sans-serif",
-                    fontWeight: 300,
+                    fontWeight: 400,
                     lineHeight: "1.6",
                   }}
                 >
