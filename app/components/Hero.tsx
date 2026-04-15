@@ -52,7 +52,7 @@ export default function Hero() {
             </h1>
 
             <p 
-              className="text-base sm:text-lg text-[rgba(44,48,46,0.7)] font-light px-2"
+              className="text-base sm:text-lg text-[rgba(44,48,46,0.82)] font-light px-2"
               style={{ fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: "1.7" }}
             >
               Психотерапевт – это как проводник, который помогает вам найти свой собственный путь к решению проблем. Он не даёт готовых советов, а создаёт безопасное пространство, где вы можете разобраться в своих мыслях и чувствах, понять, что мешает, и найти свои собственные силы для изменений. Главное для меня– это доверие, конфиденциальность и вера в то, что вы сами способны справиться, просто иногда нужна помощь, чтобы это осознать.
@@ -82,7 +82,7 @@ export default function Hero() {
       <div className="hidden lg:block absolute inset-0 z-10">
         <div className="w-full h-full flex max-w-8xl mx-auto">
           <div className="w-[53%] flex items-center justify-center">
-            <div className="max-w-[768px] w-[768px] relative h-full flex flex-col justify-center">
+            <div className="max-w-[768px] w-[768px] relative h-full flex flex-col justify-center md:px-4">
               <h1 
                 className="relative mb-8 text-[#2c302e] text-[72px] tracking-[-1.8px] font-medium"
                 style={{ fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: "1.1" }}
@@ -91,7 +91,7 @@ export default function Hero() {
               </h1>
 
               <p 
-                className="relative max-w-[680px] mb-12 text-[24px] text-[rgba(44,48,46,0.7)] font-light"
+                className="relative max-w-[680px] mb-12 text-[24px] text-[rgba(44,48,46,0.82)] font-light"
                 style={{ fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: "1.4" }}
               >
                 Психотерапевт – это как проводник, который помогает вам найти свой собственный путь к решению проблем. Он не даёт готовых советов, а создаёт безопасное пространство, где вы можете разобраться в своих мыслях и чувствах, понять, что мешает, и найти свои собственные силы для изменений. Главное для меня– это доверие, конфиденциальность и вера в то, что вы сами способны справиться, просто иногда нужна помощь, чтобы это осознать.
