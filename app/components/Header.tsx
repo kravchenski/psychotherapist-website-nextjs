@@ -150,15 +150,23 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full bg-white border-b relative z-50 px-3" style={{ borderColor: COLORS.border, height: "66px", display: "flex", alignItems: "center" }}>
-      <div className="max-w-6xl w-full mx-auto flex justify-between items-center transition-all px-3 md:px-4 lg:px-6">
+    <header className="w-full bg-white border-b relative z-50" style={{ borderColor: COLORS.border, height: "66px", display: "flex", alignItems: "center" }}>
+      <div className="max-w-7xl w-full mx-auto flex justify-between items-center transition-all px-3 md:px-1 lg:px-6">
           <Link href="/" className="flex-shrink-0">
-            <span className="text-2xl md:text-[28px]" style={{ color: COLORS.text, letterSpacing: "0.6px", fontFamily: 'var(--font-cormorant), Georgia, serif'}}>
+            <span
+              style={{
+                color: COLORS.text,
+                letterSpacing: "0.6px",
+                fontFamily: 'var(--font-cormorant), Georgia, serif',
+                fontSize: "clamp(27px, 5vw, 31px)",
+                lineHeight: "1.1",
+              }}
+            >
               Анна Почебыт
             </span>
           </Link>
 
-          <nav className="hidden md:flex gap-8 items-center">
+          <nav className="hidden md:flex gap-8 md:gap-7 items-center">
             {NAV_LINKS.map((link) => (
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
