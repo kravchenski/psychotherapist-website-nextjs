@@ -129,7 +129,7 @@ export default function About() {
                 >
                   {/* Timeline dot */}
                   <div
-                    className="absolute left-[-30px] sm:left-[-31px] top-[5px] w-3 h-3 bg-[#6c7b6b] rounded-full"
+                    className="absolute left-[-30px] sm:left-[-35px] top-[5px] w-3 h-3 bg-[#6c7b6b] rounded-full"
                     style={{
                       boxShadow: "0 0 0 4px white",
                     }}
