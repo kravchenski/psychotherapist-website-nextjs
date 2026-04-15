@@ -6,7 +6,6 @@ import Link from "next/link";
 const NAV_LINKS = [
   { href: "#about", label: "Обо мне" },
   { href: "#services", label: "Услуги" },
-  { href: "#booking", label: "Порядок записи" },
   { href: "#contact", label: "Контакты" },
 ];
 
@@ -29,7 +28,7 @@ const NavLink = ({ href, label, onClick }: { href: string; label: string; onClic
       onClick={onClick}
       onMouseEnter={() => setColor(COLORS.text)}
       onMouseLeave={() => setColor(COLORS.textSecondary)}
-      className="text-sm font-medium transition-colors whitespace-nowrap"
+      className="text-sm font-medium transition-colors whitespace-nowrap px-3 py-2 -mx-1 rounded-md"
       style={{ color, fontFamily: 'var(--font-montserrat), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif' }}
     >
       {label}
@@ -46,7 +45,7 @@ const MobileNavLink = ({ href, label, onClick }: { href: string; label: string; 
       onClick={onClick}
       onMouseEnter={() => setColor(COLORS.button)}
       onMouseLeave={() => setColor(COLORS.text)}
-      className="text-base font-medium transition-colors whitespace-nowrap block py-4 border-b border-[#f0ede6] first:pt-0 last:border-b-0 last:pb-4"
+      className="text-base font-medium transition-colors whitespace-nowrap block px-2 py-5 border-b border-[#f0ede6] first:pt-0 last:border-b-0 last:pb-4"
       style={{ color, fontFamily: 'var(--font-montserrat), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif' }}
     >
       {label}
@@ -170,7 +169,7 @@ export default function Header() {
             {NAV_LINKS.map((link) => (
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
-            <ActionButton>Записаться</ActionButton>
+            <ActionButton onClick={() => { window.location.hash = "contact"; }}>Записаться</ActionButton>
           </nav>
 
           <div className="md:hidden">
@@ -195,7 +194,10 @@ export default function Header() {
               ))}
             </div>
             <button
-              onClick={() => closeMenu()}
+              onClick={() => {
+                closeMenu();
+                window.location.hash = "contact";
+              }}
               className="w-full text-base font-medium text-white rounded-full px-6 py-3 transition-colors border mt-6 cursor-pointer"
               style={{
                 backgroundColor: COLORS.button,
