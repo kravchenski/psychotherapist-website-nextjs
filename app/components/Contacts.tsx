@@ -6,10 +6,10 @@ const imgInstagram = "social_networks/instagram.svg";
 const imgWhatsapp = "social_networks/whatsapp.svg";
 
 const SOCIAL_LINKS = [
-  { icon: imgViber, alt: "Viber", href: "#" },
-  { icon: imgTelegram, alt: "Telegram", href: "#" },
-  { icon: imgInstagram, alt: "Instagram", href: "#" },
-  { icon: imgWhatsapp, alt: "WhatsApp", href: "#" },
+  { icon: imgViber, alt: "Viber", href: "viber://add?number=375297262239" },
+  { icon: imgTelegram, alt: "Telegram", href: "https://t.me/Anna_Pochebyt"},
+  { icon: imgInstagram, alt: "Instagram", href: "https://www.instagram.com/anna_pochebyt/" },
+  { icon: imgWhatsapp, alt: "WhatsApp", href: "https://wa.me/375297262239" },
 ];
 
 const CONTACT_INFO = [
@@ -136,6 +136,7 @@ export default function Contacts() {
                 <a
                   key={index}
                   href={social.href}
+                  target="_blank"
                   className="relative group size-[110px] md:size-[110px] lg:size-[110px] flex items-center justify-center transition-all duration-300 ease-out transform hover:scale-110 hover:-translate-y-1"
                 >
                 <img
