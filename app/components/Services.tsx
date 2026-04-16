@@ -1,6 +1,8 @@
+"use client"
 import Image from 'next/image'
+import { useState } from "react";
 
-const imgSvg = "/utils/service_check.svg";
+const imgSvg = "utils/service_check.svg";
 
 const SERVICES = [
   "Индивидуальное консультирование (психотерапия)",
@@ -13,6 +15,8 @@ const SERVICES = [
 ];
 
 export default function Services() {
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
+
   return (
     <section className="w-full bg-[#f9f8f5] py-12 lg:py-16 px-4 sm:px-6 lg:px-8" id="services">
       <div className="max-w-7xl mx-auto">
@@ -21,7 +25,7 @@ export default function Services() {
           <div
             className="text-sm font-semibold tracking-wider uppercase mb-3"
             style={{
-              color: "#4f5f4e",
+              color: "#6c7b6b",
               fontFamily: "var(--font-cormorant), Georgia, serif",
               lineHeight: "20px",
             }}
@@ -50,11 +54,14 @@ export default function Services() {
 
         <div className="flex lg:flex-row gap-6 lg:gap-10 justify-center">
           {/* Service Card - Full width on mobile, 2-column on desktop */}
-          <div className="w-full lg:w-[700px]">
+          <div>
             <div
-              className="bg-white border border-[#e5e2dc] rounded-[24px] p-6 sm:p-8 md:p-10 w-full transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0px_18px_30px_-14px_rgba(44,48,46,0.28),0px_8px_14px_-10px_rgba(44,48,46,0.2)]"
+              className="bg-white border border-[#e5e2dc] rounded-[24px] p-6 sm:p-8 md:p-10 w-full transition-all duration-300 ease-out"
               style={{
-                boxShadow: "0px 10px 18px -12px rgba(44, 48, 46, 0.18), 0px 4px 8px -6px rgba(44, 48, 46, 0.12)",
+                transform: isButtonHovered ? "translateY(-4px)" : "translateY(0)",
+                boxShadow: isButtonHovered
+                  ? "0px 18px 30px -14px rgba(44, 48, 46, 0.28), 0px 8px 14px -10px rgba(44, 48, 46, 0.2)"
+                  : "0px 10px 18px -12px rgba(44, 48, 46, 0.18), 0px 4px 8px -6px rgba(44, 48, 46, 0.12)",
               }}
             >
               <div className="relative">
@@ -62,7 +69,7 @@ export default function Services() {
                 <div className="flex justify-between items-start mb-5">
                   <div>
                     <div
-                      className="text-2xl font-bold mb-2"
+                      className="text-2xl font-medium mb-2"
                       style={{
                         color: "#2c302e",
                         fontFamily: "var(--font-cormorant), Georgia, serif",
@@ -72,10 +79,10 @@ export default function Services() {
                       Индивидуальные консультации
                     </div>
                     <div className="flex gap-2">
-                      <span className="bg-[#dce5db] text-[#334333] text-xs font-medium px-2 py-1 rounded">
+                      <span className="bg-[#6c7b6b1a] text-[#6c7b6b] text-xs font-medium px-2 py-1 rounded">
                         офлайн
                       </span>
-                      <span className="bg-[#dce5db] text-[#334333] text-xs font-medium px-2 py-1 rounded">
+                      <span className="bg-[#6c7b6b1a] text-[#6c7b6b] text-xs font-medium px-2 py-1 rounded">
                         онлайн
                       </span>
                     </div>
@@ -89,10 +96,18 @@ export default function Services() {
                     color: "rgba(44, 48, 46, 0.82)",
                     fontFamily: "var(--font-montserrat), sans-serif",
                     fontWeight: 400,
-                    lineHeight: "1.62",
+                    lineHeight: "1.6",
                   }}
                 >
-                  <p className="text-justify">Индивидуальная работа с психологическими трудностями, направленная на решение конкретных задач и достижение устойчивых позитивных изменений в жизни.</p>
+                  <p className="sm:hidden mb-0">
+                    Персональная работа с психологическими трудностями, направленная на решение конкретных проблем и достижение позитивных изменений в жизни.
+                  </p>
+                  <div className="hidden sm:block">
+                    <p className="mb-0">Персональная работа с психологическими</p>
+                    <p className="mb-0">трудностями, направленная на решение конкретных</p>
+                    <p className="mb-0">проблем и достижение позитивных изменений в</p>
+                    <p>жизни.</p>
+                  </div>
                 </div>
 
                 {/* Services List */}
@@ -118,15 +133,19 @@ export default function Services() {
                 </div>
 
                 {/* Action Button */}
-                <a
-                  href="#contact"
-                  className="w-full inline-flex items-center justify-center bg-[#435441] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] cursor-pointer transition-shadow duration-300 ease-out hover:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)] focus-visible:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)]"
+                <button
+                  className="w-full bg-[#495b48] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] cursor-pointer transition-shadow duration-300 ease-out hover:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)] focus-visible:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)]"
                   style={{
                     fontFamily: 'var(--font-montserrat), sans-serif',
                   }}
+                  onMouseEnter={() => setIsButtonHovered(true)}
+                  onMouseLeave={() => setIsButtonHovered(false)}
+                  onFocus={() => setIsButtonHovered(true)}
+                  onBlur={() => setIsButtonHovered(false)}
+                  onClick={() => { window.location.hash = "contact"; }}
                 >
                   Записаться
-                </a>
+                </button>
               </div>
             </div>
           </div>

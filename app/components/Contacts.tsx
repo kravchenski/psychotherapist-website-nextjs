@@ -186,17 +186,18 @@ export default function Contacts() {
                 <a
                   key={index}
                   href={social.href}
-                  target="_blank"
+                  target={social.href.startsWith("http") ? "_blank" : undefined}
+                  rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="relative group size-[110px] md:size-[110px] lg:size-[110px] flex items-center justify-center transition-all duration-300 ease-out transform hover:scale-110 hover:-translate-y-1"
                 >
-                <Image
-                  alt={social.alt}
-                  src={social.icon}
-                  width={110}
-                  height={110}
-                  sizes="110px"
-                  className="max-w-none size-full object-contain transition-all duration-300 group-hover:opacity-100"
-                />
+                  <Image
+                    alt={social.alt}
+                    src={social.icon}
+                    width={110}
+                    height={110}
+                    sizes="110px"
+                    className="max-w-none size-full object-contain transition-all duration-300 group-hover:opacity-100"
+                  />
                 </a>
               ))}
             </div>
