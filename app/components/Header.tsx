@@ -74,34 +74,37 @@ const ActionButton = ({ onClick, children, className = "" }: { onClick?: () => v
 };
 
 const HamburgerIcon = ({ open }: { open: boolean }) => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    {open ? (
-      <>
-        <path d="M6 6L18 18" stroke={COLORS.text} strokeWidth="2" strokeLinecap="round" />
-        <path d="M6 18L18 6" stroke={COLORS.text} strokeWidth="2" strokeLinecap="round" />
-      </>
-    ) : (
-      <>
-        <path d="M3 6H21" stroke={COLORS.text} strokeWidth="2" strokeLinecap="round" />
-        <path d="M3 12H21" stroke={COLORS.text} strokeWidth="2" strokeLinecap="round" />
-        <path d="M3 18H21" stroke={COLORS.text} strokeWidth="2" strokeLinecap="round" />
-      </>
-    )}
-  </svg>
+  <span className="relative block h-6 w-6" aria-hidden="true">
+    <span
+      className={`absolute left-0 top-[5px] block h-[2px] w-6 rounded-full transition-all duration-100 ease-[cubic-bezier(0.4,0,0.2,1)] ${open ? 'translate-y-[7px] rotate-45' : 'translate-y-0 rotate-0'}`}
+      style={{ backgroundColor: COLORS.text }}
+    />
+    <span
+      className={`absolute left-0 top-[12px] block h-[2px] w-6 rounded-full transition-all duration-75 ease-[cubic-bezier(0.4,0,0.2,1)] ${open ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'}`}
+      style={{ backgroundColor: COLORS.text }}
+    />
+    <span
+      className={`absolute left-0 top-[19px] block h-[2px] w-6 rounded-full transition-all duration-100 ease-[cubic-bezier(0.4,0,0.2,1)] ${open ? '-translate-y-[7px] -rotate-45' : 'translate-y-0 rotate-0'}`}
+      style={{ backgroundColor: COLORS.text }}
+    />
+  </span>
 );
 
 export default function Header() {
+  const MENU_ANIMATION_MS = 200;
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const closeMenu = () => {
+    if (!open || isClosing) return;
+    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
     setIsClosing(true);
     closeTimeoutRef.current = setTimeout(() => {
       setOpen(false);
       setIsClosing(false);
-    }, 350);
+    }, MENU_ANIMATION_MS);
   };
 
   const openMenu = () => {
@@ -110,7 +113,16 @@ export default function Header() {
     setIsClosing(false);
   };
 
-  const toggleMenu = () => (open ? closeMenu() : openMenu());
+  const toggleMenu = () => {
+    if (open && !isClosing) {
+      closeMenu();
+      return;
+    }
+
+    if (!open) {
+      openMenu();
+    }
+  };
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -173,7 +185,13 @@ export default function Header() {
           </nav>
 
           <div className="md:hidden">
-            <button type="button" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={toggleMenu} className="p-2 cursor-pointer">
+            <button
+              type="button"
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              onClick={toggleMenu}
+              className="p-2 cursor-pointer transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] active:scale-95"
+            >
               <HamburgerIcon open={open || isClosing} />
             </button>
           </div>
@@ -182,7 +200,7 @@ export default function Header() {
         {(open || isClosing) && (
           <div
             ref={menuRef}
-            className={`absolute top-[66px] left-0 right-0 border-b flex flex-col gap-0 px-6 py-8 shadow-md max-h-[420px] overflow-y-auto ${isClosing ? 'animate-slide-up' : 'animate-slide-down'}`}
+            className={`absolute top-[66px] left-0 right-0 border-b flex flex-col gap-0 px-6 py-8 shadow-md max-h-[420px] overflow-y-auto transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] ${isClosing ? 'opacity-0 -translate-y-2 pointer-events-none' : 'opacity-100 translate-y-0'}`}
             style={{
               backgroundColor: COLORS.mobileMenuBg,
               borderColor: COLORS.border,
