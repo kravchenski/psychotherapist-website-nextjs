@@ -9,10 +9,10 @@ const imgInstagram = "/social_networks/instagram.svg";
 const imgWhatsapp = "/social_networks/whatsapp.svg";
 
 const SOCIAL_LINKS = [
-  { icon: imgViber, alt: "Viber", href: "viber://add?number=375297262239" },
+  { icon: imgViber, alt: "Viber", href: "viber://add?number=375297262293" },
   { icon: imgTelegram, alt: "Telegram", href: "https://t.me/Anna_Pochebyt"},
   { icon: imgInstagram, alt: "Instagram", href: "https://www.instagram.com/anna_pochebyt/" },
-  { icon: imgWhatsapp, alt: "WhatsApp", href: "https://wa.me/375297262239" },
+  { icon: imgWhatsapp, alt: "WhatsApp", href: "https://wa.me/375297262293" },
 ];
 
 const CONTACT_INFO = [
@@ -50,27 +50,14 @@ export default function Contacts() {
           <div className="w-full lg:w-1/2 flex flex-col gap-3 text-center lg:text-left">
             {/* Section Label */}
             <div
-              className="text-sm font-semibold tracking-wider uppercase"
+              className="text-lg sm:text-xl lg:text-2xl font-semibold tracking-wider uppercase"
               style={{
                 color: "#4f5f4e",
                 fontFamily: "var(--font-cormorant), Georgia, serif",
-                lineHeight: "20px",
+                lineHeight: "1.1",
               }}
             >
               Связь со мной
-            </div>
-
-            {/* Main Heading */}
-            <div
-              className="text-4xl sm:text-5xl lg:text-[48px] font-medium"
-              style={{
-                color: "#2c302e",
-                fontFamily: "var(--font-cormorant), Georgia, serif",
-                lineHeight: 1.1,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Контакты
             </div>
 
             {/* Description */}
