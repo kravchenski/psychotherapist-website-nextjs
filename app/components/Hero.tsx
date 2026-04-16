@@ -1,7 +1,9 @@
 "use client";
 
-const imgAbstractCalmBackground = "utils/bg_abstract_calm.png";
-const imgMainPhoto = "personal_photos/hero_photo.jpeg";
+import Image from "next/image";
+
+const imgAbstractCalmBackground = "/utils/bg_abstract_calm.png";
+const imgMainPhoto = "/personal_photos/hero_photo.jpeg";
 
 export default function Hero() {
   return (
@@ -11,10 +13,14 @@ export default function Hero() {
       <div className="absolute inset-0 flex flex-col items-start justify-center">
         <div className="flex-1 min-h-0 min-w-0 opacity-60 relative w-full">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <img
+            <Image
               alt="Abstract calm background"
-              className="absolute h-full left-[-1.56%] max-w-none top-0 w-[103.12%] object-cover"
               src={imgAbstractCalmBackground}
+              fill
+              sizes="100vw"
+              quality={60}
+              loading="eager"
+              className="absolute h-full left-[-1.56%] max-w-none top-0 w-[103.12%] object-cover"
             />
           </div>
         </div>
@@ -29,9 +35,15 @@ export default function Hero() {
           <div className="w-full lg:w-1/2">
             <div className="relative inline-block w-full">
               <div className="relative overflow-hidden rounded-lg">
-                <img 
+                <Image
                   alt="Анна Почебыт" 
                   src={imgMainPhoto}
+                  width={1600}
+                  height={2400}
+                  sizes="(max-width: 639px) 92vw, (max-width: 1023px) 680px, 50vw"
+                  quality={70}
+                  priority
+                  fetchPriority="high"
                   className="w-full h-auto"
                 />
               </div>
@@ -120,10 +132,14 @@ export default function Hero() {
           </div>
 
           <div className="w-1/2 h-[1080px] relative">
-            <img 
+            <Image
               alt="Анна Почебыт" 
-              className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
               src={imgMainPhoto}
+              fill
+              sizes="50vw"
+              quality={70}
+              loading="lazy"
+              className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
             />
           </div>
         </div>
