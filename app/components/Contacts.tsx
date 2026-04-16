@@ -18,7 +18,7 @@ const SOCIAL_LINKS = [
 const CONTACT_INFO = [
   {
     label: "Мой номер телефона",
-    value: "+375 (29) 726-22-39",
+    value: "+375 (29) 726-22-93",
     href: "tel:+375297262239",
   },
   {
