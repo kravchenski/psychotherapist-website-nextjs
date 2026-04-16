@@ -150,14 +150,14 @@ export default function Header() {
 
   return (
     <header className="w-full bg-white border-b relative z-50" style={{ borderColor: COLORS.border, height: "66px", display: "flex", alignItems: "center" }}>
-      <div className="max-w-7xl w-full mx-auto flex justify-between items-center transition-all px-3 md:px-1 lg:px-6">
+      <div className="max-w-7xl w-full mx-auto flex justify-between items-center transition-all px-3">
           <Link href="/" className="flex-shrink-0">
             <span
               style={{
                 color: COLORS.text,
                 letterSpacing: "0.6px",
                 fontFamily: 'var(--font-cormorant), Georgia, serif',
-                fontSize: "clamp(27px, 5vw, 31px)",
+                fontSize: "30px",
                 lineHeight: "1.1",
               }}
             >
