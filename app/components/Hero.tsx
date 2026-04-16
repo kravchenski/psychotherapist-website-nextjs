@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-const imgAbstractCalmBackground = "/utils/bg_abstract_calm.png";
-const imgMainPhoto = "/personal_photos/hero_photo.jpeg";
+const imgAbstractCalmBackground = "/utils/bg_abstract_calm.webp";
+const imgMainPhoto = "/personal_photos/hero_photo.webp";
 
 export default function Hero() {
   return (
@@ -136,7 +136,9 @@ export default function Hero() {
               fill
               sizes="50vw"
               quality={70}
-              loading="lazy"
+              priority
+              fetchPriority="high"
+              loading="eager"
               className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
             />
           </div>
