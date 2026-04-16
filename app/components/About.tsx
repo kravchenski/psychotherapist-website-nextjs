@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const imgPhoto = "/personal_photos/about.webp";
+const imgPhoto = "/personal_photos/about.jpeg";
 
 const TIMELINE_ITEMS = [
   {
