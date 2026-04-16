@@ -16,7 +16,7 @@ const TIMELINE_ITEMS = [
   {
     year: "2021 - 2024",
     title: "Врач-психотерапевт",
-    institution: 'УЗ "ГОКЦ" Психиатрия-Наркология',
+    institution: 'УЗ ГOКЦ «Психиатрия-Наркология»',
   },
   {
     year: "2024 – н.в.",
@@ -68,11 +68,11 @@ export default function About() {
           <div className="w-full lg:w-1/2 flex flex-col gap-3">
             {/* Section Label */}
             <div
-              className="text-sm font-semibold tracking-wider uppercase text-center lg:text-left"
+              className="text-lg sm:text-xl lg:text-2xl font-semibold tracking-wider uppercase text-center lg:text-left"
               style={{
                 color: "#4f5f4e",
                 fontFamily: "var(--font-cormorant), Georgia, serif",
-                lineHeight: "20px",
+                lineHeight: "1.1",
               }}
             >
               Обо мне
@@ -108,12 +108,12 @@ export default function About() {
             </div>
 
               <div
-                className="text-base sm:text-lg"
+                className="text-lg sm:text-xl md:text-2xl"
                 style={{
                   color: "rgba(44, 48, 46, 0.7)",
                   fontFamily: "var(--font-montserrat), sans-serif",
                   fontWeight: 300,
-                  lineHeight: "1.7",
+                  lineHeight: "1.75",
                 }}
               >
                 <p>
