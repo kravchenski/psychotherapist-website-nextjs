@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 
 const imgAbstractCalmBackground = "/utils/bg_abstract_calm.png";
@@ -71,21 +69,21 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col gap-[12px] mt-4">
-              <button 
-                className="bg-[#6c7b6b] hover:bg-[#5f6d5f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[48px] items-center justify-center min-h-[40px] px-[24px] rounded-full shadow-[0px_10px_15px_-3px_rgba(108,123,107,0.2),0px_4px_6px_-4px_rgba(108,123,107,0.2)] hover:shadow-[0px_14px_20px_-3px_rgba(108,123,107,0.3),0px_6px_8px_-4px_rgba(108,123,107,0.2)] cursor-pointer"
+              <a
+                href="#contact"
+                className="bg-[#6c7b6b] hover:bg-[#5f6d5f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[48px] items-center justify-center min-h-[40px] px-[24px] rounded-full shadow-[0px_10px_15px_-3px_rgba(108,123,107,0.2),0px_4px_6px_-4px_rgba(108,123,107,0.2)] hover:shadow-[0px_14px_20px_-3px_rgba(108,123,107,0.3),0px_6px_8px_-4px_rgba(108,123,107,0.2)] cursor-pointer inline-flex"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
-                onClick={() => { window.location.hash = "contact"; }}
               >
                 <span className="text-[14px] text-center text-white leading-[20px]">Записаться на консультацию</span>
-              </button>
+              </a>
 
-              <button 
-                className="bg-transparent hover:bg-[rgba(108,123,107,0.05)] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border hover:border-[rgba(108,123,107,0.4)] border-[rgba(108,123,107,0.2)] h-[48px] items-center justify-center min-h-[40px] px-[24px] rounded-full shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] hover:shadow-[0px_4px_8px_0px_rgba(0,0,0,0.08)] cursor-pointer"
+              <a
+                href="#about"
+                className="bg-transparent hover:bg-[rgba(108,123,107,0.05)] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border hover:border-[rgba(108,123,107,0.4)] border-[rgba(108,123,107,0.2)] h-[48px] items-center justify-center min-h-[40px] px-[24px] rounded-full shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] hover:shadow-[0px_4px_8px_0px_rgba(0,0,0,0.08)] cursor-pointer inline-flex"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
-                onClick={() => { window.location.hash = "about"; }}
               >
                 <span className="text-[14px] text-center text-[#2c302e] leading-[20px]">Подробнее обо мне</span>
-              </button>
+              </a>
             </div>
           </div>
 
@@ -112,21 +110,21 @@ export default function Hero() {
               </p>
 
               <div className="relative flex flex-row gap-[14px]">
-                <button 
-                  className="bg-[#6c7b6b] hover:bg-[#5f6d5f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[56px] items-center justify-center min-h-[40px] px-[20px] rounded-full shadow-[0px_10px_15px_-3px_rgba(108,123,107,0.2),0px_4px_6px_-4px_rgba(108,123,107,0.2)] hover:shadow-[0px_14px_20px_-3px_rgba(108,123,107,0.3),0px_6px_8px_-4px_rgba(108,123,107,0.2)] cursor-pointer flex-none"
+                <a
+                  href="#contact"
+                  className="bg-[#6c7b6b] hover:bg-[#5f6d5f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[56px] items-center justify-center min-h-[40px] px-[20px] rounded-full shadow-[0px_10px_15px_-3px_rgba(108,123,107,0.2),0px_4px_6px_-4px_rgba(108,123,107,0.2)] hover:shadow-[0px_14px_20px_-3px_rgba(108,123,107,0.3),0px_6px_8px_-4px_rgba(108,123,107,0.2)] cursor-pointer flex-none inline-flex"
                   style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
-                  onClick={() => { window.location.hash = "contact"; }}
                 >
                   <span className="text-[16px] text-center text-white leading-[24px]">Записаться на консультацию</span>
-                </button>
+                </a>
 
-                <button 
-                  className="bg-transparent hover:bg-[rgba(108,123,107,0.05)] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border hover:border-[rgba(108,123,107,0.4)] border-[rgba(108,123,107,0.2)] h-[56px] items-center justify-center min-h-[40px] px-[20px] rounded-full shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] hover:shadow-[0px_4px_8px_0px_rgba(0,0,0,0.08)] cursor-pointer flex-none"
+                <a
+                  href="#about"
+                  className="bg-transparent hover:bg-[rgba(108,123,107,0.05)] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border hover:border-[rgba(108,123,107,0.4)] border-[rgba(108,123,107,0.2)] h-[56px] items-center justify-center min-h-[40px] px-[20px] rounded-full shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] hover:shadow-[0px_4px_8px_0px_rgba(0,0,0,0.08)] cursor-pointer flex-none inline-flex"
                   style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
-                  onClick={() => { window.location.hash = "about"; }}
                 >
                   <span className="text-[16px] text-center text-[#2c302e] leading-[24px]">Подробнее обо мне</span>
-                </button>
+                </a>
               </div>
             </div>
           </div>
