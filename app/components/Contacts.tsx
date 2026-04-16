@@ -1,11 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
-const imgViber = "social_networks/viber.svg";
-const imgTelegram = "social_networks/telegram.svg";
-const imgInstagram = "social_networks/instagram.svg";
-const imgWhatsapp = "social_networks/whatsapp.svg";
+const imgViber = "/social_networks/viber.svg";
+const imgTelegram = "/social_networks/telegram.svg";
+const imgInstagram = "/social_networks/instagram.svg";
+const imgWhatsapp = "/social_networks/whatsapp.svg";
 
 const SOCIAL_LINKS = [
   { icon: imgViber, alt: "Viber", href: "viber://add?number=375297262239" },
@@ -188,9 +189,12 @@ export default function Contacts() {
                   target="_blank"
                   className="relative group size-[110px] md:size-[110px] lg:size-[110px] flex items-center justify-center transition-all duration-300 ease-out transform hover:scale-110 hover:-translate-y-1"
                 >
-                <img
+                <Image
                   alt={social.alt}
                   src={social.icon}
+                  width={110}
+                  height={110}
+                  sizes="110px"
                   className="max-w-none size-full object-contain transition-all duration-300 group-hover:opacity-100"
                 />
                 </a>
