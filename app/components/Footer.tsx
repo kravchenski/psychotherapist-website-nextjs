@@ -1,5 +1,3 @@
-"use client";
-
 export default function Footer() {
   const NAV_LINKS = [
     { label: "Обо мне", href: "#about" },
