@@ -16,12 +16,12 @@ const SOCIAL_LINKS = [
 
 const CONTACT_INFO = [
   {
-    label: "Телефон",
+    label: "Мой номер телефона",
     value: "+375 (29) 726-22-39",
     href: "tel:+375297262239",
   },
   {
-    label: "Часы работы",
+    label: "Мои часы работы",
     value: "Пн-Пт: 09:00 - 20:00",
     subValue: "(по предварительной записи)",
   },
@@ -109,7 +109,7 @@ export default function Contacts() {
                   >
                     {item.label}
                   </div>
-                  {item.label === "Телефон" && item.href ? (
+                  {item.href ? (
                     <div className="flex items-center justify-center lg:justify-start gap-2">
                       <div
                         className="text-xl font-medium"
