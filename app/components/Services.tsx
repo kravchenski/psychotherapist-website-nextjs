@@ -23,11 +23,11 @@ export default function Services() {
         <div className="flex flex-col items-center text-center mb-10 lg:mb-12">
           {/* Section Label */}
           <div
-            className="text-sm font-semibold tracking-wider uppercase mb-3"
+            className="text-lg sm:text-xl lg:text-2xl font-semibold tracking-wider uppercase mb-3"
             style={{
               color: "#4f5f4e",
               fontFamily: "var(--font-cormorant), Georgia, serif",
-              lineHeight: "20px",
+              lineHeight: "1.1",
             }}
           >
             Направления работы
