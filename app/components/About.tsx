@@ -108,7 +108,7 @@ export default function About() {
             </div>
 
               <div
-                className="text-lg sm:text-xl md:text-2xl"
+                className="text-lg sm:text-xl"
                 style={{
                   color: "rgba(44, 48, 46, 0.7)",
                   fontFamily: "var(--font-montserrat), sans-serif",
