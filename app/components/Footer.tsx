@@ -1,14 +1,37 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import PrivacyPolicy from "./PrivacyPolicy";
+
 export default function Footer() {
+  const [isPolicyOpen, setIsPolicyOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isPolicyOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsPolicyOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "";
+    };
+  }, [isPolicyOpen]);
+
   const NAV_LINKS = [
     { label: "Обо мне", href: "#about" },
     { label: "Услуги", href: "#services" },
     { label: "Контакты", href: "#contact" },
-  ];
-
-  const INFO_LINKS = [
-    { label: "Об оплате", href: "#" },
-    { label: "Политика конфиденциальности", href: "#" },
-    { label: "Договор публичной оферты", href: "#" },
   ];
 
   const REQUISITES = [
@@ -93,20 +116,18 @@ export default function Footer() {
               Информация
             </div>
 
-            {INFO_LINKS.map((link, index) => (
-              <a
-                key={index}
-                href={link.href}
-                className="text-sm font-light transition-all duration-300 hover:text-white"
-                style={{
-                  color: "rgba(255, 255, 255, 0.6)",
-                  fontFamily: "var(--font-montserrat), sans-serif",
-                  lineHeight: "20px",
-                }}
-              >
-                {link.label}
-              </a>
-            ))}
+            <button
+              type="button"
+              onClick={() => setIsPolicyOpen(true)}
+              className="text-left text-sm font-light transition-all duration-300 hover:text-white cursor-pointer"
+              style={{
+                color: "rgba(255, 255, 255, 0.6)",
+                fontFamily: "var(--font-montserrat), sans-serif",
+                lineHeight: "20px",
+              }}
+            >
+              Политика конфиденциальности
+            </button>
           </div>
 
           {/* Column 4: Requisites */}
@@ -154,6 +175,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <PrivacyPolicy open={isPolicyOpen} onClose={() => setIsPolicyOpen(false)} />
     </footer>
   );
 }
