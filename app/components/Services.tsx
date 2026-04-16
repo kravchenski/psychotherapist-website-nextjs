@@ -69,7 +69,7 @@ export default function Services() {
                 <div className="flex justify-between items-start mb-5">
                   <div>
                     <div
-                      className="text-2xl font-medium mb-2"
+                      className="text-2xl font-bold mb-2"
                       style={{
                         color: "#2c302e",
                         fontFamily: "var(--font-cormorant), Georgia, serif",
