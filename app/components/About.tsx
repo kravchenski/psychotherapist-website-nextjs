@@ -70,7 +70,7 @@ export default function About() {
             <div
               className="text-sm font-semibold tracking-wider uppercase text-center lg:text-left"
               style={{
-                color: "#6c7b6b",
+                color: "#4f5f4e",
                 fontFamily: "var(--font-cormorant), Georgia, serif",
                 lineHeight: "20px",
               }}
@@ -134,7 +134,7 @@ export default function About() {
                 >
                   {/* Timeline dot */}
                   <div
-                    className="absolute left-[-30px] sm:left-[-35px] top-[5px] w-3 h-3 bg-[#6c7b6b] rounded-full"
+                    className="absolute left-[-30px] sm:left-[-35px] top-[5px] w-3 h-3 bg-[#4f5f4e] rounded-full"
                     style={{
                       boxShadow: "0 0 0 4px white",
                     }}
@@ -143,7 +143,7 @@ export default function About() {
                   {/* Year/Label */}
                   <div
                     style={{
-                      color: "#6c7b6b",
+                      color: "#4f5f4e",
                       fontFamily: "var(--font-montserrat), sans-serif",
                       fontSize: "1rem",
                       fontWeight: 600,
@@ -174,7 +174,7 @@ export default function About() {
                   {item.institution && (
                     <div
                       style={{
-                        color: "rgba(44, 48, 46, 0.6)",
+                        color: "rgba(44, 48, 46, 0.78)",
                         fontFamily: "var(--font-montserrat), sans-serif",
                         fontSize: "1rem",
                         fontWeight: 400,
@@ -189,7 +189,7 @@ export default function About() {
                   {item.courses && (
                     <div
                       style={{
-                        color: "rgba(44, 48, 46, 0.6)",
+                        color: "rgba(44, 48, 46, 0.78)",
                         fontFamily: "var(--font-montserrat), sans-serif",
                         fontSize: "1rem",
                         fontWeight: 400,

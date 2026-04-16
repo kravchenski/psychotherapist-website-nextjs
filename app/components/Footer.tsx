@@ -145,7 +145,7 @@ export default function Footer() {
           <div
             className="text-center text-xs font-light"
             style={{
-              color: "rgba(255, 255, 255, 0.4)",
+              color: "rgba(255, 255, 255, 0.68)",
               fontFamily: "var(--font-montserrat), sans-serif",
               lineHeight: "16px",
             }}

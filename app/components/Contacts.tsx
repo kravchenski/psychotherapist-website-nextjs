@@ -52,7 +52,7 @@ export default function Contacts() {
             <div
               className="text-sm font-semibold tracking-wider uppercase"
               style={{
-                color: "#6c7b6b",
+                color: "#4f5f4e",
                 fontFamily: "var(--font-cormorant), Georgia, serif",
                 lineHeight: "20px",
               }}
@@ -102,7 +102,7 @@ export default function Contacts() {
                   <div
                     className="text-xs font-semibold tracking-wider uppercase"
                     style={{
-                      color: "rgba(44, 48, 46, 0.6)",
+                      color: "rgba(44, 48, 46, 0.78)",
                       fontFamily: "var(--font-cormorant), Georgia, serif",
                       lineHeight: "20px",
                       letterSpacing: "0.7px",
@@ -136,13 +136,13 @@ export default function Contacts() {
                       >
                         <span className={`absolute inset-0 flex items-center justify-center transition-all duration-200 ${copied ? "opacity-0 scale-75" : "opacity-100 scale-100"}`}>
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M9 9.75A1.75 1.75 0 0 1 10.75 8h8.5A1.75 1.75 0 0 1 21 9.75v8.5A1.75 1.75 0 0 1 19.25 20h-8.5A1.75 1.75 0 0 1 9 18.25v-8.5Z" stroke="#6c7b6b" strokeWidth="1.8"/>
-                            <path d="M5.75 16A1.75 1.75 0 0 1 4 14.25v-8.5A1.75 1.75 0 0 1 5.75 4h8.5A1.75 1.75 0 0 1 16 5.75" stroke="#6c7b6b" strokeWidth="1.8"/>
+                            <path d="M9 9.75A1.75 1.75 0 0 1 10.75 8h8.5A1.75 1.75 0 0 1 21 9.75v8.5A1.75 1.75 0 0 1 19.25 20h-8.5A1.75 1.75 0 0 1 9 18.25v-8.5Z" stroke="#4f5f4e" strokeWidth="1.8"/>
+                            <path d="M5.75 16A1.75 1.75 0 0 1 4 14.25v-8.5A1.75 1.75 0 0 1 5.75 4h8.5A1.75 1.75 0 0 1 16 5.75" stroke="#4f5f4e" strokeWidth="1.8"/>
                           </svg>
                         </span>
                         <span className={`absolute inset-0 flex items-center justify-center transition-all duration-200 ${copied ? "opacity-100 scale-100" : "opacity-0 scale-75"}`}>
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M5 12.5L9.2 16.5L19 7.5" stroke="#6c7b6b" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M5 12.5L9.2 16.5L19 7.5" stroke="#4f5f4e" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
                           </svg>
                         </span>
                       </button>
@@ -166,7 +166,7 @@ export default function Contacts() {
                     <div
                       className="text-sm font-light"
                       style={{
-                        color: "rgba(44, 48, 46, 0.6)",
+                        color: "rgba(44, 48, 46, 0.78)",
                         fontFamily: "var(--font-montserrat), sans-serif",
                         lineHeight: "20px",
                       }}

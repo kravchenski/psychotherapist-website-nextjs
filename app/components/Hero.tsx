@@ -71,7 +71,7 @@ export default function Hero() {
             <div className="flex flex-col gap-[12px] mt-4">
               <a
                 href="#contact"
-                className="bg-[#6c7b6b] hover:bg-[#5f6d5f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[48px] items-center justify-center min-h-[40px] px-[24px] rounded-full shadow-[0px_10px_15px_-3px_rgba(108,123,107,0.2),0px_4px_6px_-4px_rgba(108,123,107,0.2)] hover:shadow-[0px_14px_20px_-3px_rgba(108,123,107,0.3),0px_6px_8px_-4px_rgba(108,123,107,0.2)] cursor-pointer inline-flex"
+                className="bg-[#4a5b49] hover:bg-[#3f4f3f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[48px] items-center justify-center min-h-[40px] px-[24px] rounded-full shadow-[0px_10px_15px_-3px_rgba(74,91,73,0.22),0px_4px_6px_-4px_rgba(74,91,73,0.22)] hover:shadow-[0px_14px_20px_-3px_rgba(74,91,73,0.32),0px_6px_8px_-4px_rgba(74,91,73,0.24)] cursor-pointer inline-flex"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
               >
                 <span className="text-[14px] text-center text-white leading-[20px]">Записаться на консультацию</span>
@@ -112,7 +112,7 @@ export default function Hero() {
               <div className="relative flex flex-row gap-[14px]">
                 <a
                   href="#contact"
-                  className="bg-[#6c7b6b] hover:bg-[#5f6d5f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[56px] items-center justify-center min-h-[40px] px-[20px] rounded-full shadow-[0px_10px_15px_-3px_rgba(108,123,107,0.2),0px_4px_6px_-4px_rgba(108,123,107,0.2)] hover:shadow-[0px_14px_20px_-3px_rgba(108,123,107,0.3),0px_6px_8px_-4px_rgba(108,123,107,0.2)] cursor-pointer flex-none inline-flex"
+                  className="bg-[#4a5b49] hover:bg-[#3f4f3f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[56px] items-center justify-center min-h-[40px] px-[20px] rounded-full shadow-[0px_10px_15px_-3px_rgba(74,91,73,0.22),0px_4px_6px_-4px_rgba(74,91,73,0.22)] hover:shadow-[0px_14px_20px_-3px_rgba(74,91,73,0.32),0px_6px_8px_-4px_rgba(74,91,73,0.24)] cursor-pointer flex-none inline-flex"
                   style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
                 >
                   <span className="text-[16px] text-center text-white leading-[24px]">Записаться на консультацию</span>

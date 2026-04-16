@@ -21,7 +21,7 @@ export default function Services() {
           <div
             className="text-sm font-semibold tracking-wider uppercase mb-3"
             style={{
-              color: "#6c7b6b",
+              color: "#4f5f4e",
               fontFamily: "var(--font-cormorant), Georgia, serif",
               lineHeight: "20px",
             }}
@@ -72,10 +72,10 @@ export default function Services() {
                       Индивидуальные консультации
                     </div>
                     <div className="flex gap-2">
-                      <span className="bg-[#6c7b6b1a] text-[#6c7b6b] text-xs font-medium px-2 py-1 rounded">
+                      <span className="bg-[#dce5db] text-[#334333] text-xs font-medium px-2 py-1 rounded">
                         офлайн
                       </span>
-                      <span className="bg-[#6c7b6b1a] text-[#6c7b6b] text-xs font-medium px-2 py-1 rounded">
+                      <span className="bg-[#dce5db] text-[#334333] text-xs font-medium px-2 py-1 rounded">
                         онлайн
                       </span>
                     </div>
@@ -120,7 +120,7 @@ export default function Services() {
                 {/* Action Button */}
                 <a
                   href="#contact"
-                  className="w-full inline-flex items-center justify-center bg-[#495b48] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] cursor-pointer transition-shadow duration-300 ease-out hover:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)] focus-visible:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)]"
+                  className="w-full inline-flex items-center justify-center bg-[#435441] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] cursor-pointer transition-shadow duration-300 ease-out hover:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)] focus-visible:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)]"
                   style={{
                     fontFamily: 'var(--font-montserrat), sans-serif',
                   }}

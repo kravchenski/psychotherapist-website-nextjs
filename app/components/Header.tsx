@@ -12,8 +12,8 @@ const NAV_LINKS = [
 const COLORS = {
   text: "#2c302e",
   textSecondary: "rgba(44, 48, 46, 0.8)",
-  button: "#6c7b6b",
-  buttonHover: "#5f6d5f",
+  button: "#4a5b49",
+  buttonHover: "#3f4f3f",
   border: "#f0ede6",
   buttonBorder: "#e5e2dc",
   mobileMenuBg: "#fefdfb",
