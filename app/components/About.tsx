@@ -1,6 +1,8 @@
 "use client";
 
-const imgPhoto = "personal_photos/about.jpeg";
+import Image from "next/image";
+
+const imgPhoto = "/personal_photos/about.jpeg";
 
 const TIMELINE_ITEMS = [
   {
@@ -45,9 +47,14 @@ export default function About() {
           <div className="w-full lg:w-1/2">
             <div className="relative inline-block w-full">
               <div className="relative overflow-hidden rounded-lg">
-                <img
+                <Image
                   alt="Анна Почебыт"
                   src={imgPhoto}
+                  width={640}
+                  height={800}
+                  sizes="(max-width: 1023px) 92vw, 50vw"
+                  quality={72}
+                  loading="lazy"
                   className="w-full h-auto"
                 />
               </div>
