@@ -25,7 +25,7 @@ export default function Services() {
           <div
             className="text-sm font-semibold tracking-wider uppercase mb-3"
             style={{
-              color: "#6c7b6b",
+              color: "#4f5f4e",
               fontFamily: "var(--font-cormorant), Georgia, serif",
               lineHeight: "20px",
             }}
@@ -79,10 +79,10 @@ export default function Services() {
                       Индивидуальные консультации
                     </div>
                     <div className="flex gap-2">
-                      <span className="bg-[#6c7b6b1a] text-[#6c7b6b] text-xs font-medium px-2 py-1 rounded">
+                      <span className="bg-[#dce5db] text-[#334333] text-xs font-medium px-2 py-1 rounded">
                         офлайн
                       </span>
-                      <span className="bg-[#6c7b6b1a] text-[#6c7b6b] text-xs font-medium px-2 py-1 rounded">
+                      <span className="bg-[#dce5db] text-[#334333] text-xs font-medium px-2 py-1 rounded">
                         онлайн
                       </span>
                     </div>
