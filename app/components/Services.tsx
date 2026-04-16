@@ -54,7 +54,7 @@ export default function Services() {
 
         <div className="flex lg:flex-row gap-6 lg:gap-10 justify-center">
           {/* Service Card - Full width on mobile, 2-column on desktop */}
-          <div>
+          <div className="w-full lg:w-[700px]">
             <div
               className="bg-white border border-[#e5e2dc] rounded-[24px] p-6 sm:p-8 md:p-10 w-full transition-all duration-300 ease-out"
               style={{
@@ -96,13 +96,10 @@ export default function Services() {
                     color: "rgba(44, 48, 46, 0.82)",
                     fontFamily: "var(--font-montserrat), sans-serif",
                     fontWeight: 400,
-                    lineHeight: "1.6",
+                    lineHeight: "1.62",
                   }}
                 >
-                  <p className="mb-0">Персональная работа с психологическими</p>
-                  <p className="mb-0">трудностями, направленная на решение конкретных</p>
-                  <p className="mb-0">проблем и достижение позитивных изменений в</p>
-                  <p>жизни.</p>
+                  <p className="text-justify">Индивидуальная работа с психологическими трудностями, направленная на решение конкретных задач и достижение устойчивых позитивных изменений в жизни.</p>
                 </div>
 
                 {/* Services List */}
