@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 const NAV_LINKS = [
@@ -91,29 +91,39 @@ const HamburgerIcon = ({ open }: { open: boolean }) => (
 );
 
 export default function Header() {
-  const MENU_ANIMATION_MS = 200;
+  const MENU_ANIMATION_MS = 240;
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const rafRef = useRef<number | null>(null);
 
-  const closeMenu = () => {
+  const closeMenu = useCallback(() => {
     if (!open || isClosing) return;
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
     setIsClosing(true);
+    setIsMenuVisible(false);
     closeTimeoutRef.current = setTimeout(() => {
       setOpen(false);
       setIsClosing(false);
+      setIsMenuVisible(false);
     }, MENU_ANIMATION_MS);
-  };
+  }, [open, isClosing]);
 
-  const openMenu = () => {
+  const openMenu = useCallback(() => {
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
     setOpen(true);
     setIsClosing(false);
-  };
+    setIsMenuVisible(false);
+    rafRef.current = requestAnimationFrame(() => {
+      setIsMenuVisible(true);
+    });
+  }, []);
 
-  const toggleMenu = () => {
+  const toggleMenu = useCallback(() => {
     if (open && !isClosing) {
       closeMenu();
       return;
@@ -122,7 +132,7 @@ export default function Header() {
     if (!open) {
       openMenu();
     }
-  };
+  }, [open, isClosing, closeMenu, openMenu]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -137,7 +147,7 @@ export default function Header() {
     }
 
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [open, isClosing]);
+  }, [open, isClosing, closeMenu]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -152,11 +162,12 @@ export default function Header() {
     }
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [open, isClosing]);
+  }, [open, isClosing, closeMenu]);
 
   useEffect(() => {
     return () => {
       if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
@@ -200,7 +211,7 @@ export default function Header() {
         {(open || isClosing) && (
           <div
             ref={menuRef}
-            className={`absolute top-[66px] left-0 right-0 border-b flex flex-col gap-0 px-6 py-8 shadow-md max-h-[420px] overflow-y-auto transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] ${isClosing ? 'opacity-0 -translate-y-2 pointer-events-none' : 'opacity-100 translate-y-0'}`}
+            className={`absolute top-[66px] left-0 right-0 border-b flex flex-col gap-0 px-6 py-8 shadow-md max-h-[420px] overflow-y-auto transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${isMenuVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
             style={{
               backgroundColor: COLORS.mobileMenuBg,
               borderColor: COLORS.border,
