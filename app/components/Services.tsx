@@ -1,8 +1,6 @@
-"use client"
 import Image from 'next/image'
-import { useState } from "react";
 
-const imgSvg = "utils/service_check.svg";
+const imgSvg = "/utils/service_check.svg";
 
 const SERVICES = [
   "Индивидуальное консультирование (психотерапия)",
@@ -15,8 +13,6 @@ const SERVICES = [
 ];
 
 export default function Services() {
-  const [isButtonHovered, setIsButtonHovered] = useState(false);
-
   return (
     <section className="w-full bg-[#f9f8f5] py-12 lg:py-16 px-4 sm:px-6 lg:px-8" id="services">
       <div className="max-w-7xl mx-auto">
@@ -56,12 +52,9 @@ export default function Services() {
           {/* Service Card - Full width on mobile, 2-column on desktop */}
           <div className="w-full lg:w-[700px]">
             <div
-              className="bg-white border border-[#e5e2dc] rounded-[24px] p-6 sm:p-8 md:p-10 w-full transition-all duration-300 ease-out"
+              className="bg-white border border-[#e5e2dc] rounded-[24px] p-6 sm:p-8 md:p-10 w-full transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0px_18px_30px_-14px_rgba(44,48,46,0.28),0px_8px_14px_-10px_rgba(44,48,46,0.2)]"
               style={{
-                transform: isButtonHovered ? "translateY(-4px)" : "translateY(0)",
-                boxShadow: isButtonHovered
-                  ? "0px 18px 30px -14px rgba(44, 48, 46, 0.28), 0px 8px 14px -10px rgba(44, 48, 46, 0.2)"
-                  : "0px 10px 18px -12px rgba(44, 48, 46, 0.18), 0px 4px 8px -6px rgba(44, 48, 46, 0.12)",
+                boxShadow: "0px 10px 18px -12px rgba(44, 48, 46, 0.18), 0px 4px 8px -6px rgba(44, 48, 46, 0.12)",
               }}
             >
               <div className="relative">
@@ -125,19 +118,15 @@ export default function Services() {
                 </div>
 
                 {/* Action Button */}
-                <button
-                  className="w-full bg-[#495b48] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] cursor-pointer transition-shadow duration-300 ease-out hover:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)] focus-visible:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)]"
+                <a
+                  href="#contact"
+                  className="w-full inline-flex items-center justify-center bg-[#495b48] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] cursor-pointer transition-shadow duration-300 ease-out hover:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)] focus-visible:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)]"
                   style={{
                     fontFamily: 'var(--font-montserrat), sans-serif',
                   }}
-                  onMouseEnter={() => setIsButtonHovered(true)}
-                  onMouseLeave={() => setIsButtonHovered(false)}
-                  onFocus={() => setIsButtonHovered(true)}
-                  onBlur={() => setIsButtonHovered(false)}
-                  onClick={() => { window.location.hash = "contact"; }}
                 >
                   Записаться
-                </button>
+                </a>
               </div>
             </div>
           </div>
