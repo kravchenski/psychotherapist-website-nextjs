@@ -136,8 +136,7 @@ export default function Hero() {
               fill
               sizes="50vw"
               quality={70}
-              loading="eager"
-              fetchPriority="high"
+              loading="lazy"
               className="absolute inset-0 max-w-none object-cover pointer-events-none w-full h-full"
             />
           </div>
