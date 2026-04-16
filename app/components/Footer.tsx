@@ -4,7 +4,6 @@ export default function Footer() {
   const NAV_LINKS = [
     { label: "Обо мне", href: "#about" },
     { label: "Услуги", href: "#services" },
-    { label: "Порядок записи", href: "#booking" },
     { label: "Контакты", href: "#contact" },
   ];
 
@@ -48,14 +47,14 @@ export default function Footer() {
                 lineHeight: "1.7",
               }}
             >
-              <p className="mb-0">Врач-психотерапевт, психолог. Интегративный подход, живой терапевтический контакт.</p>
+              <p className="mb-0">Психотерапевт-психолог. Интегративный подход, живой терапевтический контакт.</p>
             </div>
           </div>
 
           {/* Column 2: Navigation */}
           <div className="flex flex-col gap-4">
             <div
-              className="text-xl font-medium pb-2"
+              className="text-2xl font-medium pb-2"
               style={{
                 color: "#ffffff",
                 fontFamily: "var(--font-cormorant), Georgia, serif",
@@ -70,9 +69,9 @@ export default function Footer() {
               <a
                 key={index}
                 href={link.href}
-                className="text-sm font-normal transition-all duration-300 hover:text-white"
+                className="text-sm font-light transition-all duration-300 hover:text-white"
                 style={{
-                  color: "rgba(255, 255, 255, 0.8)",
+                  color: "rgba(255, 255, 255, 0.6)",
                   fontFamily: "var(--font-montserrat), sans-serif",
                   lineHeight: "20px",
                 }}
@@ -85,7 +84,7 @@ export default function Footer() {
           {/* Column 3: Information */}
           <div className="flex flex-col gap-4">
             <div
-              className="text-xl font-medium pb-2"
+              className="text-2xl font-medium pb-2"
               style={{
                 color: "#ffffff",
                 fontFamily: "var(--font-cormorant), Georgia, serif",
@@ -100,9 +99,9 @@ export default function Footer() {
               <a
                 key={index}
                 href={link.href}
-                className="text-sm font-normal transition-all duration-300 hover:text-white"
+                className="text-sm font-light transition-all duration-300 hover:text-white"
                 style={{
-                  color: "rgba(255, 255, 255, 0.8)",
+                  color: "rgba(255, 255, 255, 0.6)",
                   fontFamily: "var(--font-montserrat), sans-serif",
                   lineHeight: "20px",
                 }}
@@ -115,7 +114,7 @@ export default function Footer() {
           {/* Column 4: Requisites */}
           <div className="flex flex-col gap-4">
             <div
-              className="text-xl font-medium pb-2"
+              className="text-2xl font-medium pb-2"
               style={{
                 color: "#ffffff",
                 fontFamily: "var(--font-cormorant), Georgia, serif",
@@ -129,11 +128,11 @@ export default function Footer() {
             {REQUISITES.map((item, index) => (
               <div
                 key={index}
-                className="text-xs font-light"
+                className="text-sm font-light"
                 style={{
                   color: "rgba(255, 255, 255, 0.6)",
                   fontFamily: "var(--font-montserrat), sans-serif",
-                  lineHeight: "16px",
+                  lineHeight: "20px",
                 }}
               >
                 {item}
