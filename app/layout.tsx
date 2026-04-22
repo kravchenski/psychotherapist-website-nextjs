@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Montserrat, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import ScrollToTop from "./components/ScrollToTop";
+import SiteChrome from "./components/SiteChrome";
+import type { ReactNode } from "react";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -25,7 +24,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html
@@ -33,10 +32,7 @@ export default function RootLayout({
       className={`${montserrat.variable} ${cormorantGaramond.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col">
-        <Header />
-        {children}
-        <Footer />
-        <ScrollToTop />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );
