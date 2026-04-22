@@ -1,20 +1,15 @@
 "use client"
 import Image from 'next/image'
 import { useState } from "react";
+import type { HomeContent } from "../types/content";
 
 const imgSvg = "utils/service_check.svg";
 
-const SERVICES = [
-  "Индивидуальное консультирование (психотерапия)",
-  "Работа с отношениями и семейными вопросами",
-  "Коррекция самооценки и эмоциональной устойчивости",
-  "Работа с созависимостью",
-  "Поддержка при трудностях сепарации",
-  "Консультирование по вопросам сексуальности",
-  "Другие вопросы по запросу (уточняйте)",
-];
+type ServicesProps = {
+  content: HomeContent["services"];
+};
 
-export default function Services() {
+export default function Services({ content }: ServicesProps) {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
 
   return (
@@ -30,7 +25,7 @@ export default function Services() {
               lineHeight: "1.1",
             }}
           >
-            Направления работы
+            {content.label}
           </div>
 
           {/* Description */}
@@ -44,10 +39,10 @@ export default function Services() {
             }}
           >
             <p className="mb-0">
-              Предлагаю индивидуальный формат работы, доступный как очно, так и онлайн.
+              {content.description}
             </p>
             <p>
-              <span className="font-bold">Не работаю со всеми видами зависимости, с детьми и подростками до 18 лет</span>
+              <span className="font-bold">{content.highlight}</span>
             </p>
           </div>
         </div>
@@ -56,7 +51,7 @@ export default function Services() {
           {/* Service Card - Full width on mobile, 2-column on desktop */}
           <div>
             <div
-              className="bg-white border border-[#e5e2dc] rounded-[24px] p-6 sm:p-8 md:p-10 w-full transition-all duration-300 ease-out"
+              className="bg-white border border-[#e5e2dc] rounded-[24px] p-6 sm:p-8 md:p-10 w-full lg:w-[780px] transition-all duration-300 ease-out"
               style={{
                 transform: isButtonHovered ? "translateY(-4px)" : "translateY(0)",
                 boxShadow: isButtonHovered
@@ -76,7 +71,7 @@ export default function Services() {
                         letterSpacing: "-0.01em",
                       }}
                     >
-                      Индивидуальные консультации
+                      {content.cardTitle}
                     </div>
                     <div className="flex gap-2">
                       <span className="bg-[#dce5db] text-[#334333] text-xs font-medium px-2 py-1 rounded">
@@ -100,19 +95,16 @@ export default function Services() {
                   }}
                 >
                   <p className="sm:hidden mb-0">
-                    Персональная работа с психологическими трудностями, направленная на решение конкретных проблем и достижение позитивных изменений в жизни.
+                    {content.cardDescription}
                   </p>
                   <div className="hidden sm:block">
-                    <p className="mb-0">Персональная работа с психологическими</p>
-                    <p className="mb-0">трудностями, направленная на решение конкретных</p>
-                    <p className="mb-0">проблем и достижение позитивных изменений в</p>
-                    <p>жизни.</p>
+                    <p>{content.cardDescription}</p>
                   </div>
                 </div>
 
                 {/* Services List */}
                 <div className="space-y-4 mb-7">
-                  {SERVICES.map((service, index) => (
+                  {content.items.map((service, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <div className="flex-shrink-0 mt-1">
                         <Image src={imgSvg} alt='Service check' width={20} height={20} />
@@ -144,7 +136,7 @@ export default function Services() {
                   onBlur={() => setIsButtonHovered(false)}
                   onClick={() => { window.location.hash = "contact"; }}
                 >
-                  Записаться
+                  {content.buttonText}
                 </button>
               </div>
             </div>

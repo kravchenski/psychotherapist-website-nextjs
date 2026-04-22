@@ -1,42 +1,13 @@
 import Image from "next/image";
+import type { HomeContent } from "../types/content";
 
 const imgPhoto = "/personal_photos/about.webp";
 
-const TIMELINE_ITEMS = [
-  {
-    year: "2012",
-    title: "Диплом врача-психотерапевта",
-    institution: "Гродненский государственный медицинский университет",
-  },
-  {
-    year: "2016 - 2021",
-    title: "Врач-психотерапевт",
-    institution: "Психосоматическое отделение УЗ ГКБ №3",
-  },
-  {
-    year: "2021 - 2024",
-    title: "Врач-психотерапевт",
-    institution: 'УЗ ГOКЦ «Психиатрия-Наркология»',
-  },
-  {
-    year: "2024 – н.в.",
-    title: "Врач-психотерапевт",
-    institution: "Медицинский центр «ЛОДЭ»",
-  },
-  {
-    year: "Дополнительное образование по курсам:",
-    courses: [
-      "- семейная системная психотерапия;",
-      "- семейная медиация: технология работы с семейным кризисом;",
-      "- сексуальные расстройства, профилактика сексуальных нарушений;",
-      "- доказательная медицина: антидепрессанты в практике врача-психотерапевта;",
-      "- актуальные проблемы диагностики, лечения, реабилитации психических расстройств;",
-      "- современные подходы к терапии психосоматических расстройств",
-    ],
-  },
-];
+type AboutProps = {
+  content: HomeContent["about"];
+};
 
-export default function About() {
+export default function About({ content }: AboutProps) {
   return (
     <section className="w-full bg-white py-12 lg:py-16 px-4 sm:px-6 lg:px-8" id="about">
       <div className="max-w-7xl mx-auto">
@@ -75,7 +46,7 @@ export default function About() {
                 lineHeight: "1.1",
               }}
             >
-              Обо мне
+              {content.label}
             </div>
 
             {/* Main Heading */}
@@ -88,7 +59,7 @@ export default function About() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Приятно познакомиться!
+              {content.heading}
             </div>
 
             {/* Bio Text */}
@@ -103,7 +74,7 @@ export default function About() {
               }}
             >
               <p className="mb-0">
-                Меня зовут <span className="font-semibold text-[#2c302e]">Анна Почебыт</span>, я психотерапевт-психолог. Живу и работаю в Гродно.
+                {content.intro}
               </p>
             </div>
 
@@ -117,14 +88,14 @@ export default function About() {
                 }}
               >
                 <p>
-                  Создаю безопасное пространство, где можно открыто говорить о чувствах, разбираться в отношениях и находить внутренние ресурсы. Помогаю справляться со стрессом, тревогой и жизненными трудностями. Вместе мы ищем пути к гармонии и внутренней уверенности. Моя цель — помочь вам жить осознанно и легче.
+                  {content.description}
                 </p>
               </div>
             </div>
 
             {/* Timeline */}
             <div className="relative pl-6 sm:pl-7 border-l-2 border-[rgba(108,123,107,0.2)] pt-6 sm:pt-8 lg:pt-10">
-              {TIMELINE_ITEMS.map((item, index) => (
+              {content.timeline.map((item, index) => (
                 <div
                   key={index}
                   className="relative pb-6 sm:pb-7 last:pb-0"

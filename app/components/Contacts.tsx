@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import type { HomeContent } from "../types/content";
 
 const imgViber = "/social_networks/viber.svg";
 const imgTelegram = "/social_networks/telegram.svg";
@@ -15,21 +16,26 @@ const SOCIAL_LINKS = [
   { icon: imgWhatsapp, alt: "WhatsApp", href: "https://wa.me/375297262293" },
 ];
 
-const CONTACT_INFO = [
-  {
-    label: "Мой номер телефона",
-    value: "+375 (29) 726-22-93",
-    href: "tel:+375297262293",
-  },
-  {
-    label: "Мои часы работы",
-    value: "Пн-Пт: 09:00 - 20:00",
-    subValue: "(по предварительной записи)",
-  },
-];
+type ContactsProps = {
+  content: HomeContent["contacts"];
+};
 
-export default function Contacts() {
+export default function Contacts({ content }: ContactsProps) {
   const [copied, setCopied] = useState(false);
+  const descriptionLines = content.description.split("\n");
+
+  const contactInfo = [
+    {
+      label: content.phoneLabel,
+      value: content.phoneValue,
+      href: "tel:+375297262293",
+    },
+    {
+      label: content.hoursLabel,
+      value: content.hoursValue,
+      subValue: content.hoursSubValue,
+    },
+  ];
 
   const handleCopyPhone = async (value: string) => {
     try {
@@ -57,7 +63,7 @@ export default function Contacts() {
                 lineHeight: "1.1",
               }}
             >
-              Связь со мной
+              {content.label}
             </div>
 
             {/* Description */}
@@ -72,19 +78,19 @@ export default function Contacts() {
                 }}
               >
                 <p className="mb-0">
-                  <span className="font-bold">
-                    Возможен формат онлайн или офлайн в Гродно.
-                    <br />
-                    <br />
-                  </span>
-                  Свяжитесь со мной, чтобы задать вопросы или записаться на консультацию. Я отвечу вам в ближайшее время.
+                  {descriptionLines.map((line, index) => (
+                    <span key={`${line}-${index}`} className={index === 0 ? "font-bold" : undefined}>
+                      {line}
+                      {index < descriptionLines.length - 1 ? <br /> : null}
+                    </span>
+                  ))}
                 </p>
               </div>
             </div>
 
             {/* Contact Info List */}
             <div className="flex flex-col gap-8 pt-4 sm:pt-6">
-              {CONTACT_INFO.map((item, index) => (
+              {contactInfo.map((item, index) => (
                 <div key={index} className="flex flex-col gap-2">
                   <div
                     className="text-xs font-semibold tracking-wider uppercase"

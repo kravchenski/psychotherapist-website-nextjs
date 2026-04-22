@@ -1,9 +1,14 @@
 import Image from "next/image";
+import type { HomeContent } from "../types/content";
 
 const imgAbstractCalmBackground = "/utils/bg_abstract_calm.webp";
 const imgMainPhoto = "/personal_photos/hero_photo.webp";
 
-export default function Hero() {
+type HeroProps = {
+  content: HomeContent["hero"];
+};
+
+export default function Hero({ content }: HeroProps) {
   return (
     <section className="w-full min-h-[1080px] flex items-center justify-center relative overflow-hidden lg:py-16 px-4 sm:px-6 lg:px-8" id="hero">
      <div className="max-w-8xl mx-auto my-auto">
@@ -58,14 +63,14 @@ export default function Hero() {
               className="text-[#2c302e] text-4xl sm:text-5xl lg:text-[72px] font-medium text-center lg:text-left"
               style={{ fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: "1.1", letterSpacing: "-0.02em" }}
             >
-              Психолог-психотерапевт
+              {content.title}
             </h1>
 
             <p 
               className="text-lg sm:text-xl md:text-2xl font-light px-2"
               style={{ color: "#000", fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: "1.75" }}
             >
-              Психотерапевт – это как проводник, который помогает вам найти свой собственный путь к решению проблем. Он не даёт готовых советов, а создаёт безопасное пространство, где вы можете разобраться в своих мыслях и чувствах, понять, что мешает, и найти свои собственные силы для изменений. Главное для меня– это доверие, конфиденциальность и вера в то, что вы сами способны справиться, просто иногда нужна помощь, чтобы это осознать.
+              {content.description}
             </p>
 
             <div className="flex flex-col gap-[12px] mt-4">
@@ -74,7 +79,7 @@ export default function Hero() {
                 className="bg-[#4a5b49] hover:bg-[#3f4f3f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[48px] items-center justify-center min-h-[40px] px-[24px] rounded-full shadow-[0px_10px_15px_-3px_rgba(74,91,73,0.22),0px_4px_6px_-4px_rgba(74,91,73,0.22)] hover:shadow-[0px_14px_20px_-3px_rgba(74,91,73,0.32),0px_6px_8px_-4px_rgba(74,91,73,0.24)] cursor-pointer inline-flex"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
               >
-                <span className="text-[14px] text-center text-white leading-[20px]">Записаться на консультацию</span>
+                <span className="text-[14px] text-center text-white leading-[20px]">{content.primaryButtonText}</span>
               </a>
 
               <a
@@ -82,7 +87,7 @@ export default function Hero() {
                 className="bg-transparent hover:bg-[rgba(108,123,107,0.05)] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border hover:border-[rgba(108,123,107,0.4)] border-[rgba(108,123,107,0.2)] h-[48px] items-center justify-center min-h-[40px] px-[24px] rounded-full shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] hover:shadow-[0px_4px_8px_0px_rgba(0,0,0,0.08)] cursor-pointer inline-flex"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
               >
-                <span className="text-[14px] text-center text-[#2c302e] leading-[20px]">Подробнее обо мне</span>
+                <span className="text-[14px] text-center text-[#2c302e] leading-[20px]">{content.secondaryButtonText}</span>
               </a>
             </div>
           </div>
@@ -99,14 +104,14 @@ export default function Hero() {
                 className="relative mb-8 text-[#2c302e] text-[72px] tracking-[-1.8px] font-medium"
                 style={{ fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: "1.1" }}
               >
-                Психолог-психотерапевт
+                {content.title}
               </h1>
 
               <p 
                 className="relative max-w-[680px] mb-12 text-[24px] font-light"
                 style={{ color: "#000", fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: "1.4" }}
               >
-                Психотерапевт – это как проводник, который помогает вам найти свой собственный путь к решению проблем. Он не даёт готовых советов, а создаёт безопасное пространство, где вы можете разобраться в своих мыслях и чувствах, понять, что мешает, и найти свои собственные силы для изменений. Главное для меня– это доверие, конфиденциальность и вера в то, что вы сами способны справиться, просто иногда нужна помощь, чтобы это осознать.
+                {content.description}
               </p>
 
               <div className="relative flex flex-row gap-[14px]">
@@ -115,7 +120,7 @@ export default function Hero() {
                   className="bg-[#4a5b49] hover:bg-[#3f4f3f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[56px] items-center justify-center min-h-[40px] px-[20px] rounded-full shadow-[0px_10px_15px_-3px_rgba(74,91,73,0.22),0px_4px_6px_-4px_rgba(74,91,73,0.22)] hover:shadow-[0px_14px_20px_-3px_rgba(74,91,73,0.32),0px_6px_8px_-4px_rgba(74,91,73,0.24)] cursor-pointer flex-none inline-flex"
                   style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
                 >
-                  <span className="text-[16px] text-center text-white leading-[24px]">Записаться на консультацию</span>
+                  <span className="text-[16px] text-center text-white leading-[24px]">{content.primaryButtonText}</span>
                 </a>
 
                 <a
@@ -123,7 +128,7 @@ export default function Hero() {
                   className="bg-transparent hover:bg-[rgba(108,123,107,0.05)] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border hover:border-[rgba(108,123,107,0.4)] border-[rgba(108,123,107,0.2)] h-[56px] items-center justify-center min-h-[40px] px-[20px] rounded-full shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] hover:shadow-[0px_4px_8px_0px_rgba(0,0,0,0.08)] cursor-pointer flex-none inline-flex"
                   style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
                 >
-                  <span className="text-[16px] text-center text-[#2c302e] leading-[24px]">Подробнее обо мне</span>
+                  <span className="text-[16px] text-center text-[#2c302e] leading-[24px]">{content.secondaryButtonText}</span>
                 </a>
               </div>
             </div>
