@@ -1,10 +1,41 @@
 import crypto from "node:crypto";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import {
   ADMIN_SESSION_COOKIE_NAME,
   ADMIN_SESSION_MAX_AGE_SECONDS,
   createAdminSessionToken,
 } from "../../../lib/adminSession";
+
+// Simple in-memory rate limiter
+const loginAttempts = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
+const MAX_ATTEMPTS = 5;
+
+function checkRateLimit(key: string): boolean {
+  const now = Date.now();
+  const attempt = loginAttempts.get(key);
+
+  if (!attempt || now > attempt.resetTime) {
+    loginAttempts.set(key, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+
+  if (attempt.count >= MAX_ATTEMPTS) {
+    return false;
+  }
+
+  attempt.count++;
+  return true;
+}
+
+function getClientIp(request: NextRequest) {
+  const xForwardedFor = request.headers.get("x-forwarded-for");
+  if (xForwardedFor) {
+    return xForwardedFor.split(",")[0]?.trim() || "unknown";
+  }
+
+  return request.headers.get("x-real-ip") || "unknown";
+}
 
 function timingSafeMatch(left: string, right: string) {
   const leftBuffer = Buffer.from(left);
@@ -17,22 +48,57 @@ function timingSafeMatch(left: string, right: string) {
   return crypto.timingSafeEqual(leftBuffer, rightBuffer);
 }
 
-export async function POST(request: Request) {
+// Validate input type and length
+function validateInput(input: unknown): input is { username?: string; password?: string } {
+  if (typeof input !== "object" || input === null) {
+    return false;
+  }
+
+  const obj = input as Record<string, unknown>;
+
+  if (
+    (obj.username !== undefined && typeof obj.username !== "string") ||
+    (obj.password !== undefined && typeof obj.password !== "string")
+  ) {
+    return false;
+  }
+
+  // Limit input length to prevent DoS
+  const username = (obj.username as string) || "";
+  const password = (obj.password as string) || "";
+
+  return username.length <= 256 && password.length <= 256;
+}
+
+export async function POST(request: NextRequest) {
   const { ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_SESSION_SECRET } = process.env;
 
   if (!ADMIN_USERNAME || !ADMIN_PASSWORD || !ADMIN_SESSION_SECRET) {
     return NextResponse.json(
-      { error: "Admin is not configured. Set ADMIN_USERNAME, ADMIN_PASSWORD and ADMIN_SESSION_SECRET in .env.local." },
+      { error: "Admin is not configured" },
       { status: 500 },
     );
   }
 
-  let payload: { username?: string; password?: string } = {};
+  // Rate limiting
+  const ip = getClientIp(request);
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json(
+      { error: "Too many login attempts. Try again in 15 minutes." },
+      { status: 429 },
+    );
+  }
+
+  let payload: unknown;
 
   try {
-    payload = (await request.json()) as { username?: string; password?: string };
+    payload = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  }
+
+  if (!validateInput(payload)) {
+    return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
 
   const username = payload.username ?? "";
@@ -42,7 +108,7 @@ export async function POST(request: Request) {
   const passwordOk = timingSafeMatch(password, ADMIN_PASSWORD);
 
   if (!usernameOk || !passwordOk) {
-    return NextResponse.json({ error: "Неверный логин или пароль" }, { status: 401 });
+    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
   const adminSessionToken = await createAdminSessionToken(ADMIN_SESSION_SECRET);
