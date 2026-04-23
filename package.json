@@ -26,10 +26,18 @@
   },
   "dependencies": {
     "@tinacms/cli": "^2.2.3",
+    "@tinacms/datalayer": "^2.0.16",
+    "fs-extra": "^11.3.4",
     "next": "^16.2.2",
+    "next-auth": "^4.24.14",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "tinacms": "^3.7.3"
+    "slate": "^0.124.1",
+    "slate-dom": "^0.124.1",
+    "tinacms": "^3.7.3",
+    "tinacms-authjs": "^21.0.3",
+    "tinacms-gitprovider-github": "^4.1.3",
+    "upstash-redis-level": "^1.1.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
