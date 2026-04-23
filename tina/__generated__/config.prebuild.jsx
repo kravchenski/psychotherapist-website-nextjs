@@ -1,9 +1,52 @@
 // tina/config.ts
-import { defineConfig } from "tinacms";
+import { LocalAuthProvider, defineConfig } from "tinacms";
+var SelfHostedAuthProvider = class extends LocalAuthProvider {
+  async authenticate() {
+    if (typeof window !== "undefined") {
+      window.location.assign("/admin");
+    }
+    return {
+      access_token: "",
+      id_token: "",
+      refresh_token: ""
+    };
+  }
+  async getUser() {
+    try {
+      const response = await fetch("/api/admin/session", {
+        credentials: "include"
+      });
+      if (!response.ok) {
+        return null;
+      }
+      return await response.json();
+    } catch {
+      return null;
+    }
+  }
+  async getToken() {
+    const user = await this.getUser();
+    return user ? { id_token: "admin-session" } : { id_token: "" };
+  }
+  async logout() {
+    try {
+      await fetch("/api/admin/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+    } catch {
+    }
+    if (typeof window !== "undefined") {
+      window.location.assign("/admin");
+    }
+  }
+};
 var branch = process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "master";
 var config_default = defineConfig({
   branch,
   telemetry: "disabled",
+  contentApiUrlOverride: "/api/tina",
+  authProvider: new SelfHostedAuthProvider(),
   build: {
     outputFolder: "admin",
     publicFolder: "public"
