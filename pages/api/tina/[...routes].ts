@@ -1,18 +1,61 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { TinaNodeBackend, LocalBackendAuthProvider } from "@tinacms/datalayer";
+import { TinaNodeBackend } from "@tinacms/datalayer";
 import databaseClient from "../../../tina/__generated__/databaseClient";
+import { ADMIN_SESSION_COOKIE_NAME, verifyAdminSessionToken } from "../../../app/lib/adminSession";
+
+const ADMIN_SESSION_SECRET = process.env.ADMIN_SESSION_SECRET;
+
+function readCookieValue(cookieHeader: string | undefined, name: string) {
+  if (!cookieHeader) {
+    return undefined;
+  }
+
+  const parts = cookieHeader.split(";");
+
+  for (const part of parts) {
+    const [key, ...valueParts] = part.trim().split("=");
+
+    if (key === name) {
+      return valueParts.join("=");
+    }
+  }
+
+  return undefined;
+}
 
 /**
- * Always use LocalBackendAuthProvider — no Tina Cloud or Auth.js required.
- * Authentication is handled by the custom /admin login page and session cookie.
+ * Self-hosted auth provider that verifies the signed admin session cookie.
  */
-let cachedHandler: any = null;
+let cachedHandler: ReturnType<typeof TinaNodeBackend> | null = null;
 
 function createHandler() {
   if (cachedHandler) return cachedHandler;
 
   cachedHandler = TinaNodeBackend({
-    authProvider: LocalBackendAuthProvider(),
+    authProvider: {
+      async isAuthorized(req) {
+        if (!ADMIN_SESSION_SECRET) {
+          return {
+            isAuthorized: false,
+            errorMessage: "Admin is not configured",
+            errorCode: 500,
+          };
+        }
+
+        const token = readCookieValue(req.headers.cookie, ADMIN_SESSION_COOKIE_NAME);
+        const isAuthorized = await verifyAdminSessionToken(token, ADMIN_SESSION_SECRET);
+
+        if (!isAuthorized) {
+          return {
+            isAuthorized: false,
+            errorMessage: "Unauthorized",
+            errorCode: 401,
+          };
+        }
+
+        return { isAuthorized: true };
+      },
+    },
     databaseClient,
   });
 
