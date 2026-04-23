@@ -2,81 +2,52 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { TinaNodeBackend, LocalBackendAuthProvider } from "@tinacms/datalayer";
 import databaseClient from "../../../tina/__generated__/databaseClient";
 
-const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
-const nextAuthSecret =
-  process.env.NEXTAUTH_SECRET || "replace-this-secret-in-production";
+/**
+ * Always use LocalBackendAuthProvider — no Tina Cloud or Auth.js required.
+ * Authentication is handled by the custom /admin login page and session cookie.
+ */
+let cachedHandler: any = null;
 
-// Block introspection queries in production to prevent schema leakage
+function createHandler() {
+  if (cachedHandler) return cachedHandler;
+
+  cachedHandler = TinaNodeBackend({
+    authProvider: LocalBackendAuthProvider(),
+    databaseClient,
+  });
+
+  return cachedHandler;
+}
+
+/**
+ * Prevent GraphQL introspection queries in production to avoid schema leakage.
+ */
 function isIntrospectionQuery(body: string): boolean {
   try {
-    const query = JSON.parse(body).query || "";
+    const parsed = JSON.parse(body);
+    const query = parsed?.query ?? "";
     return /(__schema|__type|introspectionQuery)/.test(query);
   } catch {
     return false;
   }
 }
 
-let cachedHandler: any = null;
-
-function createHandler() {
-  if (cachedHandler) {
-    return cachedHandler;
-  }
-
-  if (isLocal) {
-    cachedHandler = TinaNodeBackend({
-      authProvider: LocalBackendAuthProvider(),
-      databaseClient,
-    });
-    return cachedHandler;
-  }
-
-  // Try to use AuthJs provider if available
-  try {
-    // Use a computed require name to avoid static analysis by Turbopack/webpack.
-    // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
-    const pkgName = "tinacms-authjs";
-    // Use eval('require') to avoid bundler static analysis while still requiring at runtime.
-    // This prevents the build-time "Can't resolve 'tinacms-authjs'" error when the package
-    // is intentionally optional.
-    // @ts-ignore
-    const authjsModule = (0, eval)("require")(pkgName);
-    const { AuthJsBackendAuthProvider, TinaAuthJSOptions } = authjsModule;
-
-    cachedHandler = TinaNodeBackend({
-      authProvider: AuthJsBackendAuthProvider({
-        authOptions: TinaAuthJSOptions({
-          databaseClient,
-          secret: nextAuthSecret,
-        }),
-      }),
-      databaseClient,
-    });
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      "[tina] tinacms-authjs not available, falling back to LocalBackendAuthProvider",
-      err instanceof Error ? err.message : String(err)
-    );
-
-    cachedHandler = TinaNodeBackend({
-      authProvider: LocalBackendAuthProvider(),
-      databaseClient,
-    });
-  }
-
-  return cachedHandler;
-}
-
-export default (req: NextApiRequest, res: NextApiResponse) => {
-  // Block GraphQL introspection in production
+/**
+ * API Route handler
+ */
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Block GraphQL introspection in production to prevent schema leakage
   if (process.env.NODE_ENV === "production" && req.method === "POST") {
     let bodyStr = "";
 
     if (typeof req.body === "string") {
       bodyStr = req.body;
     } else {
-      bodyStr = JSON.stringify(req.body);
+      try {
+        bodyStr = JSON.stringify(req.body);
+      } catch {
+        bodyStr = "";
+      }
     }
 
     if (isIntrospectionQuery(bodyStr)) {
@@ -86,6 +57,6 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  const handler = createHandler();
-  return handler(req, res);
-};
+  const tinaHandler = createHandler();
+  return tinaHandler(req, res);
+}
