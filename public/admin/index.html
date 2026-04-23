@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,67 +28,5 @@
   ></script>
   <body class="tina-tailwind">
     <div id="root"></div>
-    <script>
-      (function translateTinaWelcomeToRussian() {
-        const translations = new Map([
-          ["Welcome to Tina!", "Добро пожаловать в Tina!"],
-          [
-            "This is your dashboard for editing or creating content. Select a collection on the left to begin.",
-            "Это панель управления для редактирования и создания контента. Выберите коллекцию слева, чтобы начать.",
-          ],
-        ]);
-        const localModeRegex = /you\s+are\s+(in\s+)?local\s+mode/i;
-
-        const applyTranslations = () => {
-          const tinaCloudNoticeLinks = document.querySelectorAll('a[href*="tina.io/docs/r/what-is-tinacloud"]');
-
-          for (const link of tinaCloudNoticeLinks) {
-            const notice = link.closest("div");
-
-            if (notice) {
-              notice.remove();
-            }
-          }
-
-          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-          const textNodes = [];
-
-          while (walker.nextNode()) {
-            textNodes.push(walker.currentNode);
-          }
-
-          for (const node of textNodes) {
-            const raw = node.nodeValue;
-
-            if (!raw) {
-              continue;
-            }
-
-            const trimmed = raw.trim();
-
-            if (localModeRegex.test(trimmed)) {
-              const host = node.parentElement;
-
-              if (host) {
-                host.style.display = "none";
-              }
-
-              node.nodeValue = "";
-              continue;
-            }
-
-            const translated = translations.get(trimmed);
-
-            if (translated) {
-              node.nodeValue = raw.replace(trimmed, translated);
-            }
-          }
-        };
-
-        applyTranslations();
-        const observer = new MutationObserver(applyTranslations);
-        observer.observe(document.body, { childList: true, subtree: true });
-      })();
-    </script>
   </body>
 </html>
