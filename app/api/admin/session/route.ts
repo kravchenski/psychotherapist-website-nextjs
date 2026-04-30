@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { ADMIN_SESSION_COOKIE_NAME, verifyAdminSessionToken } from "../../../lib/adminSession";
+import { getAdminEnv } from "../../../lib/env";
 
 export async function GET(request: Request) {
-  const { ADMIN_SESSION_SECRET, ADMIN_USERNAME } = process.env;
+  const {
+    username: ADMIN_USERNAME,
+    sessionSecret: ADMIN_SESSION_SECRET,
+  } = getAdminEnv();
 
   if (!ADMIN_SESSION_SECRET || !ADMIN_USERNAME) {
     return NextResponse.json({ error: "Admin is not configured" }, { status: 500 });

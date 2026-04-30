@@ -2,8 +2,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { TinaNodeBackend } from "@tinacms/datalayer";
 import databaseClient from "../../../tina/__generated__/databaseClient";
 import { ADMIN_SESSION_COOKIE_NAME, verifyAdminSessionToken } from "../../../app/lib/adminSession";
+import { getAdminEnv } from "../../../app/lib/env";
 
-const ADMIN_SESSION_SECRET = process.env.ADMIN_SESSION_SECRET;
+const { sessionSecret: ADMIN_SESSION_SECRET } = getAdminEnv();
 
 function readCookieValue(cookieHeader: string | undefined, name: string) {
   if (!cookieHeader) {

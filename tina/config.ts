@@ -1,4 +1,5 @@
 import { LocalAuthProvider, defineConfig } from "tinacms";
+import { getBranchEnv } from "../app/lib/env";
 
 class SelfHostedAuthProvider extends LocalAuthProvider {
   async authenticate() {
@@ -51,11 +52,7 @@ class SelfHostedAuthProvider extends LocalAuthProvider {
   }
 }
 
-const branch =
-  process.env.GITHUB_BRANCH ||
-  process.env.VERCEL_GIT_COMMIT_REF ||
-  process.env.HEAD ||
-  "master";
+const branch = getBranchEnv();
 
 export default defineConfig({
   branch,

@@ -2,9 +2,10 @@ import crypto from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import {
   ADMIN_SESSION_COOKIE_NAME,
-  ADMIN_SESSION_MAX_AGE_SECONDS,
   createAdminSessionToken,
+  getAdminSessionMaxAgeSeconds,
 } from "../../../lib/adminSession";
+import { getAdminEnv } from "../../../lib/env";
 
 // Simple in-memory rate limiter
 const loginAttempts = new Map<string, { count: number; resetTime: number }>();
@@ -48,6 +49,34 @@ function timingSafeMatch(left: string, right: string) {
   return crypto.timingSafeEqual(leftBuffer, rightBuffer);
 }
 
+function isSameOrigin(request: NextRequest) {
+  const host = request.headers.get("host");
+  const origin = request.headers.get("origin");
+  const referer = request.headers.get("referer");
+
+  if (!host) {
+    return false;
+  }
+
+  if (origin) {
+    try {
+      return new URL(origin).host === host;
+    } catch {
+      return false;
+    }
+  }
+
+  if (referer) {
+    try {
+      return new URL(referer).host === host;
+    } catch {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 // Validate input type and length
 function validateInput(input: unknown): input is { username?: string; password?: string } {
   if (typeof input !== "object" || input === null) {
@@ -71,13 +100,21 @@ function validateInput(input: unknown): input is { username?: string; password?:
 }
 
 export async function POST(request: NextRequest) {
-  const { ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_SESSION_SECRET } = process.env;
+  const {
+    username: ADMIN_USERNAME,
+    password: ADMIN_PASSWORD,
+    sessionSecret: ADMIN_SESSION_SECRET,
+  } = getAdminEnv();
 
   if (!ADMIN_USERNAME || !ADMIN_PASSWORD || !ADMIN_SESSION_SECRET) {
     return NextResponse.json(
       { error: "Admin is not configured" },
       { status: 500 },
     );
+  }
+
+  if (!isSameOrigin(request)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   // Rate limiting
@@ -111,7 +148,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
-  const adminSessionToken = await createAdminSessionToken(ADMIN_SESSION_SECRET);
+  const maxAgeSeconds = getAdminSessionMaxAgeSeconds();
+  const adminSessionToken = await createAdminSessionToken(
+    ADMIN_SESSION_SECRET,
+    Date.now(),
+    maxAgeSeconds,
+  );
   const response = NextResponse.json({ ok: true });
 
   response.cookies.set({
@@ -121,7 +163,7 @@ export async function POST(request: NextRequest) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     path: "/",
-    maxAge: ADMIN_SESSION_MAX_AGE_SECONDS,
+    maxAge: maxAgeSeconds,
   });
 
   return response;

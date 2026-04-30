@@ -192,10 +192,11 @@ proxy.ts                            # Защита admin-маршрутов
 
 1. Пользователь открывает [app/admin/page.tsx](app/admin/page.tsx).
 2. Вводит `ADMIN_USERNAME` и `ADMIN_PASSWORD`.
-3. Серверная функция в [app/api/admin/login/route.ts](app/api/admin/login/route.ts) проверяет данные.
-4. Если логин успешен, создается токен через [app/lib/adminSession.ts](app/lib/adminSession.ts).
-5. Токен записывается в cookie `admin_session`.
-6. [proxy.ts](proxy.ts) разрешает вход только при валидной cookie.
+3. Логин-эндпоинт принимает запрос только с того же origin (`Origin`/`Referer`).
+4. Серверная функция в [app/api/admin/login/route.ts](app/api/admin/login/route.ts) проверяет данные.
+5. Если логин успешен, создается токен через [app/lib/adminSession.ts](app/lib/adminSession.ts).
+6. Токен записывается в cookie `admin_session`.
+7. [proxy.ts](proxy.ts) разрешает вход только при валидной cookie.
 
 ### Политика cookie
 
@@ -203,13 +204,14 @@ proxy.ts                            # Защита admin-маршрутов
 - `SameSite`: `strict`.
 - `Secure`: включается в production.
 - `Path`: `/`.
-- `Max-Age`: 8 часов.
+- `Max-Age`: 2 часа.
 
 ### Важные замечания по security
 
 - Не храните реальные production-секреты в репозитории.
 - Не используйте короткий пароль администратора.
 - Меняйте `ADMIN_SESSION_SECRET`, если подозреваете компрометацию.
+- Логин-эндпоинт отклоняет cross-site запросы, чтобы нельзя было получить cookie по внешней ссылке.
 - Для production добавьте секреты в managed secret storage у хостинга.
 
 ### TinaCMS runtime
@@ -237,12 +239,15 @@ npm install
 
 ### Файл окружения
 
+Для локальной разработки используйте `.env.local`, а `.env.example` держите в репозитории как шаблон без реальных секретов.
+
 Создайте [`.env.local`](.env.local) и укажите:
 
 ```env
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=your-strong-password
 ADMIN_SESSION_SECRET=your-very-long-random-secret
+ADMIN_SESSION_MAX_AGE_SECONDS=7200
 ```
 
 Если используете Tina Cloud, дополнительно могут понадобиться:
@@ -289,6 +294,7 @@ TINA_DEV=true tinacms dev -c "next dev"
 | `GITHUB_BRANCH` | [tina/config.ts](tina/config.ts) | Имя ветки при работе в GitHub |
 | `VERCEL_GIT_COMMIT_REF` | [tina/config.ts](tina/config.ts) | Имя ветки на Vercel |
 | `HEAD` | [tina/config.ts](tina/config.ts) | Запасной источник имени ветки |
+| `ADMIN_SESSION_MAX_AGE_SECONDS` | [app/lib/adminSession.ts](app/lib/adminSession.ts), [app/api/admin/login/route.ts](app/api/admin/login/route.ts) | Длительность admin-сессии в секундах |
 
 ## npm-скрипты
 
@@ -368,6 +374,7 @@ TinaCMS в этом проекте не деплоится как отдельн
 ADMIN_USERNAME=your_admin_login
 ADMIN_PASSWORD=your_admin_password
 ADMIN_SESSION_SECRET=your_very_long_random_secret
+ADMIN_SESSION_MAX_AGE_SECONDS=7200
 ```
 
 Если используете Tina Cloud, также добавьте:
@@ -439,6 +446,7 @@ Vercel подходит, если вы хотите самый быстрый и
 ADMIN_USERNAME=your_admin_login
 ADMIN_PASSWORD=your_admin_password
 ADMIN_SESSION_SECRET=your_very_long_random_secret
+ADMIN_SESSION_MAX_AGE_SECONDS=7200
 NEXT_PUBLIC_TINA_CLIENT_ID=your_client_id
 TINA_TOKEN=your_tina_token
 ```
@@ -499,6 +507,7 @@ npm run build
 ADMIN_USERNAME=your_admin_login
 ADMIN_PASSWORD=your_admin_password
 ADMIN_SESSION_SECRET=your_very_long_random_secret
+ADMIN_SESSION_MAX_AGE_SECONDS=7200
 ```
 
 #### Шаг 4. Установите зависимости и запустите

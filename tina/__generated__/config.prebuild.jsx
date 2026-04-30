@@ -1,5 +1,12 @@
 // tina/config.ts
 import { LocalAuthProvider, defineConfig } from "tinacms";
+
+// app/lib/env.ts
+function getBranchEnv() {
+  return process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "master";
+}
+
+// tina/config.ts
 var SelfHostedAuthProvider = class extends LocalAuthProvider {
   async authenticate() {
     if (typeof window !== "undefined") {
@@ -41,7 +48,7 @@ var SelfHostedAuthProvider = class extends LocalAuthProvider {
     }
   }
 };
-var branch = process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.HEAD || "master";
+var branch = getBranchEnv();
 var config_default = defineConfig({
   branch,
   telemetry: "disabled",

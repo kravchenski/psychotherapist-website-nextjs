@@ -1,5 +1,22 @@
 export const ADMIN_SESSION_COOKIE_NAME = "admin_session";
-export const ADMIN_SESSION_MAX_AGE_SECONDS = 60 * 60 * 8;
+export const ADMIN_SESSION_MAX_AGE_SECONDS = 60 * 60 * 2;
+const ADMIN_SESSION_MAX_AGE_CAP_SECONDS = 60 * 60 * 24 * 30;
+
+export function getAdminSessionMaxAgeSeconds() {
+  const raw = process.env.ADMIN_SESSION_MAX_AGE_SECONDS;
+
+  if (!raw) {
+    return ADMIN_SESSION_MAX_AGE_SECONDS;
+  }
+
+  const parsed = Number(raw);
+
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return ADMIN_SESSION_MAX_AGE_SECONDS;
+  }
+
+  return Math.min(parsed, ADMIN_SESSION_MAX_AGE_CAP_SECONDS);
+}
 
 const encoder = new TextEncoder();
 
@@ -31,8 +48,12 @@ async function signValue(secret: string, value: string) {
   return bytesToHex(signature);
 }
 
-export async function createAdminSessionToken(secret: string, now = Date.now()) {
-  const expiresAt = Math.floor(now / 1000) + ADMIN_SESSION_MAX_AGE_SECONDS;
+export async function createAdminSessionToken(
+  secret: string,
+  now = Date.now(),
+  maxAgeSeconds = getAdminSessionMaxAgeSeconds(),
+) {
+  const expiresAt = Math.floor(now / 1000) + maxAgeSeconds;
   const expiresAtRaw = String(expiresAt);
   const signature = await signValue(secret, expiresAtRaw);
 
