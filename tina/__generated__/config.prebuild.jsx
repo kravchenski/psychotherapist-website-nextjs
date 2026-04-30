@@ -45,7 +45,7 @@ var branch = process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || p
 var config_default = defineConfig({
   branch,
   telemetry: "disabled",
-  contentApiUrlOverride: "/api/tina",
+  contentApiUrlOverride: "/api/tina/gql",
   authProvider: new SelfHostedAuthProvider(),
   build: {
     outputFolder: "admin",

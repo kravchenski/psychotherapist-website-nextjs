@@ -586,7 +586,7 @@ export const ExperimentalGetTinaClient = () =>
   getSdk(
     generateRequester(
       createClient({
-        url: "/api/tina",
+        url: "/api/tina/gql",
         queries,
       })
     )

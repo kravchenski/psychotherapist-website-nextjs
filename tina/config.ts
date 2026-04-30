@@ -60,7 +60,7 @@ const branch =
 export default defineConfig({
   branch,
   telemetry: "disabled",
-  contentApiUrlOverride: "/api/tina",
+  contentApiUrlOverride: "/api/tina/gql",
   authProvider: new SelfHostedAuthProvider(),
   build: {
     outputFolder: "admin",
