@@ -1,14 +1,15 @@
 import Image from "next/image";
 import type { HomeContent } from "../types/content";
 
-const imgAbstractCalmBackground = "/utils/bg_abstract_calm.webp";
-const imgMainPhoto = "/personal_photos/hero_photo.webp";
+const defaultBackground = "/utils/bg_abstract_calm.webp";
+const defaultPhoto = "/personal_photos/hero_photo.webp";
 
 type HeroProps = {
   content: HomeContent["hero"];
 };
 
 export default function Hero({ content }: HeroProps) {
+  const photoUrl = content.photoUrl || defaultPhoto;
   return (
     <section className="w-full min-h-[1080px] flex items-center justify-center relative overflow-hidden lg:py-16 px-4 sm:px-6 lg:px-8" id="hero">
      <div className="max-w-8xl mx-auto my-auto">
@@ -18,7 +19,7 @@ export default function Hero({ content }: HeroProps) {
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <Image
               alt="Abstract calm background"
-              src={imgAbstractCalmBackground}
+              src={defaultBackground}
               fill
               sizes="100vw"
               quality={60}
@@ -40,7 +41,7 @@ export default function Hero({ content }: HeroProps) {
               <div className="relative overflow-hidden rounded-lg">
                 <Image
                   alt="Анна Почебыт" 
-                  src={imgMainPhoto}
+                  src={photoUrl}
                   width={1600}
                   height={2400}
                   sizes="(max-width: 639px) 92vw, (max-width: 1023px) 680px, 50vw"
@@ -137,7 +138,7 @@ export default function Hero({ content }: HeroProps) {
           <div className="w-1/2 h-[1080px] relative">
             <Image
               alt="Анна Почебыт" 
-              src={imgMainPhoto}
+              src={photoUrl}
               fill
               sizes="50vw"
               quality={70}

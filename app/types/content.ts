@@ -4,12 +4,14 @@ export type HomeContent = {
     description: string;
     primaryButtonText: string;
     secondaryButtonText: string;
+    photoUrl?: string;
   };
   about: {
     label: string;
     heading: string;
     intro: string;
     description: string;
+    photoUrl?: string;
     timeline: Array<{
       year: string;
       title?: string;

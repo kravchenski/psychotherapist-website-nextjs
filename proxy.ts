@@ -101,7 +101,7 @@ export async function proxy(request: NextRequest) {
 
   if (pathname === "/admin") {
     if (authorized) {
-      const response = NextResponse.redirect(new URL("/admin/index.html", request.url));
+      const response = NextResponse.redirect(new URL("/admin/dashboard", request.url));
         addSecurityHeaders(response, pathname);
       return response;
     }
@@ -123,11 +123,11 @@ export async function proxy(request: NextRequest) {
 }
 
 function addSecurityHeaders(response: NextResponse, pathname = "") {
-  const allowTinaDevAssets = pathname.startsWith("/admin");
+  const isAdminPanel = pathname.startsWith("/admin");
   const devViteOrigin = "http://localhost:4001";
   const devWsOrigin = "ws://localhost:4001";
 
-  const scriptSrc = allowTinaDevAssets
+  const scriptSrc = isAdminPanel
     ? `default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' ${devViteOrigin}; script-src-elem 'self' 'unsafe-inline' ${devViteOrigin}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https: ${devViteOrigin} ${devWsOrigin}; frame-ancestors 'none';`
     : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'none';";
 

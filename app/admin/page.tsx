@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
         throw new Error(payload?.error || "Не удалось войти");
       }
 
-      router.replace("/admin/index.html");
+      router.replace("/admin/dashboard");
       router.refresh();
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Не удалось войти");
@@ -112,7 +112,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-6 inline-flex h-12 w-full items-center justify-center rounded-full bg-[#4a5b49] px-5 text-sm font-semibold text-white transition hover:bg-[#3f4f3f] disabled:cursor-not-allowed disabled:opacity-70"
+              className="mt-6 inline-flex h-12 w-full items-center justify-center rounded-full bg-[#4a5b49] px-5 text-sm font-semibold text-white transition hover:bg-[#3f4f3f] disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
               {isSubmitting ? "Проверка..." : "Войти в Панель управления"}

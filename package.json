@@ -1,9 +1,9 @@
 {
   "name": "psychotherapist-website",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
-    "dev": "TINA_PUBLIC_IS_LOCAL=true tinacms dev -c \"next dev\"",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -23,15 +23,10 @@
     ]
   },
   "dependencies": {
-    "@tinacms/cli": "^2.2.3",
-    "@tinacms/datalayer": "^2.0.16",
-    "fs-extra": "^11.3.4",
+    "bcryptjs": "^2.4.3",
     "next": "^16.2.2",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "slate": "^0.124.1",
-    "slate-dom": "^0.124.1",
-    "tinacms": "^3.7.3"
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -1,13 +1,14 @@
 import Image from "next/image";
 import type { HomeContent } from "../types/content";
 
-const imgPhoto = "/personal_photos/about.webp";
+const defaultPhoto = "/personal_photos/about.webp";
 
 type AboutProps = {
   content: HomeContent["about"];
 };
 
 export default function About({ content }: AboutProps) {
+  const photoUrl = content.photoUrl || defaultPhoto;
   return (
     <section className="w-full bg-white py-12 lg:py-16 px-4 sm:px-6 lg:px-8" id="about">
       <div className="max-w-7xl mx-auto">
@@ -18,7 +19,7 @@ export default function About({ content }: AboutProps) {
               <div className="relative overflow-hidden rounded-lg">
                 <Image
                   alt="Анна Почебыт"
-                  src={imgPhoto}
+                  src={photoUrl}
                   width={640}
                   height={800}
                   sizes="(max-width: 1023px) 92vw, 50vw"
