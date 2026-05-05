@@ -1,20 +1,7 @@
 import type { Metadata } from "next";
-import { Montserrat, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import SiteChrome from "./components/SiteChrome";
 import type { ReactNode } from "react";
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin", "cyrillic"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
-
-const cormorantGaramond = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin", "cyrillic"],
-  weight: ["300", "400", "500", "600", "700"],
-});
 
 export const metadata: Metadata = {
   title: "Анна Почебыт | Психолог-психотерапевт в Гродно",
@@ -30,8 +17,16 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${montserrat.variable} ${cormorantGaramond.variable} h-full antialiased scroll-smooth`}
+      className="h-full antialiased scroll-smooth"
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <SiteChrome>{children}</SiteChrome>
       </body>

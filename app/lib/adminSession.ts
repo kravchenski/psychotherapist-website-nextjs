@@ -84,3 +84,19 @@ export async function verifyAdminSessionToken(token: string | undefined, secret:
   const expectedSignature = await signValue(secret, expiresAtRaw);
   return timingSafeEqual(signature, expectedSignature);
 }
+
+export function extractAdminSessionToken(cookieHeader: string) {
+  return cookieHeader
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(`${ADMIN_SESSION_COOKIE_NAME}=`))
+    ?.slice(ADMIN_SESSION_COOKIE_NAME.length + 1);
+}
+
+export async function verifyAdminRequest(cookieHeader: string, secret: string | undefined) {
+  if (!secret) {
+    return false;
+  }
+
+  return verifyAdminSessionToken(extractAdminSessionToken(cookieHeader), secret);
+}

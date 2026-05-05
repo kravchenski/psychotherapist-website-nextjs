@@ -1,29 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
-import { ADMIN_SESSION_COOKIE_NAME, verifyAdminSessionToken } from "@/app/lib/adminSession";
+import { verifyAdminRequest } from "@/app/lib/adminSession";
 import { getAdminEnv } from "@/app/lib/env";
 
 const CONTENT_DIR = join(process.cwd(), "content");
 
 export const dynamic = "force-dynamic";
-
-async function verifyAuth(request: NextRequest): Promise<boolean> {
-  const { sessionSecret: ADMIN_SESSION_SECRET } = getAdminEnv();
-
-  if (!ADMIN_SESSION_SECRET) {
-    return false;
-  }
-
-  const cookieHeader = request.headers.get("cookie") || "";
-  const token = cookieHeader
-    .split(";")
-    .map((part) => part.trim())
-    .find((part) => part.startsWith(`${ADMIN_SESSION_COOKIE_NAME}=`))
-    ?.slice(ADMIN_SESSION_COOKIE_NAME.length + 1);
-
-  return await verifyAdminSessionToken(token, ADMIN_SESSION_SECRET);
-}
 
 export async function GET() {
   try {
@@ -41,8 +24,10 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    // Check if user is authenticated
-    const isAuthenticated = await verifyAuth(request);
+    const isAuthenticated = await verifyAdminRequest(
+      request.headers.get("cookie") || "",
+      getAdminEnv().sessionSecret,
+    );
     if (!isAuthenticated) {
       return NextResponse.json(
         { error: "Unauthorized" },

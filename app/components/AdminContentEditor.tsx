@@ -1,14 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { HomeContent } from "@/app/types/content";
 
 interface ContentEditorProps {
   initialContent: HomeContent;
   onSave: (content: HomeContent) => Promise<void>;
+  onContentChange?: (content: HomeContent) => void;
+  onConfirm?: () => void;
+  isDeploying?: boolean;
 }
 
-export default function ContentEditor({ initialContent, onSave }: ContentEditorProps) {
+export default function ContentEditor({
+  initialContent,
+  onSave,
+  onContentChange,
+  onConfirm,
+  isDeploying = false,
+}: ContentEditorProps) {
   const [content, setContent] = useState<HomeContent>(initialContent);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -32,27 +41,33 @@ export default function ContentEditor({ initialContent, onSave }: ContentEditorP
     }
   };
 
+  useEffect(() => {
+    onContentChange?.(content);
+  }, [content, onContentChange]);
+
   return (
     <div className="space-y-6">
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-[rgba(108,123,107,0.2)]">
-        {(["hero", "about", "services", "contacts"] as const).map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 text-sm font-semibold uppercase tracking-[0.14em] border-b-2 -mb-px transition-colors cursor-pointer ${
-              activeTab === tab
-                ? "border-[#4a5b49] text-[#2c302e]"
-                : "border-transparent text-[#4f5f4e]/70 hover:text-[#2c302e]"
-            }`}
-            style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-          >
-            {tab === "hero" && "Первый экран"}
-            {tab === "about" && "Обо мне"}
-            {tab === "services" && "Услуги"}
-            {tab === "contacts" && "Контакты"}
-          </button>
-        ))}
+      <div className="overflow-x-auto border-b border-[rgba(108,123,107,0.2)]">
+        <div className="flex min-w-max gap-2 sm:min-w-0">
+          {(["hero", "about", "services", "contacts"] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`shrink-0 whitespace-nowrap border-b-2 -mb-px px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition-colors cursor-pointer sm:px-4 sm:text-sm sm:tracking-[0.14em] ${
+                activeTab === tab
+                  ? "border-[#4a5b49] text-[#2c302e]"
+                  : "border-transparent text-[#4f5f4e]/70 hover:text-[#2c302e]"
+              }`}
+              style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
+            >
+              {tab === "hero" && "1. Первый экран"}
+              {tab === "about" && "2. Обо мне"}
+              {tab === "services" && "3. Услуги"}
+              {tab === "contacts" && "4. Контакты"}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Hero Section */}
@@ -524,6 +539,16 @@ export default function ContentEditor({ initialContent, onSave }: ContentEditorP
         >
           {isSaving ? "Сохранение..." : "Сохранить"}
         </button>
+        {activeTab === "contacts" && onConfirm && (
+          <button
+            onClick={onConfirm}
+            disabled={isSaving || isDeploying}
+            className="inline-flex items-center justify-center rounded-full bg-[#2f3e2f] px-6 py-2 text-sm font-semibold text-white transition hover:bg-[#253225] disabled:bg-[#9aa49a] cursor-pointer"
+            style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
+          >
+            {isDeploying ? "Выполняется..." : "Подтвердить"}
+          </button>
+        )}
       </div>
     </div>
   );
