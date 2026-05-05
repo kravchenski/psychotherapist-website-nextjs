@@ -4,6 +4,8 @@ import { join } from "path";
 
 const CONTENT_DIR = join(process.cwd(), "content");
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const filePath = join(CONTENT_DIR, "home.json");

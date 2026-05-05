@@ -4,6 +4,8 @@ import { join } from "path";
 import { ADMIN_SESSION_COOKIE_NAME, verifyAdminSessionToken } from "@/app/lib/adminSession";
 import { getAdminEnv } from "@/app/lib/env";
 
+export const dynamic = "force-static";
+
 async function verifyAuth(request: NextRequest): Promise<boolean> {
   const { sessionSecret: ADMIN_SESSION_SECRET } = getAdminEnv();
 

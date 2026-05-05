@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { ADMIN_SESSION_COOKIE_NAME, verifyAdminSessionToken } from "../../../lib/adminSession";
 import { getAdminEnv } from "../../../lib/env";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const {
     username: ADMIN_USERNAME,

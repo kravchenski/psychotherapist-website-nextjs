@@ -7,6 +7,8 @@ import {
 } from "../../../lib/adminSession";
 import { getAdminEnv } from "../../../lib/env";
 
+export const dynamic = "force-dynamic";
+
 // Simple in-memory rate limiter
 const loginAttempts = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
@@ -49,32 +51,31 @@ function timingSafeMatch(left: string, right: string) {
   return crypto.timingSafeEqual(leftBuffer, rightBuffer);
 }
 
+function getRequestHost(request: NextRequest) {
+  return request.headers.get("x-forwarded-host") || request.headers.get("host");
+}
+
+function getRequestOrigin(request: NextRequest) {
+  return request.headers.get("origin") || request.headers.get("referer");
+}
+
 function isSameOrigin(request: NextRequest) {
-  const host = request.headers.get("host");
-  const origin = request.headers.get("origin");
-  const referer = request.headers.get("referer");
+  const host = getRequestHost(request);
+  const originLike = getRequestOrigin(request);
+
+  if (!originLike) {
+    return true;
+  }
 
   if (!host) {
     return false;
   }
 
-  if (origin) {
-    try {
-      return new URL(origin).host === host;
-    } catch {
-      return false;
-    }
+  try {
+    return new URL(originLike).host === host;
+  } catch {
+    return false;
   }
-
-  if (referer) {
-    try {
-      return new URL(referer).host === host;
-    } catch {
-      return false;
-    }
-  }
-
-  return true;
 }
 
 // Validate input type and length

@@ -6,6 +6,8 @@ import { getAdminEnv } from "@/app/lib/env";
 
 const CONTENT_DIR = join(process.cwd(), "content");
 
+export const dynamic = "force-dynamic";
+
 async function verifyAuth(request: NextRequest): Promise<boolean> {
   const { sessionSecret: ADMIN_SESSION_SECRET } = getAdminEnv();
 
