@@ -19,10 +19,8 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       success: true,
-      deployHost: deployEnv.host || "сервер не настроен",
-      deployPath: deployEnv.path,
-      deployTarget: deployEnv.targetLabel,
-      isConfigured: Boolean(deployEnv.host && deployEnv.password),
+      deployMode: deployEnv.mode,
+      isConfigured: deployEnv.mode !== "unconfigured",
     }, { status: 200 });
   } catch {
     return NextResponse.json({

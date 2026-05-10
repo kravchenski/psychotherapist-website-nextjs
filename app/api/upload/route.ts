@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { put } from "@vercel/blob";
 import { verifyAdminRequest } from "@/app/lib/adminSession";
 import { getAdminEnv } from "@/app/lib/env";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
@@ -46,29 +45,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate filename with timestamp
-    const ext = file.name.split(".").pop();
-    const filename = `photo-${Date.now()}.${ext}`;
-    const uploadDir = join(process.cwd(), "public", "personal_photos");
-
-    // Create directory if it doesn't exist
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch {
-      // Directory might already exist
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      return NextResponse.json(
+        { error: "BLOB_READ_WRITE_TOKEN is not configured" },
+        { status: 500 }
+      );
     }
 
-    // Save file
-    const filepath = join(uploadDir, filename);
-    const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(filepath, buffer);
-
-    // Return the public URL
-    const publicUrl = `/personal_photos/${filename}`;
+    const extension = file.name.includes(".") ? file.name.split(".").pop() : undefined;
+    const safeBaseName = (file.name.replace(/\.[^.]+$/, "") || "photo")
+      .toLowerCase()
+      .replace(/[^a-z0-9-_]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 48) || "photo";
+    const pathname = `uploads/${Date.now()}-${safeBaseName}${extension ? `.${extension}` : ""}`;
+    const blob = await put(pathname, file, {
+      access: "public",
+      addRandomSuffix: true,
+      contentType: file.type,
+    });
 
     return NextResponse.json({
       success: true,
-      url: publicUrl,
+      url: blob.url,
       message: "File uploaded successfully",
     });
   } catch (error) {

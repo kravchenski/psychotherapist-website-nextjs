@@ -1,18 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFile, writeFile } from "fs/promises";
-import { join } from "path";
 import { verifyAdminRequest } from "@/app/lib/adminSession";
 import { getAdminEnv } from "@/app/lib/env";
-
-const CONTENT_DIR = join(process.cwd(), "content");
+import { getHomeContent, isHomeContent, saveHomeContent } from "@/app/lib/contentStore";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const filePath = join(CONTENT_DIR, "home.json");
-    const content = await readFile(filePath, "utf-8");
-    return NextResponse.json(JSON.parse(content));
+    const content = await getHomeContent();
+    return NextResponse.json(content);
   } catch (error) {
     console.error("Error reading content:", error);
     return NextResponse.json(
@@ -36,17 +32,15 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await request.json();
-    const filePath = join(CONTENT_DIR, "home.json");
 
-    // Validate the data structure
-    if (!data.hero || !data.about || !data.services || !data.contacts) {
+    if (!isHomeContent(data)) {
       return NextResponse.json(
         { error: "Invalid content structure" },
         { status: 400 }
       );
     }
 
-    await writeFile(filePath, JSON.stringify(data, null, 2));
+    await saveHomeContent(data);
 
     return NextResponse.json({
       success: true,

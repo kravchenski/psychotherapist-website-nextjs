@@ -9,15 +9,16 @@ import type { HomeContent } from "@/app/types/content";
 export default function AdminDashboardPage() {
   const router = useRouter();
   const [content, setContent] = useState<HomeContent | null>(null);
-  const [draftContent, setDraftContent] = useState<HomeContent | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDeployConfigured, setIsDeployConfigured] = useState(false);
   const [isDeploying, setIsDeploying] = useState(false);
-  const [deployError, setDeployError] = useState<string | null>(null);
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [deployMessage, setDeployMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   useEffect(() => {
-    // Check authentication and load content
     const loadContent = async () => {
       try {
         const sessionResponse = await fetch("/api/admin/session", {
@@ -29,9 +30,14 @@ export default function AdminDashboardPage() {
           return;
         }
 
-        const contentResponse = await fetch("/api/content", {
-          credentials: "include",
-        });
+        const [contentResponse, deployInfoResponse] = await Promise.all([
+          fetch("/api/content", {
+            credentials: "include",
+          }),
+          fetch("/api/admin/deploy-info", {
+            credentials: "include",
+          }),
+        ]);
 
         if (!contentResponse.ok) {
           setError("Failed to load content");
@@ -40,8 +46,11 @@ export default function AdminDashboardPage() {
 
         const data = await contentResponse.json();
         setContent(data);
-        setDraftContent(data);
 
+        if (deployInfoResponse.ok) {
+          const deployInfo = await deployInfoResponse.json();
+          setIsDeployConfigured(Boolean(deployInfo.isConfigured));
+        }
       } catch (err) {
         console.error("Error loading content:", err);
         setError("Failed to load content");
@@ -70,37 +79,36 @@ export default function AdminDashboardPage() {
       }
 
       setContent(updatedContent);
-      setDraftContent(updatedContent);
     } catch (err) {
       throw err;
     }
   };
 
-  const handleDeploy = async () => {
-    setShowConfirmDialog(true);
-  };
-
-  const confirmDeployment = async () => {
-    setShowConfirmDialog(false);
+  const handleStaticBuildAndDeploy = async () => {
     setIsDeploying(true);
-    setDeployError(null);
+    setDeployMessage(null);
 
     try {
-      if (draftContent) {
-        await handleSaveContent(draftContent);
-      }
-
       const response = await fetch("/api/admin/deploy", {
         method: "POST",
         credentials: "include",
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to deploy");
+        throw new Error(data.error || "Не удалось выполнить сборку и деплой");
       }
+
+      setDeployMessage({
+        type: "success",
+        text: data.message || "Статический HTML собран и отправлен на сервер",
+      });
     } catch (err) {
-      setDeployError(err instanceof Error ? err.message : "Unknown deployment error");
+      setDeployMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Ошибка при сборке и деплое",
+      });
     } finally {
       setIsDeploying(false);
     }
@@ -196,48 +204,14 @@ export default function AdminDashboardPage() {
             <AdminContentEditor
               initialContent={content}
               onSave={handleSaveContent}
-              onContentChange={setDraftContent}
-              onConfirm={handleDeploy}
+              onDeploy={handleStaticBuildAndDeploy}
+              isDeployConfigured={isDeployConfigured}
               isDeploying={isDeploying}
+              deployMessage={deployMessage}
             />
           )}
         </div>
       </div>
-
-      {deployError && (
-        <div className="fixed bottom-6 right-6 z-50 max-w-md rounded-2xl border border-[#b89d87] bg-[#f5ece5] px-4 py-3 text-sm text-[#7d4d35] shadow-[0px_20px_50px_-24px_rgba(44,48,46,0.45)]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-          Ошибка: {deployError}
-        </div>
-      )}
-
-      {showConfirmDialog && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="m-4 w-full max-w-md rounded-[24px] bg-white p-6 shadow-[0px_30px_80px_-30px_rgba(44,48,46,0.4)]">
-            <h3 className="mb-4 text-lg font-medium text-[#2c302e]" style={{ fontFamily: "var(--font-cormorant), Georgia, serif" }}>
-              Подтверждение
-            </h3>
-            <p className="mb-6 text-sm text-[#4f5f4e]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Вы действительно хотите записать информацию?
-            </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowConfirmDialog(false)}
-                className="flex-1 inline-flex items-center justify-center rounded-full border border-[rgba(108,123,107,0.25)] bg-white/70 px-5 py-2 text-sm font-medium text-[#2c302e] transition hover:border-[rgba(108,123,107,0.45)] hover:bg-[rgba(108,123,107,0.08)] cursor-pointer"
-                style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-              >
-                Отмена
-              </button>
-              <button
-                onClick={confirmDeployment}
-                className="flex-1 inline-flex items-center justify-center rounded-full bg-[#4a5b49] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#3f4f3f] cursor-pointer"
-                style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-              >
-                Подтвердить
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </main>
   );
 }
