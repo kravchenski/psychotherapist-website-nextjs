@@ -2,12 +2,13 @@ import About from "./components/About";
 import Services from "./components/Services";
 import Hero from "./components/Hero";
 import Contacts from "./components/Contacts";
-import homeContent from "@/content/home.json";
-import type { HomeContent } from "./types/content";
+import { getHomeContent } from "./lib/contentStore";
 
-const content = homeContent as HomeContent;
+export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
+  const content = await getHomeContent();
+
   return (
     <main className="flex flex-col w-full flex-1">
       <Hero content={content.hero} />
