@@ -2,15 +2,13 @@
   "name": "psychotherapist-website",
   "version": "0.1.1",
   "private": true,
+  "packageManager": "bun@1.3.14",
   "scripts": {
     "dev": "next dev",
     "build": "next build --webpack",
-    "export": "node scripts/export-static.cjs",
-    "build-export": "npm run build && npm run export",
-    "postinstall": "prisma generate",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate:dev": "prisma migrate dev",
-    "start": "next start",
+    "export": "bun scripts/export-static.cjs",
+    "build-export": "bun run build && bun run export",
+    "start": "bun server.js",
     "lint": "eslint"
   },
   "browserslist": {
@@ -28,12 +26,9 @@
     ]
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.8.0",
-    "@prisma/client": "^7.8.0",
     "@vercel/blob": "^1.1.1",
     "bcryptjs": "^2.4.3",
     "next": "^16.2.2",
-    "pg": "^8.16.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
@@ -44,7 +39,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.2",
-    "prisma": "^7.8.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

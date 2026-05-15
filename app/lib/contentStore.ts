@@ -1,11 +1,11 @@
-import { Prisma } from "@prisma/client";
+import { promises as fs } from "node:fs";
+import path from "node:path";
 import { revalidatePath } from "next/cache";
 import homeContent from "@/content/home.json";
 import type { HomeContent } from "@/app/types/content";
-import { ensurePrismaTables, getPrismaClient } from "./prisma";
 
-const HOME_CONTENT_KEY = "home";
 const fallbackContent = homeContent as HomeContent;
+const contentFilePath = path.join(process.cwd(), "content", "home.json");
 
 function isTimelineItem(value: unknown): value is HomeContent["about"]["timeline"][number] {
   if (!value || typeof value !== "object") {
@@ -69,104 +69,25 @@ export function isHomeContent(value: unknown): value is HomeContent {
   );
 }
 
-function toJsonContent(content: HomeContent): Prisma.InputJsonValue {
-  return content as Prisma.InputJsonValue;
-}
-
-function isPrismaConnectionError(error: unknown) {
-  return (
-    error instanceof Prisma.PrismaClientInitializationError ||
-    error instanceof Prisma.PrismaClientUnknownRequestError
-  );
-}
-
-function isPrismaMissingTableError(error: unknown) {
-  return (
-    error instanceof Prisma.PrismaClientKnownRequestError &&
-    error.code === "P2021"
-  );
-}
-
-async function upsertHomeContentRecord(
-  data: Prisma.InputJsonValue,
-  shouldUpdate: boolean,
-) {
-  const prisma = getPrismaClient();
-  if (!prisma) {
-    return null;
-  }
-
-  try {
-    return await prisma.siteContent.upsert({
-      where: { key: HOME_CONTENT_KEY },
-      update: shouldUpdate ? { data } : {},
-      create: {
-        key: HOME_CONTENT_KEY,
-        data,
-      },
-    });
-  } catch (error) {
-    if (isPrismaMissingTableError(error)) {
-      await ensurePrismaTables(prisma);
-
-      return prisma.siteContent.upsert({
-        where: { key: HOME_CONTENT_KEY },
-        update: shouldUpdate ? { data } : {},
-        create: {
-          key: HOME_CONTENT_KEY,
-          data,
-        },
-      });
-    }
-
-    throw error;
-  }
-}
-
 export async function getHomeContent(): Promise<HomeContent> {
-  if (!getPrismaClient()) {
-    return fallbackContent;
-  }
-
   try {
-    const record = await upsertHomeContentRecord(toJsonContent(fallbackContent), false);
-    if (!record) {
-      return fallbackContent;
-    }
+    const rawContent = await fs.readFile(contentFilePath, "utf8");
+    const content = JSON.parse(rawContent) as unknown;
 
-    if (isHomeContent(record.data)) {
-      return record.data;
+    if (isHomeContent(content)) {
+      return content;
     }
   } catch (error) {
-    if (isPrismaConnectionError(error)) {
-      console.warn("Database is unavailable, using fallback home content.");
-      return fallbackContent;
-    }
-
-    throw error;
+    console.warn("Content file is unavailable or invalid, using fallback home content.", error);
   }
 
   return fallbackContent;
 }
 
 export async function saveHomeContent(content: HomeContent) {
-  if (!getPrismaClient()) {
-    throw new Error("Database URL is not configured");
-  }
-
-  let saved;
-
-  try {
-    saved = await upsertHomeContentRecord(toJsonContent(content), true);
-  } catch (error) {
-    if (isPrismaConnectionError(error)) {
-      throw new Error("Database is unavailable");
-    }
-
-    throw error;
-  }
-
+  await fs.mkdir(path.dirname(contentFilePath), { recursive: true });
+  await fs.writeFile(contentFilePath, `${JSON.stringify(content, null, 2)}\n`, "utf8");
   revalidatePath("/");
 
-  return saved?.data as HomeContent;
+  return content;
 }
