@@ -4,6 +4,7 @@ import {
   ADMIN_SESSION_COOKIE_NAME,
   createAdminSessionToken,
   getAdminSessionMaxAgeSeconds,
+  shouldUseSecureAdminCookie,
 } from "../../../lib/adminSession";
 import { getAdminEnv } from "../../../lib/env";
 
@@ -72,7 +73,26 @@ function isSameOrigin(request: NextRequest) {
   }
 
   try {
-    return new URL(originLike).host === host;
+    const origin = new URL(originLike);
+    const allowedOrigins = [
+      process.env.NEXT_PUBLIC_SITE_URL,
+      process.env.SITE_URL,
+      ...(process.env.ADMIN_ALLOWED_ORIGINS || "").split(","),
+    ]
+      .map((value) => value?.trim())
+      .filter((value): value is string => Boolean(value));
+
+    if (allowedOrigins.some((value) => {
+      try {
+        return new URL(value).origin === origin.origin;
+      } catch {
+        return false;
+      }
+    })) {
+      return true;
+    }
+
+    return origin.host === host;
   } catch {
     return false;
   }
@@ -161,7 +181,7 @@ export async function POST(request: NextRequest) {
     name: ADMIN_SESSION_COOKIE_NAME,
     value: adminSessionToken,
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: shouldUseSecureAdminCookie(request.headers, request.url),
     sameSite: "strict",
     path: "/",
     maxAge: maxAgeSeconds,

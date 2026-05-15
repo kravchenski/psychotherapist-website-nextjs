@@ -100,3 +100,31 @@ export async function verifyAdminRequest(cookieHeader: string, secret: string | 
 
   return verifyAdminSessionToken(extractAdminSessionToken(cookieHeader), secret);
 }
+
+export function shouldUseSecureAdminCookie(headers: Headers, requestUrl?: string) {
+  const override = process.env.ADMIN_COOKIE_SECURE?.trim().toLowerCase();
+
+  if (override === "true") {
+    return true;
+  }
+
+  if (override === "false") {
+    return false;
+  }
+
+  const forwardedProto = headers.get("x-forwarded-proto")?.split(",")[0]?.trim();
+
+  if (forwardedProto) {
+    return forwardedProto === "https";
+  }
+
+  if (requestUrl) {
+    try {
+      return new URL(requestUrl).protocol === "https:";
+    } catch {
+      return false;
+    }
+  }
+
+  return false;
+}

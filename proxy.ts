@@ -2,8 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ADMIN_SESSION_COOKIE_NAME, verifyAdminSessionToken } from "./app/lib/adminSession";
 import { getAdminEnv } from "./app/lib/env";
 
-const { sessionSecret: ADMIN_SESSION_SECRET } = getAdminEnv();
-
 // Simple in-memory rate limiter for login attempts
 const loginAttempts = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
@@ -56,6 +54,8 @@ function getClientIp(request: NextRequest) {
 }
 
 async function isAuthorized(request: NextRequest) {
+  const { sessionSecret: ADMIN_SESSION_SECRET } = getAdminEnv();
+
   if (!ADMIN_SESSION_SECRET) {
     return false;
   }
