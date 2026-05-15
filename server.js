@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
+const { loadEnvConfig } = require("@next/env");
 const { createServer } = require("node:http");
 const fs = require("node:fs");
 const next = require("next");
 
+loadEnvConfig(process.cwd());
+
 const dev = process.env.NODE_ENV !== "production";
 const hostname =
-  process.env.INSTANCE_HOST || process.env.HOSTNAME || process.env.HOST || "0.0.0.0";
+  process.env.INSTANCE_HOST || process.env.HOST || "0.0.0.0";
 const port = Number.parseInt(process.env.PORT || "3000", 10);
 const socket = process.env.SOCKET;
 

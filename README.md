@@ -48,13 +48,19 @@ bun run dev
 ```bash
 bun install
 bun run build
-NODE_ENV=production bun run start
+NODE_ENV=production node server.js
 ```
 
 Если панель сама запускает приложение, укажите entrypoint:
 
 ```text
 server.js
+```
+
+Если панель просит start command:
+
+```bash
+NODE_ENV=production node server.js
 ```
 
 ## Важные файлы

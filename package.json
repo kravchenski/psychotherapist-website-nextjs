@@ -8,7 +8,7 @@
     "build": "next build --webpack",
     "export": "bun scripts/export-static.cjs",
     "build-export": "bun run build && bun run export",
-    "start": "bun server.js",
+    "start": "node server.js",
     "lint": "eslint"
   },
   "browserslist": {
