@@ -548,15 +548,6 @@ export default function ContentEditor({
             </div>
           )}
 
-          {!isDeployConfigured && activeTab === "contacts" && (
-            <div
-              className="rounded-2xl border border-[#b89d87] bg-[#f5ece5] px-4 py-3 text-sm text-[#7d4d35]"
-              style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-            >
-              Для деплоя на Vercel укажите `VERCEL_DEPLOY_HOOK_URL`.
-            </div>
-          )}
-
           {deployMessage && activeTab === "contacts" && (
             <div
               className={`rounded-2xl border px-4 py-3 text-sm ${
