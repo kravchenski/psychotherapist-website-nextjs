@@ -40,27 +40,21 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#f7f3ea_0%,#f9f8f5_42%,#eef1ea_100%)] px-4 py-10 sm:px-6 lg:px-8">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#dce5db] blur-3xl opacity-70" />
-        <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-[#e8ddd1] blur-3xl opacity-60" />
-      </div>
-
+    <main className="relative flex min-h-screen items-center justify-center overflow-x-clip bg-[linear-gradient(180deg,#f7f3ea_0%,#f9f8f5_46%,#edf1ea_100%)] px-4 py-10 sm:px-6 lg:px-8">
       <section className="relative grid w-full max-w-5xl gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div className="space-y-6 text-center lg:text-left">
           <h1
             className="text-4xl font-medium text-[#2c302e] sm:text-5xl lg:text-[64px]"
-            style={{ fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: "1.05", letterSpacing: "-0.03em" }}
+            style={{ fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: "1.05" }}
           >
             Вход для администратора
           </h1>
         </div>
 
         <div className="relative">
-          <div className="absolute inset-0 translate-y-6 rounded-[34px] bg-[#d9e1d8] blur-2xl opacity-70" />
           <form
             onSubmit={handleSubmit}
-            className="relative overflow-hidden rounded-[32px] border border-[rgba(108,123,107,0.18)] bg-[rgba(255,255,255,0.72)] p-6 shadow-[0px_30px_80px_-30px_rgba(44,48,46,0.4)] backdrop-blur-xl sm:p-8"
+            className="relative rounded-xl border border-[rgba(108,123,107,0.18)] bg-[rgba(255,255,255,0.84)] p-6 shadow-[0px_24px_70px_-36px_rgba(44,48,46,0.5)] backdrop-blur-xl sm:p-8"
           >
             <div className="mb-6">
               <h2
@@ -81,7 +75,7 @@ export default function AdminLoginPage() {
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
                   autoComplete="username"
-                  className="w-full rounded-2xl border border-[rgba(108,123,107,0.22)] bg-white/80 px-4 py-3 text-[#2c302e] outline-none transition focus:border-[#4f5f4e] focus:ring-4 focus:ring-[rgba(79,95,78,0.12)]"
+                  className="min-h-11 w-full rounded-lg border border-[rgba(108,123,107,0.24)] bg-white/85 px-3.5 py-2.5 text-sm text-[#2c302e] outline-none transition focus:border-[#6c7b6b] focus:bg-white focus:ring-4 focus:ring-[#6c7b6b]/10"
                   placeholder="Логин"
                   required
                   style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
@@ -95,7 +89,7 @@ export default function AdminLoginPage() {
                   onChange={(event) => setPassword(event.target.value)}
                   type="password"
                   autoComplete="current-password"
-                  className="w-full rounded-2xl border border-[rgba(108,123,107,0.22)] bg-white/80 px-4 py-3 text-[#2c302e] outline-none transition focus:border-[#4f5f4e] focus:ring-4 focus:ring-[rgba(79,95,78,0.12)]"
+                  className="min-h-11 w-full rounded-lg border border-[rgba(108,123,107,0.24)] bg-white/85 px-3.5 py-2.5 text-sm text-[#2c302e] outline-none transition focus:border-[#6c7b6b] focus:bg-white focus:ring-4 focus:ring-[#6c7b6b]/10"
                   placeholder="Пароль"
                   required
                   style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
@@ -104,7 +98,7 @@ export default function AdminLoginPage() {
             </div>
 
             {errorMessage ? (
-              <div className="mt-4 rounded-2xl border border-[#b89d87] bg-[#f5ece5] px-4 py-3 text-sm text-[#7d4d35]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              <div className="mt-4 rounded-lg border border-[#b89d87] bg-[#f5ece5] px-4 py-3 text-sm text-[#7d4d35]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                 {errorMessage}
               </div>
             ) : null}
@@ -112,7 +106,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-6 inline-flex h-12 w-full items-center justify-center rounded-full bg-[#4a5b49] px-5 text-sm font-semibold text-white transition hover:bg-[#3f4f3f] disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
+              className="mt-6 inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-[#4a5b49] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#3f4f3f] disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
               {isSubmitting ? "Проверка..." : "Войти в Панель управления"}
