@@ -12,7 +12,7 @@ forceWebpackBundler();
 const next = require("next");
 
 const projectDir = __dirname;
-loadEnvConfig(projectDir, process.env.NODE_ENV !== "production");
+const loadedEnv = loadEnvConfig(projectDir, process.env.NODE_ENV !== "production");
 forceWebpackBundler();
 
 const dev = process.env.NODE_ENV !== "production";
@@ -24,6 +24,50 @@ const socket = process.env.SOCKET;
 const app = next({ dev, hostname, port, dir: projectDir, webpack: true });
 const handle = app.getRequestHandler();
 const allowedMethods = new Set(["GET", "HEAD", "POST"]);
+
+function getAdminConfigIssues() {
+  const issues = [];
+  const username = process.env.ADMIN_USERNAME?.trim();
+  const password = process.env.ADMIN_PASSWORD;
+  const sessionSecret = process.env.ADMIN_SESSION_SECRET;
+
+  if (!username) {
+    issues.push("ADMIN_USERNAME is missing");
+  }
+
+  if (!password) {
+    issues.push("ADMIN_PASSWORD is missing");
+  } else if (password.length < 12) {
+    issues.push("ADMIN_PASSWORD must be at least 12 characters");
+  } else if (password === "admin" || password === "change-me") {
+    issues.push("ADMIN_PASSWORD must not be a placeholder");
+  }
+
+  if (!sessionSecret) {
+    issues.push("ADMIN_SESSION_SECRET is missing");
+  } else if (sessionSecret.length < 32) {
+    issues.push("ADMIN_SESSION_SECRET must be at least 32 characters");
+  } else if (sessionSecret === "replace-with-a-long-random-secret") {
+    issues.push("ADMIN_SESSION_SECRET must not be a placeholder");
+  }
+
+  return issues;
+}
+
+function logAdminConfigStatus() {
+  const issues = getAdminConfigIssues();
+
+  if (issues.length === 0) {
+    return;
+  }
+
+  const envFiles =
+    loadedEnv.loadedEnvFiles.map((file) => file.path).join(", ") || "none";
+
+  console.warn(
+    `Admin is not configured. Loaded env files: ${envFiles}. Issues: ${issues.join("; ")}`,
+  );
+}
 
 function addEarlySecurityHeaders(res) {
   res.setHeader("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'");
@@ -67,6 +111,7 @@ app.prepare().then(() => {
 
     server.listen(socket, () => {
       fs.chmodSync(socket, 0o660);
+      logAdminConfigStatus();
       console.log(`Next.js server is listening on ${socket}`);
     });
 
@@ -74,6 +119,7 @@ app.prepare().then(() => {
   }
 
   server.listen(port, hostname, () => {
+    logAdminConfigStatus();
     console.log(
       `Next.js server is running on http://${hostname}:${port} in ${
         dev ? "development" : "production"
