@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  allowedDevOrigins: ["www.anna-pochebyt.by", "anna-pochebyt.by"],
   skipTrailingSlashRedirect: true,
   skipProxyUrlNormalize: true,
   images: {
