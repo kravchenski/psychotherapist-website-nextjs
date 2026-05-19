@@ -4,8 +4,8 @@
   "private": true,
   "packageManager": "bun@1.3.14",
   "scripts": {
-    "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "dev": "RAYON_NUM_THREADS=1 next dev --webpack",
+    "build": "RAYON_NUM_THREADS=1 next build --webpack",
     "export": "bun scripts/export-static.cjs",
     "build-export": "bun run build && bun run export",
     "start": "NODE_ENV=production node server.js",

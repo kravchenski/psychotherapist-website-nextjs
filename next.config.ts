@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["www.anna-pochebyt.by", "anna-pochebyt.by"],
   skipTrailingSlashRedirect: true,
   skipProxyUrlNormalize: true,
+  experimental: {
+    cpus: 1,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [360, 414, 640, 768, 1024, 1280, 1536],
