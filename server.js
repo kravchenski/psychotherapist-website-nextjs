@@ -2,10 +2,18 @@
 const { loadEnvConfig } = require("@next/env");
 const { createServer } = require("node:http");
 const fs = require("node:fs");
+
+function forceWebpackBundler() {
+  delete process.env.TURBOPACK;
+  delete process.env.IS_TURBOPACK_TEST;
+}
+
+forceWebpackBundler();
 const next = require("next");
 
 const projectDir = __dirname;
 loadEnvConfig(projectDir, process.env.NODE_ENV !== "production");
+forceWebpackBundler();
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname =
