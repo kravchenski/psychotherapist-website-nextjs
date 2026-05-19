@@ -13,7 +13,7 @@ const hostname =
 const port = Number.parseInt(process.env.PORT || "3000", 10);
 const socket = process.env.SOCKET;
 
-const app = next({ dev, hostname, port, dir: projectDir });
+const app = next({ dev, hostname, port, dir: projectDir, webpack: true });
 const handle = app.getRequestHandler();
 const allowedMethods = new Set(["GET", "HEAD", "POST"]);
 
