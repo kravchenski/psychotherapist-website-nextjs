@@ -4,7 +4,8 @@ const { createServer } = require("node:http");
 const fs = require("node:fs");
 const next = require("next");
 
-loadEnvConfig(process.cwd());
+const projectDir = __dirname;
+loadEnvConfig(projectDir, process.env.NODE_ENV !== "production");
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname =
@@ -12,7 +13,7 @@ const hostname =
 const port = Number.parseInt(process.env.PORT || "3000", 10);
 const socket = process.env.SOCKET;
 
-const app = next({ dev, hostname, port });
+const app = next({ dev, hostname, port, dir: projectDir });
 const handle = app.getRequestHandler();
 const allowedMethods = new Set(["GET", "HEAD", "POST"]);
 
