@@ -8,9 +8,10 @@ export async function GET(request: Request) {
   const {
     username: ADMIN_USERNAME,
     sessionSecret: ADMIN_SESSION_SECRET,
+    isConfigured: isAdminConfigured,
   } = getAdminEnv();
 
-  if (!ADMIN_SESSION_SECRET || !ADMIN_USERNAME) {
+  if (!isAdminConfigured || !ADMIN_SESSION_SECRET || !ADMIN_USERNAME) {
     return NextResponse.json({ error: "Admin is not configured" }, { status: 500 });
   }
 

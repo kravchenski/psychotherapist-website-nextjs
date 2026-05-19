@@ -54,9 +54,9 @@ function getClientIp(request: NextRequest) {
 }
 
 async function isAuthorized(request: NextRequest) {
-  const { sessionSecret: ADMIN_SESSION_SECRET } = getAdminEnv();
+  const { sessionSecret: ADMIN_SESSION_SECRET, isConfigured } = getAdminEnv();
 
-  if (!ADMIN_SESSION_SECRET) {
+  if (!isConfigured || !ADMIN_SESSION_SECRET) {
     return false;
   }
 
@@ -64,9 +64,22 @@ async function isAuthorized(request: NextRequest) {
   return verifyAdminSessionToken(token, ADMIN_SESSION_SECRET);
 }
 
+function isAdminPath(pathname: string) {
+  return pathname === "/admin" || pathname.startsWith("/admin/");
+}
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const ip = getClientIp(request);
+  const nonce = crypto.randomUUID().replaceAll("-", "");
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-nonce", nonce);
+
+  if (pathname.includes("://")) {
+    const response = NextResponse.json({ error: "Bad request" }, { status: 400 });
+    addSecurityHeaders(response, pathname, nonce);
+    return response;
+  }
 
   if (pathname.startsWith("/api/") && pathname !== "/api/admin/login") {
     if (!checkApiRateLimit(ip)) {
@@ -74,7 +87,7 @@ export async function proxy(request: NextRequest) {
         { error: "Too many requests. Try again later." },
         { status: 429 },
       );
-      addSecurityHeaders(response, pathname);
+      addSecurityHeaders(response, pathname, nonce);
       return response;
     }
   }
@@ -86,14 +99,18 @@ export async function proxy(request: NextRequest) {
         { error: "Too many login attempts. Try again later." },
         { status: 429 },
       );
-        addSecurityHeaders(response, pathname);
+        addSecurityHeaders(response, pathname, nonce);
       return response;
     }
   }
 
-  if (!pathname.startsWith("/admin")) {
-    const response = NextResponse.next();
-    addSecurityHeaders(response, pathname);
+  if (!isAdminPath(pathname)) {
+    const response = NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    });
+    addSecurityHeaders(response, pathname, nonce);
     return response;
   }
 
@@ -102,41 +119,53 @@ export async function proxy(request: NextRequest) {
   if (pathname === "/admin") {
     if (authorized) {
       const response = NextResponse.redirect(new URL("/admin/dashboard", request.url));
-        addSecurityHeaders(response, pathname);
+        addSecurityHeaders(response, pathname, nonce);
       return response;
     }
 
-    const response = NextResponse.next();
-      addSecurityHeaders(response, pathname);
+    const response = NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    });
+      addSecurityHeaders(response, pathname, nonce);
     return response;
   }
 
   if (!authorized) {
     const response = NextResponse.redirect(new URL("/admin", request.url));
-    addSecurityHeaders(response, pathname);
+    addSecurityHeaders(response, pathname, nonce);
     return response;
   }
 
-  const response = NextResponse.next();
-  addSecurityHeaders(response, pathname);
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+  addSecurityHeaders(response, pathname, nonce);
   return response;
 }
 
-function addSecurityHeaders(response: NextResponse, pathname = "") {
-  const isAdminPanel = pathname.startsWith("/admin");
-  const devViteOrigin = "http://localhost:4001";
-  const devWsOrigin = "ws://localhost:4001";
+function addSecurityHeaders(response: NextResponse, pathname = "", nonce = "") {
+  const isAdminPanel = isAdminPath(pathname);
+  const isDevelopment = process.env.NODE_ENV !== "production";
+  const devConnectSrc = isDevelopment ? " http://localhost:4001 ws://localhost:4001" : "";
+  const devScriptSrc = isDevelopment ? " 'unsafe-eval' http://localhost:4001" : "";
+  const scriptNonce = nonce ? ` 'nonce-${nonce}'` : "";
 
   const scriptSrc = isAdminPanel
-    ? `default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' ${devViteOrigin}; script-src-elem 'self' 'unsafe-inline' ${devViteOrigin}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https: ${devViteOrigin} ${devWsOrigin}; frame-ancestors 'none';`
-    : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'none';";
+    ? `default-src 'self'; script-src 'self'${scriptNonce}${devScriptSrc}; script-src-elem 'self'${scriptNonce}${devScriptSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:${devConnectSrc}; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';`
+    : "default-src 'self'; script-src 'self' 'unsafe-inline'; script-src-elem 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';";
 
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("X-Frame-Options", "DENY");
-  response.headers.set("X-XSS-Protection", "1; mode=block");
   response.headers.set("Content-Security-Policy", scriptSrc);
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   response.headers.set("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
+  response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  response.headers.set("Cross-Origin-Opener-Policy", "same-origin");
+  response.headers.set("Cross-Origin-Resource-Policy", "same-origin");
 }
 
 export const config = {

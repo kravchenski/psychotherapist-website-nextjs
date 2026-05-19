@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
-import { verifyAdminRequest } from "@/app/lib/adminSession";
+import { verifyConfiguredAdminRequest } from "@/app/lib/adminSession";
 import { getAdminEnv, getDeployEnv } from "@/app/lib/env";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
-    const isAuthenticated = await verifyAdminRequest(
+    const isAuthenticated = await verifyConfiguredAdminRequest(
       request.headers.get("cookie") || "",
-      getAdminEnv().sessionSecret,
+      getAdminEnv(),
     );
 
     if (!isAuthenticated) {

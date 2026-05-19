@@ -1,15 +1,22 @@
+import { promises as fs } from "node:fs";
+import path from "node:path";
 import { NextRequest, NextResponse } from "next/server";
-import { put } from "@vercel/blob";
-import { verifyAdminRequest } from "@/app/lib/adminSession";
+import { verifyConfiguredAdminRequest } from "@/app/lib/adminSession";
 import { getAdminEnv } from "@/app/lib/env";
 
 export const dynamic = "force-dynamic";
 
+const allowedImageTypes = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+} as const;
+
 export async function POST(request: NextRequest) {
   try {
-    const isAuthenticated = await verifyAdminRequest(
+    const isAuthenticated = await verifyConfiguredAdminRequest(
       request.headers.get("cookie") || "",
-      getAdminEnv().sessionSecret,
+      getAdminEnv(),
     );
     if (!isAuthenticated) {
       return NextResponse.json(
@@ -19,20 +26,20 @@ export async function POST(request: NextRequest) {
     }
 
     const formData = await request.formData();
-    const file = formData.get("file") as File;
+    const file = formData.get("file");
 
-    if (!file) {
+    if (!(file instanceof File)) {
       return NextResponse.json(
         { error: "No file provided" },
         { status: 400 }
       );
     }
 
-    // Validate file type
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/svg+xml"];
-    if (!allowedTypes.includes(file.type)) {
+    // SVG can carry active content when served back from public storage.
+    const extension = allowedImageTypes[file.type as keyof typeof allowedImageTypes];
+    if (!extension) {
       return NextResponse.json(
-        { error: "Invalid file type. Only JPEG, PNG, WebP, and SVG are allowed" },
+        { error: "Invalid file type. Only JPEG, PNG, and WebP are allowed" },
         { status: 400 }
       );
     }
@@ -45,29 +52,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!process.env.BLOB_READ_WRITE_TOKEN) {
-      return NextResponse.json(
-        { error: "BLOB_READ_WRITE_TOKEN is not configured" },
-        { status: 500 }
-      );
-    }
-
-    const extension = file.name.includes(".") ? file.name.split(".").pop() : undefined;
     const safeBaseName = (file.name.replace(/\.[^.]+$/, "") || "photo")
       .toLowerCase()
       .replace(/[^a-z0-9-_]+/g, "-")
       .replace(/^-+|-+$/g, "")
       .slice(0, 48) || "photo";
-    const pathname = `uploads/${Date.now()}-${safeBaseName}${extension ? `.${extension}` : ""}`;
-    const blob = await put(pathname, file, {
-      access: "public",
-      addRandomSuffix: true,
-      contentType: file.type,
-    });
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    const fileName = `${Date.now()}-${crypto.randomUUID()}-${safeBaseName}.${extension}`;
+    const filePath = path.join(uploadDir, fileName);
+    const fileBuffer = Buffer.from(await file.arrayBuffer());
+
+    await fs.mkdir(uploadDir, { recursive: true });
+    await fs.writeFile(filePath, fileBuffer);
 
     return NextResponse.json({
       success: true,
-      url: blob.url,
+      url: `/uploads/${fileName}`,
       message: "File uploaded successfully",
     });
   } catch (error) {

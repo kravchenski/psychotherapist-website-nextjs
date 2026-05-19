@@ -161,7 +161,7 @@ export default function ContentEditor({
             )}
             <input
               type="file"
-              accept="image/jpeg,image/png,image/webp,image/svg+xml"
+              accept="image/jpeg,image/png,image/webp"
               onChange={async (e) => {
                 const file = e.target.files?.[0];
                 if (!file) return;
@@ -202,7 +202,7 @@ export default function ContentEditor({
               disabled={isUploading}
               className={fileInputClass}
             />
-            <p className="mt-2 text-xs text-[#4f5f4e]/70">JPG, PNG, WebP или SVG. Максимум 5MB</p>
+            <p className="mt-2 text-xs text-[#4f5f4e]/70">JPG, PNG или WebP. Максимум 5MB</p>
           </div>
         </div>
       )}
@@ -283,7 +283,7 @@ export default function ContentEditor({
             )}
             <input
               type="file"
-              accept="image/jpeg,image/png,image/webp,image/svg+xml"
+              accept="image/jpeg,image/png,image/webp"
               onChange={async (e) => {
                 const file = e.target.files?.[0];
                 if (!file) return;
@@ -324,7 +324,7 @@ export default function ContentEditor({
               disabled={isUploading}
               className={fileInputClass}
             />
-            <p className="mt-2 text-xs text-[#4f5f4e]/70">JPG, PNG, WebP или SVG. Максимум 5MB</p>
+            <p className="mt-2 text-xs text-[#4f5f4e]/70">JPG, PNG или WebP. Максимум 5MB</p>
           </div>
         </div>
       )}

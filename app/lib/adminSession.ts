@@ -101,6 +101,17 @@ export async function verifyAdminRequest(cookieHeader: string, secret: string | 
   return verifyAdminSessionToken(extractAdminSessionToken(cookieHeader), secret);
 }
 
+export async function verifyConfiguredAdminRequest(
+  cookieHeader: string,
+  adminEnv: { sessionSecret?: string; isConfigured?: boolean },
+) {
+  if (!adminEnv.isConfigured) {
+    return false;
+  }
+
+  return verifyAdminRequest(cookieHeader, adminEnv.sessionSecret);
+}
+
 export function shouldUseSecureAdminCookie(headers: Headers, requestUrl?: string) {
   const override = process.env.ADMIN_COOKIE_SECURE?.trim().toLowerCase();
 

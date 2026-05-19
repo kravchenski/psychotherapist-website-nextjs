@@ -2,6 +2,7 @@ type AdminEnv = {
   username?: string;
   password?: string;
   sessionSecret?: string;
+  isConfigured: boolean;
 };
 
 type DeployEnv = {
@@ -10,10 +11,25 @@ type DeployEnv = {
 };
 
 export function getAdminEnv(): AdminEnv {
+  const username = process.env.ADMIN_USERNAME?.trim();
+  const password = process.env.ADMIN_PASSWORD;
+  const sessionSecret = process.env.ADMIN_SESSION_SECRET;
+  const isConfigured = Boolean(
+    username &&
+      password &&
+      sessionSecret &&
+      password.length >= 12 &&
+      sessionSecret.length >= 32 &&
+      password !== "admin" &&
+      password !== "change-me" &&
+      sessionSecret !== "replace-with-a-long-random-secret",
+  );
+
   return {
-    username: process.env.ADMIN_USERNAME,
-    password: process.env.ADMIN_PASSWORD,
-    sessionSecret: process.env.ADMIN_SESSION_SECRET,
+    username,
+    password,
+    sessionSecret,
+    isConfigured,
   };
 }
 

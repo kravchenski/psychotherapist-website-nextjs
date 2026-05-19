@@ -14,9 +14,40 @@ const socket = process.env.SOCKET;
 
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
+const allowedMethods = new Set(["GET", "HEAD", "POST"]);
+
+function addEarlySecurityHeaders(res) {
+  res.setHeader("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'");
+  res.setHeader("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
+}
 
 app.prepare().then(() => {
   const server = createServer((req, res) => {
+    const rawPath = (req.url || "").split("?")[0];
+
+    if (!allowedMethods.has(req.method || "")) {
+      addEarlySecurityHeaders(res);
+      res.statusCode = 405;
+      res.setHeader("Allow", "GET, HEAD, POST");
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.end(JSON.stringify({ error: "Method not allowed" }));
+      return;
+    }
+
+    if (rawPath.includes("://") || rawPath.includes("//") || rawPath.includes("\\")) {
+      addEarlySecurityHeaders(res);
+      res.statusCode = 400;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.end(JSON.stringify({ error: "Bad request" }));
+      return;
+    }
+
     handle(req, res);
   });
 

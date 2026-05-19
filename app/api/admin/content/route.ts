@@ -1,12 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyAdminRequest } from "@/app/lib/adminSession";
+import { verifyConfiguredAdminRequest } from "@/app/lib/adminSession";
 import { getAdminEnv } from "@/app/lib/env";
 import { getHomeContent, isHomeContent, saveHomeContent } from "@/app/lib/contentStore";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+async function requireAdmin(request: NextRequest) {
+  return verifyConfiguredAdminRequest(
+    request.headers.get("cookie") || "",
+    getAdminEnv(),
+  );
+}
+
+export async function GET(request: NextRequest) {
   try {
+    const isAuthenticated = await requireAdmin(request);
+    if (!isAuthenticated) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     const content = await getHomeContent();
     return NextResponse.json(content);
   } catch (error) {
@@ -20,10 +35,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const isAuthenticated = await verifyAdminRequest(
-      request.headers.get("cookie") || "",
-      getAdminEnv().sessionSecret,
-    );
+    const isAuthenticated = await requireAdmin(request);
     if (!isAuthenticated) {
       return NextResponse.json(
         { error: "Unauthorized" },

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyAdminRequest } from "@/app/lib/adminSession";
+import { verifyConfiguredAdminRequest } from "@/app/lib/adminSession";
 import { getAdminEnv } from "@/app/lib/env";
 import { getHomeContent, isHomeContent, saveHomeContent } from "@/app/lib/contentStore";
 
@@ -20,9 +20,9 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const isAuthenticated = await verifyAdminRequest(
+    const isAuthenticated = await verifyConfiguredAdminRequest(
       request.headers.get("cookie") || "",
-      getAdminEnv().sessionSecret,
+      getAdminEnv(),
     );
     if (!isAuthenticated) {
       return NextResponse.json(

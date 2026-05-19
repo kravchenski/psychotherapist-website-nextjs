@@ -125,9 +125,10 @@ export async function POST(request: NextRequest) {
     username: ADMIN_USERNAME,
     password: ADMIN_PASSWORD,
     sessionSecret: ADMIN_SESSION_SECRET,
+    isConfigured: isAdminConfigured,
   } = getAdminEnv();
 
-  if (!ADMIN_USERNAME || !ADMIN_PASSWORD || !ADMIN_SESSION_SECRET) {
+  if (!isAdminConfigured || !ADMIN_USERNAME || !ADMIN_PASSWORD || !ADMIN_SESSION_SECRET) {
     return NextResponse.json(
       { error: "Admin is not configured" },
       { status: 500 },
