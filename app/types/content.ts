@@ -1,3 +1,8 @@
+export type LegalSection = {
+  title: string;
+  paragraphs: string[];
+};
+
 export type HomeContent = {
   hero: {
     title: string;
@@ -37,5 +42,36 @@ export type HomeContent = {
     hoursLabel: string;
     hoursValue: string;
     hoursSubValue?: string;
+  };
+  footer: {
+    brandTitle: string;
+    description: string;
+    navigationTitle: string;
+    infoTitle: string;
+    requisitesTitle: string;
+    requisites: string[];
+    copyright: string;
+  };
+  payment: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    homeTitle: string;
+    sections: LegalSection[];
+    customPaymentDevLinkText: string;
+    customPaymentDevLinkUrl: string;
+    publicOfferLinkText: string;
+  };
+  publicOffer: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    sections: LegalSection[];
+  };
+  privacyPolicy: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    sections: LegalSection[];
   };
 };

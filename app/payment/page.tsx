@@ -1,17 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { paymentSections } from "../legalContent";
+import { getHomeContent } from "../lib/contentStore";
 
 export const metadata: Metadata = {
   title: "Оплата | Анна Почебыт",
   description: "Информация об оплате услуг банковскими картами через интернет-эквайринг BePaid.",
 };
 
-export default function PaymentPage() {
-  const acquiring = paymentSections[0];
-  const refund = paymentSections[1];
-  const customPayment = paymentSections[2];
+export const dynamic = "force-dynamic";
+
+export default async function PaymentPage() {
+  const content = await getHomeContent();
+  const payment = content.payment;
+  const acquiring = payment.sections[0];
+  const refund = payment.sections[1];
+  const customPayment = payment.sections[2];
 
   return (
     <main className="flex-1 bg-[#fbfaf6] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
@@ -21,20 +25,19 @@ export default function PaymentPage() {
             className="text-xs font-semibold uppercase tracking-[0.22em]"
             style={{ color: "#6c7b6b", fontFamily: "var(--font-montserrat), sans-serif" }}
           >
-            Интернет-эквайринг
+            {payment.eyebrow}
           </p>
           <h1
             className="mt-4 text-4xl font-medium sm:text-5xl"
             style={{ color: "#2c302e", fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: 1 }}
           >
-            Оплата услуг
+            {payment.title}
           </h1>
           <p
             className="mt-5 max-w-3xl text-sm leading-7 sm:text-base"
             style={{ color: "rgba(44,48,46,0.76)", fontFamily: "var(--font-montserrat), sans-serif" }}
           >
-            Информация об оплате услуг в белорусских рублях, безопасности платежей, подтверждении
-            оплаты и порядке возврата денежных средств.
+            {payment.description}
           </p>
         </div>
 
@@ -44,10 +47,10 @@ export default function PaymentPage() {
               className="text-2xl font-medium sm:text-3xl"
               style={{ color: "#2c302e", fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: 1.1 }}
             >
-              {acquiring.title}
+              {acquiring?.title}
             </h2>
             <div className="mt-4 space-y-3">
-              {acquiring.paragraphs.slice(0, 2).map((paragraph) => (
+              {acquiring?.paragraphs.slice(0, 2).map((paragraph) => (
                 <p
                   key={paragraph}
                   className="text-sm leading-7 sm:text-[15px]"
@@ -69,7 +72,7 @@ export default function PaymentPage() {
             </div>
 
             <div className="space-y-3">
-              {acquiring.paragraphs.slice(2).map((paragraph) => (
+              {acquiring?.paragraphs.slice(2).map((paragraph) => (
                 <p
                   key={paragraph}
                   className="text-sm leading-7 sm:text-[15px]"
@@ -102,10 +105,10 @@ export default function PaymentPage() {
               className="text-2xl font-medium sm:text-3xl"
               style={{ color: "#2c302e", fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: 1.1 }}
             >
-              {refund.title}
+              {refund?.title}
             </h2>
             <div className="mt-4 space-y-3">
-              {refund.paragraphs.map((paragraph) => (
+              {refund?.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph}
                   className="text-sm leading-7 sm:text-[15px]"
@@ -122,10 +125,10 @@ export default function PaymentPage() {
               className="text-2xl font-medium sm:text-3xl"
               style={{ color: "#2c302e", fontFamily: "var(--font-cormorant), Georgia, serif", lineHeight: 1.1 }}
             >
-              {customPayment.title}
+              {customPayment?.title}
             </h2>
             <div className="mt-4 space-y-3">
-              {customPayment.paragraphs.map((paragraph) => (
+              {customPayment?.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph}
                   className="text-sm leading-7 sm:text-[15px]"
@@ -148,20 +151,20 @@ export default function PaymentPage() {
 
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href="https://bepaid.by/dev"
+                href={payment.customPaymentDevLinkUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full border border-[rgba(73,91,72,0.22)] bg-white px-5 py-3 text-sm font-medium text-[#334333] transition hover:bg-[#f4f7f3]"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                API документация и интеграционные модули для CMS
+                {payment.customPaymentDevLinkText}
               </a>
               <Link
                 href="/public-offer"
                 className="rounded-full border border-[#e5e2dc] bg-[#495b48] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#3f4f3f]"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                Публичный договор
+                {payment.publicOfferLinkText}
               </Link>
             </div>
           </section>

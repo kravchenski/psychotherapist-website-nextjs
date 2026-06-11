@@ -1,7 +1,4 @@
-export type LegalSection = {
-  title: string;
-  paragraphs: string[];
-};
+import type { LegalSection } from "./types/content";
 
 export const paymentSections: LegalSection[] = [
   {

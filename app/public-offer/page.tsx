@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
 import LegalDocument from "../components/LegalDocument";
-import { publicOfferSections } from "../legalContent";
+import { getHomeContent } from "../lib/contentStore";
 
 export const metadata: Metadata = {
   title: "Публичный договор | Анна Почебыт",
   description: "Публичный договор на оказание информационно-консультационных услуг.",
 };
 
-export default function PublicOfferPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PublicOfferPage() {
+  const content = await getHomeContent();
+  const publicOffer = content.publicOffer;
+
   return (
     <LegalDocument
-      eyebrow="Правовые документы"
-      title="Публичный договор"
-      description="Публичная оферта на оказание информационно-консультационных услуг ИП Почебыт Анной Владимировной."
-      sections={publicOfferSections}
+      eyebrow={publicOffer.eyebrow}
+      title={publicOffer.title}
+      description={publicOffer.description}
+      sections={publicOffer.sections}
     />
   );
 }

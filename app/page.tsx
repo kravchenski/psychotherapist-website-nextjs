@@ -15,7 +15,7 @@ export default async function Home() {
       <Hero content={content.hero} />
       <About content={content.about} />
       <Services content={content.services} />
-      <PaymentInfo />
+      <PaymentInfo content={content.payment} />
       <Contacts content={content.contacts} />
     </main>
   );

@@ -1,4 +1,4 @@
-import type { LegalSection } from "../legalContent";
+import type { LegalSection } from "../types/content";
 
 type LegalDocumentProps = {
   eyebrow: string;

@@ -1,25 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import type { HomeContent } from "../types/content";
 
-export default function Footer() {
+type FooterProps = {
+  content: HomeContent["footer"];
+};
+
+export default function Footer({ content }: FooterProps) {
   const NAV_LINKS = [
     { label: "Обо мне", href: "/#about" },
     { label: "Услуги", href: "/#services" },
     { label: "Оплата", href: "/payment" },
     { label: "Публичный договор", href: "/public-offer" },
     { label: "Контакты", href: "/#contact" },
-  ];
-
-  const REQUISITES = [
-    "ИП Почебыт Анна Владимировна",
-    "УНП 592012888, свидетельство о регистрации выдано 02.09.2024 Администрацией Ленинского района г. Гродно",
-    "Юридический адрес: Гродненская область, г. Гродно, ул. Социалистическая, 56, кв. 28",
-    "Режим работы: 09:00 - 20:00 (по предварительной записи)",
-    "р/с BY50 ALFA 3013 2E77 2000 1027 0000",
-    "ЦБУ № 6 АО «Альфа-Банк»",
-    "BIC: ALFABY2X",
-    "УНП банка: 101541947",
   ];
 
   return (
@@ -39,7 +33,7 @@ export default function Footer() {
                 letterSpacing: "-0.01em",
               }}
             >
-              Анна Почебыт
+              {content.brandTitle}
             </div>
 
             <div
@@ -50,7 +44,7 @@ export default function Footer() {
                 lineHeight: "1.7",
               }}
             >
-              <p className="mb-0">Психотерапевт-психолог. Интегративный подход, живой терапевтический контакт.</p>
+              <p className="mb-0">{content.description}</p>
             </div>
           </div>
 
@@ -65,7 +59,7 @@ export default function Footer() {
                 letterSpacing: "-0.01em",
               }}
             >
-              Навигация
+              {content.navigationTitle}
             </div>
 
             {NAV_LINKS.map((link) => (
@@ -95,7 +89,7 @@ export default function Footer() {
                 letterSpacing: "-0.01em",
               }}
             >
-              Информация
+              {content.infoTitle}
             </div>
 
             <Link
@@ -144,10 +138,10 @@ export default function Footer() {
                 letterSpacing: "-0.01em",
               }}
             >
-              Реквизиты
+              {content.requisitesTitle}
             </div>
 
-            {REQUISITES.map((item, index) => (
+            {content.requisites.map((item, index) => (
               <div
                 key={index}
                 className="text-sm font-light"
@@ -174,7 +168,7 @@ export default function Footer() {
               lineHeight: "16px",
             }}
           >
-            © 2026 Анна Почебыт. Все права защищены.
+            {content.copyright}
           </div>
         </div>
       </div>

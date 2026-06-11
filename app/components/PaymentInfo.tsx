@@ -1,8 +1,12 @@
 import Link from "next/link";
-import { paymentSections } from "../legalContent";
+import type { HomeContent } from "../types/content";
 
-export default function PaymentInfo() {
-  const intro = paymentSections[0];
+type PaymentInfoProps = {
+  content: HomeContent["payment"];
+};
+
+export default function PaymentInfo({ content }: PaymentInfoProps) {
+  const intro = content.sections[0];
 
   return (
     <section className="w-full bg-white px-4 py-12 sm:px-6 md:px-10 lg:px-16 lg:py-16 xl:px-[60px]" id="payment-info">
@@ -23,7 +27,7 @@ export default function PaymentInfo() {
                 lineHeight: 1,
               }}
             >
-              Банковскими картами через BePaid
+              {content.homeTitle}
             </h2>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
@@ -44,7 +48,7 @@ export default function PaymentInfo() {
           </div>
 
           <div className="space-y-4">
-            {intro.paragraphs.slice(0, 4).map((paragraph) => (
+            {intro?.paragraphs.slice(0, 4).map((paragraph) => (
               <p
                 key={paragraph}
                 className="text-sm leading-7 sm:text-base"
@@ -57,8 +61,7 @@ export default function PaymentInfo() {
               className="rounded-2xl border border-[rgba(108,123,107,0.14)] bg-[#f4f7f3] px-5 py-4 text-sm leading-7"
               style={{ color: "#334333", fontFamily: "var(--font-montserrat), sans-serif" }}
             >
-              Возврат денежных средств осуществляется на карту, с которой ранее была произведена оплата.
-              Срок поступления денежных средств на карту - от 1 до 30 дней.
+              {content.sections[1]?.paragraphs.join(" ")}
             </p>
           </div>
         </div>

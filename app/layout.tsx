@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import "./globals.css";
 import SiteChrome from "./components/SiteChrome";
+import { getHomeContent } from "./lib/contentStore";
 import type { ReactNode } from "react";
 
 const montserrat = Montserrat({
@@ -20,11 +21,13 @@ export const metadata: Metadata = {
   description: "Помощь в преодолении стресса, тревоги и жизненных трудностей. Безопасное пространство для разговоров о чувствах и отношениях.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const content = await getHomeContent();
+
   return (
     <html
       lang="ru"
@@ -32,7 +35,7 @@ export default function RootLayout({
       className={`${montserrat.variable} ${cormorant.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col">
-        <SiteChrome>{children}</SiteChrome>
+        <SiteChrome footerContent={content.footer}>{children}</SiteChrome>
       </body>
     </html>
   );
