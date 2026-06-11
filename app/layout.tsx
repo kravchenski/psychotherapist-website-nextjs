@@ -35,7 +35,9 @@ export default async function RootLayout({
       className={`${montserrat.variable} ${cormorant.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col">
-        <SiteChrome footerContent={content.footer}>{children}</SiteChrome>
+        <SiteChrome footerContent={content.footer} paymentUrl={content.payment.paymentUrl}>
+          {children}
+        </SiteChrome>
       </body>
     </html>
   );

@@ -150,15 +150,6 @@ export default async function PaymentPage() {
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href={payment.customPaymentDevLinkUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-[rgba(73,91,72,0.22)] bg-white px-5 py-3 text-sm font-medium text-[#334333] transition hover:bg-[#f4f7f3]"
-                style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-              >
-                {payment.customPaymentDevLinkText}
-              </a>
               <Link
                 href="/public-offer"
                 className="rounded-full border border-[#e5e2dc] bg-[#495b48] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#3f4f3f]"

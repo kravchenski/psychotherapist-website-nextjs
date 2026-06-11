@@ -24,10 +24,28 @@ const socket = process.env.SOCKET;
 const app = next({ dev, hostname, port, dir: projectDir, webpack: true });
 const handle = app.getRequestHandler();
 const allowedMethods = new Set(["GET", "HEAD", "POST"]);
-const bePaidDirectPaymentUrl =
-  process.env.NEXT_PUBLIC_BEPAID_PAYMENT_URL?.trim() ||
-  process.env.BEPAID_DIRECT_PAYMENT_URL?.trim() ||
-  "https://api.bepaid.by/products/prd_5e2c12758bd61836/pay";
+const defaultBePaidDirectPaymentUrl = "https://api.bepaid.by/products/prd_5e2c12758bd61836/pay";
+const contentFilePath = `${projectDir}/content/home.json`;
+
+function getBePaidDirectPaymentUrl() {
+  try {
+    const rawContent = fs.readFileSync(contentFilePath, "utf8");
+    const content = JSON.parse(rawContent);
+    const paymentUrl = content?.payment?.paymentUrl;
+
+    if (typeof paymentUrl === "string" && paymentUrl.trim()) {
+      return paymentUrl.trim();
+    }
+  } catch {
+    // Keep payment fallback available even when CMS content is not yet migrated.
+  }
+
+  return (
+    process.env.NEXT_PUBLIC_BEPAID_PAYMENT_URL?.trim() ||
+    process.env.BEPAID_DIRECT_PAYMENT_URL?.trim() ||
+    defaultBePaidDirectPaymentUrl
+  );
+}
 
 function getAdminConfigIssues() {
   const issues = [];
@@ -109,7 +127,7 @@ app.prepare().then(() => {
       res.statusCode = 200;
       res.setHeader("Content-Type", "application/json; charset=utf-8");
       res.setHeader("Cache-Control", "no-store");
-      res.end(JSON.stringify({ redirectUrl: bePaidDirectPaymentUrl }));
+      res.end(JSON.stringify({ redirectUrl: getBePaidDirectPaymentUrl() }));
       return;
     }
 

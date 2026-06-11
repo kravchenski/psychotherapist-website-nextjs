@@ -29,10 +29,9 @@ const defaultExtendedContent = {
     title: "Оплата услуг",
     description:
       "Информация об оплате услуг в белорусских рублях, безопасности платежей, подтверждении оплаты и порядке возврата денежных средств.",
+    paymentUrl: "https://api.bepaid.by/products/prd_5e2c12758bd61836/pay",
     homeTitle: "Банковскими картами через BePaid",
     sections: paymentSections,
-    customPaymentDevLinkText: "API документация и интеграционные модули для CMS",
-    customPaymentDevLinkUrl: "https://bepaid.by/dev",
     publicOfferLinkText: "Публичный договор",
   },
   publicOffer: {
@@ -183,10 +182,9 @@ export function isHomeContent(value: unknown): value is HomeContent {
       typeof payment.eyebrow === "string" &&
       typeof payment.title === "string" &&
       typeof payment.description === "string" &&
+      typeof payment.paymentUrl === "string" &&
       typeof payment.homeTitle === "string" &&
       isLegalSections(payment.sections) &&
-      typeof payment.customPaymentDevLinkText === "string" &&
-      typeof payment.customPaymentDevLinkUrl === "string" &&
       typeof payment.publicOfferLinkText === "string" &&
       publicOffer &&
       typeof publicOffer.eyebrow === "string" &&

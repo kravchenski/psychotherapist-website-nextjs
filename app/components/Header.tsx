@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { bePaidPaymentUrl, redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
+import { redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
 
 const NAV_LINKS = [
   { href: "/#about", label: "Обо мне" },
@@ -113,7 +113,11 @@ const HamburgerIcon = ({ open }: { open: boolean }) => (
   </span>
 );
 
-export default function Header() {
+type HeaderProps = {
+  paymentUrl: string;
+};
+
+export default function Header({ paymentUrl }: HeaderProps) {
   const MENU_ANIMATION_MS = 240;
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -224,8 +228,8 @@ export default function Header() {
             {NAV_LINKS.map((link) => (
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
-            {bePaidPaymentUrl ? (
-              <ActionLink href={bePaidPaymentUrl}>Записаться</ActionLink>
+            {paymentUrl ? (
+              <ActionLink href={paymentUrl}>Записаться</ActionLink>
             ) : (
               <ActionButton onClick={handlePaymentClick}>Записаться</ActionButton>
             )}
@@ -258,9 +262,9 @@ export default function Header() {
                 <MobileNavLink key={link.href} href={link.href} label={link.label} onClick={() => closeMenu()} />
               ))}
             </div>
-            {bePaidPaymentUrl ? (
+            {paymentUrl ? (
               <a
-                href={bePaidPaymentUrl}
+                href={paymentUrl}
                 onClick={closeMenu}
                 className="w-full text-base font-medium text-white rounded-full px-6 py-3 transition-colors border mt-6 cursor-pointer text-center"
                 style={{

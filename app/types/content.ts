@@ -56,10 +56,9 @@ export type HomeContent = {
     eyebrow: string;
     title: string;
     description: string;
+    paymentUrl: string;
     homeTitle: string;
     sections: LegalSection[];
-    customPaymentDevLinkText: string;
-    customPaymentDevLinkUrl: string;
     publicOfferLinkText: string;
   };
   publicOffer: {

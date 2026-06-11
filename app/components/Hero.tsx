@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { bePaidPaymentUrl, redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
+import { redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
 import type { HomeContent } from "../types/content";
 
 const defaultBackground = "/utils/bg_abstract_calm.webp";
@@ -9,9 +9,10 @@ const defaultPhoto = "/personal_photos/hero_photo.webp";
 
 type HeroProps = {
   content: HomeContent["hero"];
+  paymentUrl: string;
 };
 
-export default function Hero({ content }: HeroProps) {
+export default function Hero({ content, paymentUrl }: HeroProps) {
   const photoUrl = content.photoUrl || defaultPhoto;
   const primaryButtonClassName =
     "bg-[#4a5b49] hover:bg-[#3f4f3f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] items-center justify-center min-h-[40px] rounded-full shadow-[0px_10px_15px_-3px_rgba(74,91,73,0.22),0px_4px_6px_-4px_rgba(74,91,73,0.22)] hover:shadow-[0px_14px_20px_-3px_rgba(74,91,73,0.32),0px_6px_8px_-4px_rgba(74,91,73,0.24)] cursor-pointer inline-flex";
@@ -90,9 +91,9 @@ export default function Hero({ content }: HeroProps) {
             </p>
 
             <div className="flex flex-col gap-[12px] mt-4">
-              {bePaidPaymentUrl ? (
+              {paymentUrl ? (
                 <a
-                  href={bePaidPaymentUrl}
+                  href={paymentUrl}
                   className={`${primaryButtonClassName} h-[48px] px-[24px]`}
                   style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
                 >
@@ -142,9 +143,9 @@ export default function Hero({ content }: HeroProps) {
               </p>
 
               <div className="relative flex flex-row gap-[14px]">
-                {bePaidPaymentUrl ? (
+                {paymentUrl ? (
                   <a
-                    href={bePaidPaymentUrl}
+                    href={paymentUrl}
                     className={`${primaryButtonClassName} h-[56px] px-[20px] flex-none`}
                     style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
                   >

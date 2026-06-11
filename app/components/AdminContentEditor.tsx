@@ -809,6 +809,20 @@ export default function ContentEditor({
             />
           </div>
           <div>
+            <label className={labelClass}>Ссылка на оплату bePaid</label>
+            <input
+              type="url"
+              value={content.payment.paymentUrl}
+              onChange={(e) =>
+                setContent({
+                  ...content,
+                  payment: { ...content.payment, paymentUrl: e.target.value },
+                })
+              }
+              className={inputClass}
+            />
+          </div>
+          <div>
             <label className={labelClass}>Заголовок блока на главной</label>
             <input
               type="text"
@@ -831,34 +845,6 @@ export default function ContentEditor({
                 setContent({
                   ...content,
                   payment: { ...content.payment, publicOfferLinkText: e.target.value },
-                })
-              }
-              className={inputClass}
-            />
-          </div>
-          <div>
-            <label className={labelClass}>Текст ссылки на API документацию</label>
-            <input
-              type="text"
-              value={content.payment.customPaymentDevLinkText}
-              onChange={(e) =>
-                setContent({
-                  ...content,
-                  payment: { ...content.payment, customPaymentDevLinkText: e.target.value },
-                })
-              }
-              className={inputClass}
-            />
-          </div>
-          <div>
-            <label className={labelClass}>URL API документации</label>
-            <input
-              type="url"
-              value={content.payment.customPaymentDevLinkUrl}
-              onChange={(e) =>
-                setContent({
-                  ...content,
-                  payment: { ...content.payment, customPaymentDevLinkUrl: e.target.value },
                 })
               }
               className={inputClass}

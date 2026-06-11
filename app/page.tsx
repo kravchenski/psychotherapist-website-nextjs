@@ -12,9 +12,9 @@ export default async function Home() {
 
   return (
     <main className="flex flex-col w-full flex-1">
-      <Hero content={content.hero} />
+      <Hero content={content.hero} paymentUrl={content.payment.paymentUrl} />
       <About content={content.about} />
-      <Services content={content.services} />
+      <Services content={content.services} paymentUrl={content.payment.paymentUrl} />
       <PaymentInfo content={content.payment} />
       <Contacts content={content.contacts} />
     </main>

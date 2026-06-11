@@ -1,16 +1,17 @@
 "use client"
 import Image from 'next/image'
 import { useEffect, useState } from "react";
-import { bePaidPaymentUrl, redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
+import { redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
 import type { HomeContent } from "../types/content";
 
 const imgSvg = "utils/service_check.svg";
 
 type ServicesProps = {
   content: HomeContent["services"];
+  paymentUrl: string;
 };
 
-export default function Services({ content }: ServicesProps) {
+export default function Services({ content, paymentUrl }: ServicesProps) {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
   const actionClassName =
@@ -164,9 +165,9 @@ export default function Services({ content }: ServicesProps) {
                 </div>
 
                 {/* Action Button */}
-                {bePaidPaymentUrl ? (
+                {paymentUrl ? (
                   <a
-                    href={bePaidPaymentUrl}
+                    href={paymentUrl}
                     className={`${actionClassName} block text-center`}
                     style={{
                       fontFamily: 'var(--font-montserrat), sans-serif',

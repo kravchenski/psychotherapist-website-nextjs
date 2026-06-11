@@ -10,9 +10,10 @@ import type { HomeContent } from "../types/content";
 type SiteChromeProps = {
   children: ReactNode;
   footerContent: HomeContent["footer"];
+  paymentUrl: string;
 };
 
-export default function SiteChrome({ children, footerContent }: SiteChromeProps) {
+export default function SiteChrome({ children, footerContent, paymentUrl }: SiteChromeProps) {
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith("/admin");
 
@@ -22,7 +23,7 @@ export default function SiteChrome({ children, footerContent }: SiteChromeProps)
 
   return (
     <>
-      <Header />
+      <Header paymentUrl={paymentUrl} />
       {children}
       <Footer content={footerContent} />
       <ScrollToTop />
