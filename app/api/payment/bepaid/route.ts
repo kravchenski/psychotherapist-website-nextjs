@@ -19,6 +19,11 @@ export async function POST(request: NextRequest) {
   const bePaidEnv = getBePaidEnv();
 
   if (!bePaidEnv.isConfigured || !bePaidEnv.shopId || !bePaidEnv.secretKey) {
+    console.warn("BePaid payment endpoint is not configured", {
+      hasShopId: Boolean(bePaidEnv.shopId),
+      hasSecretKey: Boolean(bePaidEnv.secretKey),
+    });
+
     return NextResponse.json(
       { error: "BePaid payment is not configured" },
       { status: 503 },

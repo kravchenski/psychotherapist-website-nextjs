@@ -24,6 +24,10 @@ const socket = process.env.SOCKET;
 const app = next({ dev, hostname, port, dir: projectDir, webpack: true });
 const handle = app.getRequestHandler();
 const allowedMethods = new Set(["GET", "HEAD", "POST"]);
+const bePaidDirectPaymentUrl =
+  process.env.NEXT_PUBLIC_BEPAID_PAYMENT_URL?.trim() ||
+  process.env.BEPAID_DIRECT_PAYMENT_URL?.trim() ||
+  "https://api.bepaid.by/products/prd_5e2c12758bd61836/pay";
 
 function getAdminConfigIssues() {
   const issues = [];
@@ -98,6 +102,14 @@ app.prepare().then(() => {
       res.statusCode = 400;
       res.setHeader("Content-Type", "application/json; charset=utf-8");
       res.end(JSON.stringify({ error: "Bad request" }));
+      return;
+    }
+
+    if (req.method === "POST" && rawPath === "/api/payment/bepaid") {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.setHeader("Cache-Control", "no-store");
+      res.end(JSON.stringify({ redirectUrl: bePaidDirectPaymentUrl }));
       return;
     }
 

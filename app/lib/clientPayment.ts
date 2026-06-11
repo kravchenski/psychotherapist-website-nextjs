@@ -4,7 +4,10 @@ type PaymentRedirectResponse = {
   redirectUrl?: string;
 };
 
-export const bePaidPaymentUrl = process.env.NEXT_PUBLIC_BEPAID_PAYMENT_URL?.trim();
+const defaultBePaidPaymentUrl = "https://api.bepaid.by/products/prd_5e2c12758bd61836/pay";
+
+export const bePaidPaymentUrl =
+  process.env.NEXT_PUBLIC_BEPAID_PAYMENT_URL?.trim() || defaultBePaidPaymentUrl;
 
 export async function redirectToBePaid() {
   if (bePaidPaymentUrl) {
