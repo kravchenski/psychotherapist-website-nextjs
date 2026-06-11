@@ -1,7 +1,7 @@
 "use client"
 import Image from 'next/image'
-import { useState } from "react";
-import { redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
+import { useEffect, useState } from "react";
+import { bePaidPaymentUrl, redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
 import type { HomeContent } from "../types/content";
 
 const imgSvg = "utils/service_check.svg";
@@ -13,6 +13,15 @@ type ServicesProps = {
 export default function Services({ content }: ServicesProps) {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
+  const actionClassName =
+    "w-full bg-[#495b48] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] cursor-pointer transition-shadow duration-300 ease-out hover:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)] focus-visible:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)]";
+
+  useEffect(() => {
+    const handlePageShow = () => setIsPaymentLoading(false);
+
+    window.addEventListener("pageshow", handlePageShow);
+    return () => window.removeEventListener("pageshow", handlePageShow);
+  }, []);
 
   async function handlePaymentClick() {
     if (isPaymentLoading) {
@@ -26,6 +35,8 @@ export default function Services({ content }: ServicesProps) {
     } catch (error) {
       console.error("Payment redirect failed", error);
       redirectToPaymentFallback();
+    } finally {
+      setIsPaymentLoading(false);
     }
   }
 
@@ -153,21 +164,37 @@ export default function Services({ content }: ServicesProps) {
                 </div>
 
                 {/* Action Button */}
-                <button
-                  type="button"
-                  className="w-full bg-[#495b48] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] cursor-pointer transition-shadow duration-300 ease-out hover:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)] focus-visible:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)]"
-                  style={{
-                    fontFamily: 'var(--font-montserrat), sans-serif',
-                  }}
-                  disabled={isPaymentLoading}
-                  onMouseEnter={() => setIsButtonHovered(true)}
-                  onMouseLeave={() => setIsButtonHovered(false)}
-                  onFocus={() => setIsButtonHovered(true)}
-                  onBlur={() => setIsButtonHovered(false)}
-                  onClick={handlePaymentClick}
-                >
-                  {isPaymentLoading ? "Переход к оплате..." : content.buttonText}
-                </button>
+                {bePaidPaymentUrl ? (
+                  <a
+                    href={bePaidPaymentUrl}
+                    className={`${actionClassName} block text-center`}
+                    style={{
+                      fontFamily: 'var(--font-montserrat), sans-serif',
+                    }}
+                    onMouseEnter={() => setIsButtonHovered(true)}
+                    onMouseLeave={() => setIsButtonHovered(false)}
+                    onFocus={() => setIsButtonHovered(true)}
+                    onBlur={() => setIsButtonHovered(false)}
+                  >
+                    {content.buttonText}
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    className={actionClassName}
+                    style={{
+                      fontFamily: 'var(--font-montserrat), sans-serif',
+                    }}
+                    disabled={isPaymentLoading}
+                    onMouseEnter={() => setIsButtonHovered(true)}
+                    onMouseLeave={() => setIsButtonHovered(false)}
+                    onFocus={() => setIsButtonHovered(true)}
+                    onBlur={() => setIsButtonHovered(false)}
+                    onClick={handlePaymentClick}
+                  >
+                    {isPaymentLoading ? "Переход к оплате..." : content.buttonText}
+                  </button>
+                )}
               </div>
             </div>
           </div>

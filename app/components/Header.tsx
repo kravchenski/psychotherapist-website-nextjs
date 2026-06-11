@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
+import { bePaidPaymentUrl, redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
 
 const NAV_LINKS = [
   { href: "/#about", label: "Обо мне" },
@@ -72,6 +72,27 @@ const ActionButton = ({ onClick, children, className = "" }: { onClick?: () => v
     >
       {children}
     </button>
+  );
+};
+
+const ActionLink = ({ href, children, className = "", onClick }: { href: string; children: React.ReactNode; className?: string; onClick?: () => void }) => {
+  const [bgColor, setBgColor] = useState(COLORS.button);
+
+  return (
+    <a
+      href={href}
+      onClick={onClick}
+      onMouseEnter={() => setBgColor(COLORS.buttonHover)}
+      onMouseLeave={() => setBgColor(COLORS.button)}
+      className={`cursor-pointer text-sm font-medium text-white rounded-full px-6 py-2 transition-colors border ${className}`}
+      style={{
+        backgroundColor: bgColor,
+        borderColor: COLORS.buttonBorder,
+        fontFamily: 'var(--font-montserrat), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+      }}
+    >
+      {children}
+    </a>
   );
 };
 
@@ -203,7 +224,11 @@ export default function Header() {
             {NAV_LINKS.map((link) => (
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
-            <ActionButton onClick={handlePaymentClick}>Записаться</ActionButton>
+            {bePaidPaymentUrl ? (
+              <ActionLink href={bePaidPaymentUrl}>Записаться</ActionLink>
+            ) : (
+              <ActionButton onClick={handlePaymentClick}>Записаться</ActionButton>
+            )}
           </nav>
 
           <div className="md:hidden">
@@ -233,12 +258,28 @@ export default function Header() {
                 <MobileNavLink key={link.href} href={link.href} label={link.label} onClick={() => closeMenu()} />
               ))}
             </div>
-            <button
-              type="button"
-              onClick={() => {
-                closeMenu();
-                void handlePaymentClick();
-              }}
+            {bePaidPaymentUrl ? (
+              <a
+                href={bePaidPaymentUrl}
+                onClick={closeMenu}
+                className="w-full text-base font-medium text-white rounded-full px-6 py-3 transition-colors border mt-6 cursor-pointer text-center"
+                style={{
+                  backgroundColor: COLORS.button,
+                  borderColor: COLORS.buttonBorder,
+                  fontFamily: 'var(--font-montserrat), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLORS.buttonHover)}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.button)}
+              >
+                Записаться
+              </a>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  closeMenu();
+                  void handlePaymentClick();
+                }}
               className="w-full text-base font-medium text-white rounded-full px-6 py-3 transition-colors border mt-6 cursor-pointer"
               style={{
                 backgroundColor: COLORS.button,
@@ -249,7 +290,8 @@ export default function Header() {
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLORS.button)}
             >
               Записаться
-            </button>
+              </button>
+            )}
           </div>
         )}
       </header>

@@ -154,9 +154,10 @@ function addSecurityHeaders(response: NextResponse, pathname = "", nonce = "") {
   const devScriptSrc = isDevelopment ? " 'unsafe-eval' http://localhost:4001" : "";
   const scriptNonce = nonce ? ` 'nonce-${nonce}'` : "";
 
+  const publicDevScriptSrc = isDevelopment ? " 'unsafe-eval'" : "";
   const scriptSrc = isAdminPanel
     ? `default-src 'self'; script-src 'self'${scriptNonce}${devScriptSrc}; script-src-elem 'self'${scriptNonce}${devScriptSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:${devConnectSrc}; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';`
-    : "default-src 'self'; script-src 'self' 'unsafe-inline'; script-src-elem 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';";
+    : `default-src 'self'; script-src 'self' 'unsafe-inline'${publicDevScriptSrc}; script-src-elem 'self' 'unsafe-inline'${publicDevScriptSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';`;
 
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("X-Frame-Options", "DENY");

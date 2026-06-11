@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -183,12 +182,14 @@ export default function Footer() {
 
       <div className="w-full bg-white px-4 py-5 sm:px-6">
         <div className="mx-auto flex max-w-4xl justify-center">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element -- SVG payment marks should render as-is. */}
+          <img
             src="/utils/payments_logos.svg"
             alt="Visa, Mastercard, Белкарт, bePaid, Я Pay, Google Pay, Apple Pay"
             width={760}
             height={80}
             className="h-auto w-full max-w-[760px]"
+            style={{ height: "auto" }}
           />
         </div>
       </div>
