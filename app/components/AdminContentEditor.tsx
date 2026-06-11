@@ -403,6 +403,20 @@ export default function ContentEditor({
             />
           </div>
           <div>
+            <label className={labelClass}>Стоимость услуг</label>
+            <input
+              type="text"
+              value={content.services.price}
+              onChange={(e) =>
+                setContent({
+                  ...content,
+                  services: { ...content.services, price: e.target.value },
+                })
+              }
+              className={inputClass}
+            />
+          </div>
+          <div>
             <label className={labelClass}>Текст кнопки</label>
             <input
               type="text"

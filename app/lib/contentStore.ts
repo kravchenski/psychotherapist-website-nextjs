@@ -56,6 +56,7 @@ export function isHomeContent(value: unknown): value is HomeContent {
       typeof services.highlight === "string" &&
       typeof services.cardTitle === "string" &&
       typeof services.cardDescription === "string" &&
+      typeof services.price === "string" &&
       typeof services.buttonText === "string" &&
       Array.isArray(services.items) &&
       services.items.every((item) => typeof item === "string") &&

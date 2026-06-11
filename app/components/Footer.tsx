@@ -1,48 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import PrivacyPolicy from "./PrivacyPolicy";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
-  const [isPolicyOpen, setIsPolicyOpen] = useState(false);
-
-  useEffect(() => {
-    if (!isPolicyOpen) {
-      document.body.style.overflow = "";
-      return;
-    }
-
-    document.body.style.overflow = "hidden";
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsPolicyOpen(false);
-      }
-    };
-
-    document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "";
-    };
-  }, [isPolicyOpen]);
-
   const NAV_LINKS = [
-    { label: "Обо мне", href: "#about" },
-    { label: "Услуги", href: "#services" },
-    { label: "Контакты", href: "#contact" },
+    { label: "Обо мне", href: "/#about" },
+    { label: "Услуги", href: "/#services" },
+    { label: "Оплата", href: "/payment" },
+    { label: "Публичный договор", href: "/public-offer" },
+    { label: "Контакты", href: "/#contact" },
   ];
 
   const REQUISITES = [
-    "ИП Почебыт Анна",
-    "УНП 592012888",
+    "ИП Почебыт Анна Владимировна",
+    "УНП 592012888, свидетельство о регистрации выдано 02.09.2024 Администрацией Ленинского района г. Гродно",
+    "Юридический адрес: Гродненская область, г. Гродно, ул. Социалистическая, 56, кв. 28",
+    "Режим работы: 09:00 - 20:00 (по предварительной записи)",
     "р/с BY50 ALFA 3013 2E77 2000 1027 0000",
     "ЦБУ № 6 АО «Альфа-Банк»",
+    "BIC: ALFABY2X",
+    "УНП банка: 101541947",
   ];
 
   return (
-    <footer className="w-full bg-[#2c302e] border-t border-[rgba(255,255,255,0.1)] pt-16 pb-16 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-[60px]">
+    <footer className="w-full bg-[#2c302e] border-t border-[rgba(255,255,255,0.1)]">
+      <div className="px-4 pt-16 pb-12 sm:px-6 md:px-10 lg:px-16 xl:px-[60px]">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           
@@ -86,9 +69,9 @@ export default function Footer() {
               Навигация
             </div>
 
-            {NAV_LINKS.map((link, index) => (
-              <a
-                key={index}
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
                 href={link.href}
                 className="text-sm font-light transition-all duration-300 hover:text-white"
                 style={{
@@ -98,7 +81,7 @@ export default function Footer() {
                 }}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -116,10 +99,9 @@ export default function Footer() {
               Информация
             </div>
 
-            <button
-              type="button"
-              onClick={() => setIsPolicyOpen(true)}
-              className="text-left text-sm font-light transition-all duration-300 hover:text-white cursor-pointer"
+            <Link
+              href="/privacy-policy"
+              className="text-left text-sm font-light transition-all duration-300 hover:text-white"
               style={{
                 color: "rgba(255, 255, 255, 0.6)",
                 fontFamily: "var(--font-montserrat), sans-serif",
@@ -127,7 +109,29 @@ export default function Footer() {
               }}
             >
               Политика конфиденциальности
-            </button>
+            </Link>
+            <Link
+              href="/payment"
+              className="text-left text-sm font-light transition-all duration-300 hover:text-white"
+              style={{
+                color: "rgba(255, 255, 255, 0.6)",
+                fontFamily: "var(--font-montserrat), sans-serif",
+                lineHeight: "20px",
+              }}
+            >
+              Оплата услуг
+            </Link>
+            <Link
+              href="/public-offer"
+              className="text-left text-sm font-light transition-all duration-300 hover:text-white"
+              style={{
+                color: "rgba(255, 255, 255, 0.6)",
+                fontFamily: "var(--font-montserrat), sans-serif",
+                lineHeight: "20px",
+              }}
+            >
+              Публичный договор
+            </Link>
           </div>
 
           {/* Column 4: Requisites */}
@@ -175,7 +179,19 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <PrivacyPolicy open={isPolicyOpen} onClose={() => setIsPolicyOpen(false)} />
+      </div>
+
+      <div className="w-full bg-white px-4 py-5 sm:px-6">
+        <div className="mx-auto flex max-w-4xl justify-center">
+          <Image
+            src="/utils/payments_logos.svg"
+            alt="Visa, Mastercard, Белкарт, bePaid, Я Pay, Google Pay, Apple Pay"
+            width={760}
+            height={80}
+            className="h-auto w-full max-w-[760px]"
+          />
+        </div>
+      </div>
     </footer>
   );
 }

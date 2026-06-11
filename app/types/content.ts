@@ -25,6 +25,7 @@ export type HomeContent = {
     highlight: string;
     cardTitle: string;
     cardDescription: string;
+    price: string;
     buttonText: string;
     items: string[];
   };
