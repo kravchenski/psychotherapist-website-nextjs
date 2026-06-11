@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
 
 const NAV_LINKS = [
-  { href: "#about", label: "Обо мне" },
-  { href: "#services", label: "Услуги" },
-  { href: "#contact", label: "Контакты" },
+  { href: "/#about", label: "Обо мне" },
+  { href: "/#services", label: "Услуги" },
+  { href: "/#contact", label: "Контакты" },
 ];
 
 const COLORS = {
@@ -58,6 +59,7 @@ const ActionButton = ({ onClick, children, className = "" }: { onClick?: () => v
 
   return (
     <button
+      type="button"
       onClick={onClick}
       onMouseEnter={() => setBgColor(COLORS.buttonHover)}
       onMouseLeave={() => setBgColor(COLORS.button)}
@@ -98,6 +100,15 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const rafRef = useRef<number | null>(null);
+
+  const handlePaymentClick = useCallback(async () => {
+    try {
+      await redirectToBePaid();
+    } catch (error) {
+      console.error("Payment redirect failed", error);
+      redirectToPaymentFallback();
+    }
+  }, []);
 
   const closeMenu = useCallback(() => {
     if (!open || isClosing) return;
@@ -192,7 +203,7 @@ export default function Header() {
             {NAV_LINKS.map((link) => (
               <NavLink key={link.href} href={link.href} label={link.label} />
             ))}
-            <ActionButton onClick={() => { window.location.hash = "contact"; }}>Записаться</ActionButton>
+            <ActionButton onClick={handlePaymentClick}>Записаться</ActionButton>
           </nav>
 
           <div className="md:hidden">
@@ -223,9 +234,10 @@ export default function Header() {
               ))}
             </div>
             <button
+              type="button"
               onClick={() => {
                 closeMenu();
-                window.location.hash = "contact";
+                void handlePaymentClick();
               }}
               className="w-full text-base font-medium text-white rounded-full px-6 py-3 transition-colors border mt-6 cursor-pointer"
               style={{

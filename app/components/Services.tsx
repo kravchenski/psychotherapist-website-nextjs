@@ -1,6 +1,7 @@
 "use client"
 import Image from 'next/image'
 import { useState } from "react";
+import { redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
 import type { HomeContent } from "../types/content";
 
 const imgSvg = "utils/service_check.svg";
@@ -11,6 +12,22 @@ type ServicesProps = {
 
 export default function Services({ content }: ServicesProps) {
   const [isButtonHovered, setIsButtonHovered] = useState(false);
+  const [isPaymentLoading, setIsPaymentLoading] = useState(false);
+
+  async function handlePaymentClick() {
+    if (isPaymentLoading) {
+      return;
+    }
+
+    setIsPaymentLoading(true);
+
+    try {
+      await redirectToBePaid();
+    } catch (error) {
+      console.error("Payment redirect failed", error);
+      redirectToPaymentFallback();
+    }
+  }
 
   return (
     <section className="w-full bg-[#f9f8f5] py-12 lg:py-16 px-4 sm:px-6 lg:px-8" id="services">
@@ -103,7 +120,7 @@ export default function Services({ content }: ServicesProps) {
                 </div>
 
                 {/* Services List */}
-                <div className="space-y-4 mb-7">
+                <div className="space-y-4 mb-5">
                   {content.items.map((service, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <div className="flex-shrink-0 mt-1">
@@ -124,19 +141,32 @@ export default function Services({ content }: ServicesProps) {
                   ))}
                 </div>
 
+                <div
+                  className="mb-7 pl-8 text-sm font-semibold"
+                  style={{
+                    color: "#334333",
+                    fontFamily: "var(--font-montserrat), sans-serif",
+                    lineHeight: "1.5",
+                  }}
+                >
+                  {content.price}
+                </div>
+
                 {/* Action Button */}
                 <button
+                  type="button"
                   className="w-full bg-[#495b48] text-white font-medium py-3 px-6 rounded-full border border-[#e5e2dc] cursor-pointer transition-shadow duration-300 ease-out hover:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)] focus-visible:shadow-[0px_12px_24px_-10px_rgba(44,48,46,0.35),0px_6px_12px_-8px_rgba(44,48,46,0.25)]"
                   style={{
                     fontFamily: 'var(--font-montserrat), sans-serif',
                   }}
+                  disabled={isPaymentLoading}
                   onMouseEnter={() => setIsButtonHovered(true)}
                   onMouseLeave={() => setIsButtonHovered(false)}
                   onFocus={() => setIsButtonHovered(true)}
                   onBlur={() => setIsButtonHovered(false)}
-                  onClick={() => { window.location.hash = "contact"; }}
+                  onClick={handlePaymentClick}
                 >
-                  {content.buttonText}
+                  {isPaymentLoading ? "Переход к оплате..." : content.buttonText}
                 </button>
               </div>
             </div>

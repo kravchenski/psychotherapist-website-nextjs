@@ -10,6 +10,14 @@ type DeployEnv = {
   mode: "hook" | "unconfigured";
 };
 
+type BePaidEnv = {
+  shopId?: string;
+  secretKey?: string;
+  apiUrl: string;
+  isTest: boolean;
+  isConfigured: boolean;
+};
+
 export function getAdminEnv(): AdminEnv {
   const username = process.env.ADMIN_USERNAME?.trim();
   const password = process.env.ADMIN_PASSWORD;
@@ -30,6 +38,23 @@ export function getAdminEnv(): AdminEnv {
     password,
     sessionSecret,
     isConfigured,
+  };
+}
+
+export function getBePaidEnv(): BePaidEnv {
+  const shopId = process.env.BEPAID_SHOP_ID?.trim();
+  const secretKey = process.env.BEPAID_SECRET_KEY;
+  const apiUrl =
+    process.env.BEPAID_API_URL?.trim() ||
+    "https://checkout.bepaid.by/ctp/api/checkouts";
+  const isTest = process.env.BEPAID_TEST_MODE === "true";
+
+  return {
+    shopId,
+    secretKey,
+    apiUrl,
+    isTest,
+    isConfigured: Boolean(shopId && secretKey),
   };
 }
 

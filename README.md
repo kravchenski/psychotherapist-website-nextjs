@@ -20,7 +20,15 @@ ADMIN_SESSION_SECRET=replace-with-at-least-32-random-characters
 ADMIN_SESSION_MAX_AGE_SECONDS=7200
 ADMIN_COOKIE_SECURE=false
 ADMIN_ALLOWED_ORIGINS=https://example.com
+BEPAID_SHOP_ID=replace-with-bepaid-shop-id
+BEPAID_SECRET_KEY=replace-with-bepaid-secret-key
+BEPAID_TEST_MODE=true
+BEPAID_API_URL=https://checkout.bepaid.by/ctp/api/checkouts
 ```
+
+Для BePaid используются Shop ID и Secret Key из кабинета мерчанта. Кнопка
+`Записаться` создает checkout token на сервере и переводит пользователя на
+`redirect_url`, который возвращает BePaid.
 
 ## Локальный запуск
 

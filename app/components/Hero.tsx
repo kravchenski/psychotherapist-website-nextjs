@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { redirectToBePaid, redirectToPaymentFallback } from "../lib/clientPayment";
 import type { HomeContent } from "../types/content";
 
 const defaultBackground = "/utils/bg_abstract_calm.webp";
@@ -10,6 +13,16 @@ type HeroProps = {
 
 export default function Hero({ content }: HeroProps) {
   const photoUrl = content.photoUrl || defaultPhoto;
+
+  async function handlePaymentClick() {
+    try {
+      await redirectToBePaid();
+    } catch (error) {
+      console.error("Payment redirect failed", error);
+      redirectToPaymentFallback();
+    }
+  }
+
   return (
     <section className="w-full min-h-[1080px] flex items-center justify-center relative overflow-hidden lg:py-16 px-4 sm:px-6 lg:px-8" id="hero">
      <div className="max-w-8xl mx-auto my-auto">
@@ -75,13 +88,14 @@ export default function Hero({ content }: HeroProps) {
             </p>
 
             <div className="flex flex-col gap-[12px] mt-4">
-              <a
-                href="#contact"
+              <button
+                type="button"
+                onClick={handlePaymentClick}
                 className="bg-[#4a5b49] hover:bg-[#3f4f3f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[48px] items-center justify-center min-h-[40px] px-[24px] rounded-full shadow-[0px_10px_15px_-3px_rgba(74,91,73,0.22),0px_4px_6px_-4px_rgba(74,91,73,0.22)] hover:shadow-[0px_14px_20px_-3px_rgba(74,91,73,0.32),0px_6px_8px_-4px_rgba(74,91,73,0.24)] cursor-pointer inline-flex"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
               >
                 <span className="text-[14px] text-center text-white leading-[20px]">{content.primaryButtonText}</span>
-              </a>
+              </button>
 
               <a
                 href="#about"
@@ -116,13 +130,14 @@ export default function Hero({ content }: HeroProps) {
               </p>
 
               <div className="relative flex flex-row gap-[14px]">
-                <a
-                  href="#contact"
+                <button
+                  type="button"
+                  onClick={handlePaymentClick}
                   className="bg-[#4a5b49] hover:bg-[#3f4f3f] transition-all duration-300 ease-out transform hover:translate-y-[-2px] border border-[#e5e2dc] h-[56px] items-center justify-center min-h-[40px] px-[20px] rounded-full shadow-[0px_10px_15px_-3px_rgba(74,91,73,0.22),0px_4px_6px_-4px_rgba(74,91,73,0.22)] hover:shadow-[0px_14px_20px_-3px_rgba(74,91,73,0.32),0px_6px_8px_-4px_rgba(74,91,73,0.24)] cursor-pointer flex-none inline-flex"
                   style={{ fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500 }}
                 >
                   <span className="text-[16px] text-center text-white leading-[24px]">{content.primaryButtonText}</span>
-                </a>
+                </button>
 
                 <a
                   href="#about"
